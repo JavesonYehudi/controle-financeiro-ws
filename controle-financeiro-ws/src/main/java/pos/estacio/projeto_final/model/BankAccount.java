@@ -5,19 +5,24 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import pos.estacio.projeto_final.enumeration.EFundsType;
+
 @Entity
-@Table(catalog = "blumar", schema = "financeiro", name = "bank_account")
+@Table(name = "bank_account")
 public class BankAccount extends Funds implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4435628215627819990L;
 
+	@JsonIgnoreProperties
 	@JsonProperty("account")
 	private String account;
 
+	@JsonIgnoreProperties
 	@JsonProperty("agency")
 	private String agency;
 
@@ -44,10 +49,8 @@ public class BankAccount extends Funds implements Serializable {
 		this.agency = agency;
 	}
 
-	public String toString() {
-		StringBuffer stringBuffer = new StringBuffer("Bank Account: ");
-		stringBuffer.append(super.getDescription());
-		return stringBuffer.toString();
+	@JsonProperty("fundsType")
+	public EFundsType getEFundsType() {
+		return EFundsType.BANK_ACCOUNT;
 	}
-
 }

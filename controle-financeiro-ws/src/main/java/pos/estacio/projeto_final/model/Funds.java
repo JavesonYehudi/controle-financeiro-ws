@@ -1,17 +1,33 @@
 package pos.estacio.projeto_final.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@MappedSuperclass
-@SequenceGenerator(name = "seq", sequenceName = "financeiro.funds_id_seq")
-public abstract class Funds {
+import pos.estacio.projeto_final.enumeration.EFundsType;
+
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Funds implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3769024446632244523L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,7 +38,17 @@ public abstract class Funds {
 	@JsonProperty("description")
 	protected String description;
 
+	@OneToMany(mappedBy = "funds")
+	@JsonBackReference
+	@JsonProperty("financialTransactions")
+	protected List<FinancialTransaction> financialTransactions;
+
+	@Transient
+	@JsonProperty("fundsType")
+	private EFundsType eFundsType;
+
 	public Funds() {
+		financialTransactions = new ArrayList<>();
 	}
 
 	public Funds(String description) {
@@ -43,6 +69,29 @@ public abstract class Funds {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public List<FinancialTransaction> getFinancialTransactions() {
+		return financialTransactions;
+	}
+
+	public void setFinancialTransactions(List<FinancialTransaction> financialTransactions) {
+		this.financialTransactions = financialTransactions;
+	}
+
+	public EFundsType getEFundsType() {
+		return eFundsType;
+	}
+
+	public void setEFundsType(EFundsType eFundsType) {
+		this.eFundsType = eFundsType;
+	}
+
+	@Override
+	public String toString() {
+		StringBuffer stringBuffer = new StringBuffer();
+		stringBuffer.append(this.getEFundsType().getName()).append(": ").append(this.getDescription());
+		return stringBuffer.toString();
 	}
 
 }

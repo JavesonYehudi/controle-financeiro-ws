@@ -1,4 +1,4 @@
-package pos.estacio.projeto_final.factory;
+package pos.estacio.projeto_final.producer;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -8,7 +8,7 @@ import javax.enterprise.inject.spi.InjectionPoint;
 
 import pos.estacio.projeto_final.dao.GenericDao;
 
-public class GenericDaoFactory implements Serializable {
+public class GenericDaoProducer implements Serializable {
 	/**
 	 * 
 	 */

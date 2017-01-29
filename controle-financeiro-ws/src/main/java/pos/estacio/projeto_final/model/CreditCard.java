@@ -9,10 +9,11 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Entity
-@Table(catalog = "blumar", schema = "financeiro", name = "credit_card")
-public class CreditCard extends Funds implements Serializable {
+import pos.estacio.projeto_final.enumeration.EFundsType;
 
+@Entity
+@Table(name = "credit_card")
+public class CreditCard extends Funds implements Serializable {
 	/**
 	 * 
 	 */
@@ -51,9 +52,7 @@ public class CreditCard extends Funds implements Serializable {
 		this.limitValue = limitValue;
 	}
 
-	public String toString() {
-		StringBuffer stringBuffer = new StringBuffer("Credit Card: ");
-		stringBuffer.append(super.getDescription());
-		return stringBuffer.toString();
+	public EFundsType getEFundsType() {
+		return EFundsType.CREDIT_CARD;
 	}
 }

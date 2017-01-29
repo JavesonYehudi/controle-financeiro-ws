@@ -1,17 +1,33 @@
-/*package pos.estacio.projeto_final.resource;
+package pos.estacio.projeto_final.resource;
 
+import javax.inject.Inject;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
 
-@Path(value = "/test")
-public class CreditCardResource {
+import pos.estacio.projeto_final.dao.GenericDao;
+import pos.estacio.projeto_final.model.CreditCard;
 
-	//@Inject
-	//private CreditCardDaoImpl creditCardDao;
+@Path(value = "/credit-card")
+public class CreditCardResource extends GenericResource<CreditCard> {
 
-	@GET
-	@Produces("application/json")
+	@Inject
+	private GenericDao<CreditCard> creditCardDao;
+
+	@Override
+	public Response save(CreditCard creditCard) {
+		try {
+			return Response.status(201).entity(creditCardDao.create(creditCard)).build();
+		} catch (Exception e) {
+			return errorMessage(e);
+		}
+	}
+
+	@Override
 	public Response list() {
-		return Response.status(200).entity(creditCardDao.list()).build();
+		try {
+			return Response.status(200).entity(creditCardDao.list()).build();
+		} catch (Exception e) {
+			return errorMessage(e);
+		}
 	}
 }
-*/
