@@ -9,7 +9,7 @@ import pos.estacio.projeto_final.model.FinancialTransaction;
 
 @RequestScoped
 @Named("pay")
-public class FinancialTransactionPayExecutor implements IFinancialTransactionExecutor {
+public class IncomeTransactionExecutor implements IFinancialTransactionExecutor {
 
 	@Inject
 	private GenericDao<FinancialTransaction> financialTransactionDao;

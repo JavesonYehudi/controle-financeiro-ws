@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import pos.estacio.projeto_final.enumeration.EFundsType;
 
 @Entity
-@Table(name = "credit_card")
+@Table(name = "credit_card", schema = "financeiro")
 public class CreditCard extends Funds implements Serializable {
 	/**
 	 * 

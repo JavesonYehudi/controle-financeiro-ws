@@ -14,7 +14,7 @@ import pos.estacio.projeto_final.executor.IFinancialTransactionExecutor;
 import pos.estacio.projeto_final.model.FinancialTransaction;
 import pos.estacio.projeto_final.model.Income;
 
-@Path(value = "/financial-transaction")
+@Path(value = "/income")
 public class IncomeResource extends GenericResource<Income> {
 
 	@Inject

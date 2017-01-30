@@ -2,13 +2,8 @@ package pos.estacio.projeto_final.test.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Entity
-@Table(catalog = "blumar", schema = "financeiro", name = "bank_account")
 public class BankAccountResponse implements Serializable {
 	/**
 	 * 

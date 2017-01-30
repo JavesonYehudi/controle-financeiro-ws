@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import pos.estacio.projeto_final.enumeration.EFundsType;
 
 @Entity
-@Table(name = "bank_account")
+@Table(name = "bank_account", schema = "financeiro")
 public class BankAccount extends Funds implements Serializable {
 	/**
 	 * 

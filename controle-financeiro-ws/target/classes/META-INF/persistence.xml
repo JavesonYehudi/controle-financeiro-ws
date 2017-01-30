@@ -5,29 +5,32 @@
 	version="2.1">
 
 	<persistence-unit name="postgres" transaction-type="RESOURCE_LOCAL">
-		<!-- entidade mapeada -->
+		<!-- entidade mapeada
 		<class>pos.estacio.projeto_final.model.Funds</class>
 		<class>pos.estacio.projeto_final.model.BankAccount</class>
 		<class>pos.estacio.projeto_final.model.CreditCard</class>
 		<class>pos.estacio.projeto_final.model.FinancialTransaction</class>
-
+		-->
 		<properties>
 			<!-- propriedades do hibernate -->
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
-			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
 
 			<!-- dados da conexao -->
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
+			<!--
+			
 			<property name="hibernate.connection.username" value="javeson" />
 			<property name="hibernate.connection.password" value="150192" />
 			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/controlefinanceiro" />
 
-			<!-- 
-				<property name="hibernate.connection.username" value="javesonanjos" />
-				<property name="hibernate.connection.password" value="15gd15as" />
-				<property name="hibernate.connection.url" value="jdbc:postgresql://10.3.3.7:5432/blumar" />
  			-->
+ 			
+ 			<property name="hibernate.connection.username" value="javesonanjos" />
+			<property name="hibernate.connection.password" value="15gd15as" />
+			<property name="hibernate.connection.url" value="jdbc:postgresql://10.3.3.7:5432/blumar" />
+ 			
 
 			<!-- atualiza o banco, gera as tabelas se for preciso -->
 			<property name="hibernate.hbm2ddl.auto" value="update" />
