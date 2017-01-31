@@ -14,7 +14,7 @@ public class CreditCardResource extends GenericResource<CreditCard> {
 	private GenericDao<CreditCard> creditCardDao;
 
 	@Override
-	public Response save(CreditCard creditCard) {
+	public Response create(CreditCard creditCard) {
 		try {
 			return Response.status(201).entity(creditCardDao.create(creditCard)).build();
 		} catch (Exception e) {

@@ -13,13 +13,10 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import pos.estacio.projeto_final.enumeration.EFundsType;
 
@@ -27,7 +24,8 @@ import pos.estacio.projeto_final.enumeration.EFundsType;
 @Table(name = "funds", schema = "financeiro")
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+// @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+// property = "id")
 public class Funds implements Serializable {
 	/**
 	 * 
@@ -44,14 +42,9 @@ public class Funds implements Serializable {
 	protected String description;
 
 	@OneToMany(mappedBy = "funds")
-	//@JsonBackReference
-	@JsonIgnore
+	@JsonBackReference
 	@JsonProperty("financialTransactions")
 	protected List<FinancialTransaction> financialTransactions;
-
-	@Transient
-	@JsonProperty("fundsType")
-	private EFundsType eFundsType;
 
 	public Funds() {
 		financialTransactions = new ArrayList<>();
@@ -85,12 +78,9 @@ public class Funds implements Serializable {
 		this.financialTransactions = financialTransactions;
 	}
 
+	@JsonProperty("fundsType")
 	public EFundsType getEFundsType() {
-		return eFundsType;
-	}
-
-	public void setEFundsType(EFundsType eFundsType) {
-		this.eFundsType = eFundsType;
+		return EFundsType.DEFAULT;
 	}
 
 	@Override

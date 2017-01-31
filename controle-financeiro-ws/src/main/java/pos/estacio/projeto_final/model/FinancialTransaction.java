@@ -13,14 +13,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import pos.estacio.projeto_final.enumeration.EFinancialTransactionType;
 
 @Entity
 @Table(name = "financial_transaction", schema = "financeiro")
-//@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@financialTransactionId")
 public class FinancialTransaction implements Serializable {
 	/**
 	 * 
@@ -43,16 +41,26 @@ public class FinancialTransaction implements Serializable {
 	protected BigDecimal valueExecuted;
 
 	@ManyToOne
-	@JsonManagedReference
 	@JsonProperty("funds")
 	protected Funds funds;
 
+	@Column(nullable = true)
 	@JsonProperty("dayOfMaturity")
 	protected Date dayOfMaturity;
+
+	@JsonProperty("fixedTransaction")
+	protected boolean fixedTransaction;
+
+	@JsonProperty("recurrent")
+	protected int recurrent;
 
 	@Transient
 	@JsonProperty("financialTransactionType")
 	private EFinancialTransactionType eFinancialTransactionType;
+
+	public FinancialTransaction() {
+		setRecurrent(1);
+	}
 
 	public Integer getId() {
 		return id;
@@ -100,6 +108,22 @@ public class FinancialTransaction implements Serializable {
 
 	public void setDayOfMaturity(Date dayOfMaturity) {
 		this.dayOfMaturity = dayOfMaturity;
+	}
+
+	public boolean isFixedTransaction() {
+		return fixedTransaction;
+	}
+
+	public void setFixedTransaction(boolean fixedTransaction) {
+		this.fixedTransaction = fixedTransaction;
+	}
+
+	public int getRecurrent() {
+		return recurrent;
+	}
+
+	public void setRecurrent(int recurrent) {
+		this.recurrent = recurrent;
 	}
 
 	public EFinancialTransactionType getEFinancialTransactionType() {

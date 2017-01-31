@@ -14,7 +14,7 @@ public class BankAccountResource extends GenericResource<BankAccount> {
 	private GenericDao<BankAccount> bankAccountDao;
 
 	@Override
-	public Response save(BankAccount bankAccount) {
+	public Response create(BankAccount bankAccount) {
 		try {
 			return Response.status(201).entity(bankAccountDao.create(bankAccount)).build();
 		} catch (Exception e) {

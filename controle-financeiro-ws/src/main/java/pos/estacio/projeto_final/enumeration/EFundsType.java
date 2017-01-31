@@ -1,7 +1,7 @@
 package pos.estacio.projeto_final.enumeration;
 
 public enum EFundsType {
-	BANK_ACCOUNT("Bank Account"), CREDIT_CARD("Credit Card");
+	BANK_ACCOUNT("Bank Account"), CREDIT_CARD("Credit Card"), DEFAULT("Default");
 	private String name;
 
 	private EFundsType(String name) {

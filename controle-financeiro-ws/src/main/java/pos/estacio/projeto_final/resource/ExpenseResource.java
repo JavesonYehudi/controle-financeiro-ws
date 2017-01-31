@@ -7,20 +7,20 @@ import javax.inject.Named;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
-import pos.estacio.projeto_final.model.Income;
+import pos.estacio.projeto_final.model.Expense;
 import pos.estacio.projeto_final.service.IService;
 
-@Path(value = "/income")
-public class IncomeResource extends GenericResource<Income> implements IFinancialTransactionResource {
+@Path(value = "/expense")
+public class ExpenseResource extends GenericResource<Expense> implements IFinancialTransactionResource{
 
 	@Inject
-	@Named("income")
-	private IService<Income> incomeExecutor;
-
+	@Named("expense")
+	private IService<Expense> expenseExecutor;
+	
 	@Override
-	public Response create(Income income) {
+	public Response create(Expense t) {
 		try {
-			return Response.status(201).entity(incomeExecutor.create(income)).build();
+			return Response.status(201).entity(expenseExecutor.create(t)).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}
@@ -29,7 +29,7 @@ public class IncomeResource extends GenericResource<Income> implements IFinancia
 	@Override
 	public Response list() {
 		try {
-			return Response.status(200).entity(incomeExecutor.list()).build();
+			return Response.status(200).entity(expenseExecutor.list()).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}
@@ -38,7 +38,7 @@ public class IncomeResource extends GenericResource<Income> implements IFinancia
 	@Override
 	public Response execute(Integer id, BigDecimal valueExecuted) {
 		try {
-			return Response.status(201).entity(incomeExecutor.execute(id, valueExecuted)).build();
+			return Response.status(201).entity(expenseExecutor.execute(id, valueExecuted)).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}

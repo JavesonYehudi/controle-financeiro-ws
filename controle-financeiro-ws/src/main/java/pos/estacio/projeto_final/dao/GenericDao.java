@@ -34,7 +34,10 @@ public class GenericDao<T extends Serializable>{
 	}
 
 	public void delete(Object id) {
+		entityManager.getTransaction().begin();
 		entityManager.remove(entityManager.getReference(entityClass, id));
+		entityManager.flush();
+		entityManager.getTransaction().commit();
 	}
 
 	public T find(Object id) {
@@ -42,7 +45,11 @@ public class GenericDao<T extends Serializable>{
 	}
 
 	public T update(T entity) {
-		return entityManager.merge(entity);
+		entityManager.getTransaction().begin();
+		entityManager.merge(entity);
+		entityManager.flush();
+		entityManager.getTransaction().commit();
+		return entity;
 	}
 
 	@SuppressWarnings("unchecked")

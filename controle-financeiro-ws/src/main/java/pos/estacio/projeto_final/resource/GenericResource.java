@@ -11,10 +11,10 @@ import javax.ws.rs.core.Response;
 public abstract class GenericResource<T> {
 
 	@POST
-	@Path(value = "/save")
+	@Path(value = "/create")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public abstract Response save(T t);
+	public abstract Response create(T t);
 
 	@GET
 	@Path(value = "/list")
