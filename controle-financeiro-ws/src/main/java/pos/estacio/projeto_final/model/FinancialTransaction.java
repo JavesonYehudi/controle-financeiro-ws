@@ -2,6 +2,7 @@ package pos.estacio.projeto_final.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -15,7 +16,9 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import pos.estacio.projeto_final.enumeration.ECalendarPeriod;
 import pos.estacio.projeto_final.enumeration.EFinancialTransactionType;
+import pos.estacio.projeto_final.utils.CalendarUtils;
 
 @Entity
 @Table(name = "financial_transaction", schema = "financeiro")
@@ -51,15 +54,20 @@ public class FinancialTransaction implements Serializable {
 	@JsonProperty("fixedTransaction")
 	protected boolean fixedTransaction;
 
+	@Column(columnDefinition = "default '0'")
 	@JsonProperty("recurrent")
 	protected int recurrent;
+
+	@JsonProperty("period")
+	protected ECalendarPeriod calendarPeriod;
 
 	@Transient
 	@JsonProperty("financialTransactionType")
 	private EFinancialTransactionType eFinancialTransactionType;
 
 	public FinancialTransaction() {
-		setRecurrent(1);
+		setValueExecuted(BigDecimal.ZERO);
+		setCalendarPeriod(ECalendarPeriod.MONTH);
 	}
 
 	public Integer getId() {
@@ -126,11 +134,36 @@ public class FinancialTransaction implements Serializable {
 		this.recurrent = recurrent;
 	}
 
+	public ECalendarPeriod getCalendarPeriod() {
+		return calendarPeriod;
+	}
+
+	public void setCalendarPeriod(ECalendarPeriod calendarPeriod) {
+		this.calendarPeriod = calendarPeriod;
+	}
+
 	public EFinancialTransactionType getEFinancialTransactionType() {
 		return eFinancialTransactionType;
 	}
 
 	public void setEFinancialTransactionType(EFinancialTransactionType eFinancialTransactionType) {
 		this.eFinancialTransactionType = eFinancialTransactionType;
+	}
+
+	public Calendar getDayOfMaturityCalendar() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(this.getDayOfMaturity());
+		return calendar;
+	}
+
+	public boolean isMaturityOfTheMonth() {
+
+		Calendar today = CalendarUtils.dayWithoutHours(Calendar.getInstance());
+		Calendar thisPeriod = CalendarUtils.dayWithoutHours(this.getDayOfMaturityCalendar());
+		Calendar thisPeriodWithRecurrent = CalendarUtils.dayWithoutHours(this.getDayOfMaturityCalendar());
+
+		thisPeriodWithRecurrent.add(this.getCalendarPeriod().getPeriod(), getRecurrent());
+
+		return thisPeriod.compareTo(today) >= 0 && thisPeriodWithRecurrent.compareTo(today) <= 0;
 	}
 }

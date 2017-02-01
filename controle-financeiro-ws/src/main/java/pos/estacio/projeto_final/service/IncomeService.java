@@ -12,7 +12,7 @@ import pos.estacio.projeto_final.model.Income;
 
 @RequestScoped
 @Named("income")
-public class IncomeService implements IService<Income> {
+public class IncomeService implements IFinancialTransactionService<Income> {
 
 	@Inject
 	private GenericDao<Income> incomeDao;

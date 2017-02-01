@@ -15,10 +15,11 @@ import org.junit.Test;
 
 import pos.estacio.projeto_final.model.Funds;
 import pos.estacio.projeto_final.model.Income;
+import pos.estacio.projeto_final.utils.CalendarUtils;
 
 public class FinancialTransactionTeste {
 
-	@Test
+	//@Test
 	public void save() {
 		Client client = ClientBuilder.newClient();
 		WebTarget target = client.target("http://localhost:8080/controle-financeiro-ws/income/create");
@@ -45,7 +46,7 @@ public class FinancialTransactionTeste {
 		System.out.println(incomeResponse);
 	}
 	
-	@Test
+	//@Test
 	public void list(){
 		Client client = ClientBuilder.newClient();
 		WebTarget target = client.target("http://localhost:8080/controle-financeiro-ws/income/list");
@@ -56,4 +57,13 @@ public class FinancialTransactionTeste {
 		System.out.println(Arrays.asList(income));
 	}
 
+	@Test
+	public void testClass(){
+		Calendar calendar = CalendarUtils.dayWithoutHours(Calendar.getInstance());
+		calendar.add(Calendar.DATE, 1);
+		//calendar.add(Calendar.MONTH, 5);
+		System.out.println(calendar.getTime());
+		
+		System.out.println(calendar.compareTo(CalendarUtils.dayWithoutHours(Calendar.getInstance())));
+	}
 }

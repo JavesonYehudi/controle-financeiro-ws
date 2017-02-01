@@ -8,14 +8,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
 import pos.estacio.projeto_final.model.Expense;
-import pos.estacio.projeto_final.service.IService;
+import pos.estacio.projeto_final.service.IFinancialTransactionService;
 
 @Path(value = "/expense")
 public class ExpenseResource extends GenericResource<Expense> implements IFinancialTransactionResource{
 
 	@Inject
 	@Named("expense")
-	private IService<Expense> expenseExecutor;
+	private IFinancialTransactionService<Expense> expenseExecutor;
 	
 	@Override
 	public Response create(Expense t) {

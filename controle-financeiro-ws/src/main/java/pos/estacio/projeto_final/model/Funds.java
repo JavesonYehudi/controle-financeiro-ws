@@ -1,8 +1,10 @@
 package pos.estacio.projeto_final.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,8 +26,6 @@ import pos.estacio.projeto_final.enumeration.EFundsType;
 @Table(name = "funds", schema = "financeiro")
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonIgnoreProperties(ignoreUnknown = true)
-// @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-// property = "id")
 public class Funds implements Serializable {
 	/**
 	 * 
@@ -83,10 +83,30 @@ public class Funds implements Serializable {
 		return EFundsType.DEFAULT;
 	}
 
+	@JsonProperty("currentIncomePaid")
+	public BigDecimal getCurrentIncomePaid() {
+		Predicate<? super FinancialTransaction> predicate = transaction -> transaction.getClass().equals(Income.class);
+		return this.getFinancialTransactions().stream().filter(predicate)
+				.map(FinancialTransaction::getValueExecuted).reduce(BigDecimal.ZERO, BigDecimal::add);
+	}
+
+	@JsonProperty("currentExpensePaid")
+	public BigDecimal getCurrentExpensePaid() {
+		return this.getFinancialTransactions().stream().filter(predicate -> predicate.getClass().equals(Expense.class))
+				.map(FinancialTransaction::getValueExecuted).reduce(BigDecimal.ZERO, BigDecimal::add);
+	}
+
+	@JsonProperty("currentTransactionsPaid")
+	public BigDecimal getCurrentBalance() {
+		return this.getFinancialTransactions().stream().map(FinancialTransaction::getValueExecuted)
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
+	}
+
 	@Override
 	public String toString() {
 		StringBuffer stringBuffer = new StringBuffer();
 		stringBuffer.append(this.getEFundsType().getName()).append(": ").append(this.getDescription());
+		stringBuffer.append(" Current Balance: ").append(this.getCurrentBalance());
 		return stringBuffer.toString();
 	}
 

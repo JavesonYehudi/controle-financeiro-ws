@@ -12,7 +12,7 @@ import pos.estacio.projeto_final.model.Expense;
 
 @RequestScoped
 @Named("expense")
-public class ExpenseService implements IService<Expense> {
+public class ExpenseService implements IFinancialTransactionService<Expense> {
 
 	@Inject
 	private GenericDao<Expense> expenseDao;
@@ -20,14 +20,14 @@ public class ExpenseService implements IService<Expense> {
 	@Override
 	public Expense execute(int id, BigDecimal valueExecuted) {
 		Expense expense = expenseDao.find(id);
-		expense.setValueTransaction(valueExecuted.abs());
-		expense.setValueExecuted(valueExecuted.abs());
+		expense.setValueTransaction(valueExecuted.abs().negate());
+		expense.setValueExecuted(valueExecuted.abs().negate());
 		return expenseDao.update(expense);
 	}
 
 	@Override
 	public Expense create(Expense expense) {
-		expense.setValueTransaction(expense.getValueTransaction().abs());
+		expense.setValueTransaction(expense.getValueTransaction().abs().negate());
 		return expenseDao.create(expense);
 	}
 
