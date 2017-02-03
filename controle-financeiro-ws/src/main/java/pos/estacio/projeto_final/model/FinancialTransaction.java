@@ -2,7 +2,10 @@ package pos.estacio.projeto_final.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +17,12 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
+import pos.estacio.projeto_final.enumeration.ECalendarPeriod;
 import pos.estacio.projeto_final.enumeration.EFinancialTransactionType;
 
 @Entity
@@ -45,8 +53,10 @@ public class FinancialTransaction implements Serializable {
 	protected Funds funds;
 
 	@Column(nullable = true)
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonProperty("dayOfMaturity")
-	protected Date dayOfMaturity;
+	protected LocalDate dayOfMaturity;
 
 	@JsonProperty("fixedTransaction")
 	protected boolean fixedTransaction;
@@ -55,16 +65,16 @@ public class FinancialTransaction implements Serializable {
 	@JsonProperty("recurrent")
 	protected int recurrent;
 
-/*	@JsonProperty("period")
+	@JsonProperty("period")
 	protected ECalendarPeriod calendarPeriod;
-*/
+
 	@Transient
 	@JsonProperty("financialTransactionType")
 	private EFinancialTransactionType eFinancialTransactionType;
 
 	public FinancialTransaction() {
 		setValueExecuted(BigDecimal.ZERO);
-		//setCalendarPeriod(ECalendarPeriod.MONTH);
+		setCalendarPeriod(ECalendarPeriod.MONTH);
 	}
 
 	public Integer getId() {
@@ -107,11 +117,11 @@ public class FinancialTransaction implements Serializable {
 		this.funds = funds;
 	}
 
-	public Date getDayOfMaturity() {
+	public LocalDate getDayOfMaturity() {
 		return dayOfMaturity;
 	}
 
-	public void setDayOfMaturity(Date dayOfMaturity) {
+	public void setDayOfMaturity(LocalDate dayOfMaturity) {
 		this.dayOfMaturity = dayOfMaturity;
 	}
 
@@ -131,13 +141,13 @@ public class FinancialTransaction implements Serializable {
 		this.recurrent = recurrent;
 	}
 
-/*	public ECalendarPeriod getCalendarPeriod() {
+	public ECalendarPeriod getCalendarPeriod() {
 		return calendarPeriod;
 	}
 
 	public void setCalendarPeriod(ECalendarPeriod calendarPeriod) {
 		this.calendarPeriod = calendarPeriod;
-	}*/
+	}
 
 	public EFinancialTransactionType getEFinancialTransactionType() {
 		return eFinancialTransactionType;
@@ -147,23 +157,33 @@ public class FinancialTransaction implements Serializable {
 		this.eFinancialTransactionType = eFinancialTransactionType;
 	}
 
-/*	public Calendar getDayOfMaturityCalendar() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(this.getDayOfMaturity());
-		return calendar;
+	//@JsonSerialize(using = LocalDateSerializer[].class)
+	@JsonProperty("maturityList")
+	public List<LocalDate> getMaturityList() {
+		List<LocalDate> list = new ArrayList<>();
+
+		IntStream.range(0, this.getRecurrent()).forEach(i -> {
+			list.add(this.getDayOfMaturity().plus(i, this.getCalendarPeriod().getChronoUnit()));
+		});
+
+		return list;
 	}
-
-	public boolean isMaturityOfTheMonth() {
-
-		Calendar today = CalendarUtils.dayWithoutHours(Calendar.getInstance());
-		Calendar thisPeriod = CalendarUtils.dayWithoutHours(this.getDayOfMaturityCalendar());
-		Calendar thisPeriodWithRecurrent = CalendarUtils.dayWithoutHours(this.getDayOfMaturityCalendar());
-
-		thisPeriodWithRecurrent.add(this.getCalendarPeriod().getPeriod(), getRecurrent());
-
-		boolean t = thisPeriod.get(Calendar.MONTH) == today.get(Calendar.MONTH) &&
-					thisPeriod.get(Calendar.YEAR) == today.get(Calendar.YEAR);
-		
-		return thisPeriod.compareTo(today) >= 0 && thisPeriodWithRecurrent.compareTo(today) <= 0;
-	}*/
+	/*
+	 * public boolean isMaturityOfTheMonth() {
+	 * 
+	 * Calendar today = DatesUtils.dayWithoutHours(Calendar.getInstance());
+	 * Calendar thisPeriod =
+	 * DatesUtils.dayWithoutHours(this.getDayOfMaturityCalendar()); Calendar
+	 * thisPeriodWithRecurrent =
+	 * DatesUtils.dayWithoutHours(this.getDayOfMaturityCalendar());
+	 * 
+	 * thisPeriodWithRecurrent.add(this.getCalendarPeriod().getPeriod(),
+	 * getRecurrent());
+	 * 
+	 * boolean t = thisPeriod.get(Calendar.MONTH) == today.get(Calendar.MONTH)
+	 * && thisPeriod.get(Calendar.YEAR) == today.get(Calendar.YEAR);
+	 * 
+	 * return thisPeriod.compareTo(today) >= 0 &&
+	 * thisPeriodWithRecurrent.compareTo(today) <= 0; }
+	 */
 }
