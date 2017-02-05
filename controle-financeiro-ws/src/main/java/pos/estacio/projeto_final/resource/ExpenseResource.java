@@ -1,13 +1,12 @@
 package pos.estacio.projeto_final.resource;
 
-import java.math.BigDecimal;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
 import pos.estacio.projeto_final.model.Expense;
+import pos.estacio.projeto_final.model.Payment;
 import pos.estacio.projeto_final.service.IFinancialTransactionService;
 
 @Path(value = "/expense")
@@ -18,9 +17,9 @@ public class ExpenseResource extends GenericResource<Expense> implements IFinanc
 	private IFinancialTransactionService<Expense> expenseExecutor;
 	
 	@Override
-	public Response create(Expense t) {
+	public Response create(Expense expense) {
 		try {
-			return Response.status(201).entity(expenseExecutor.create(t)).build();
+			return Response.status(201).entity(expenseExecutor.create(expense)).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}
@@ -36,10 +35,19 @@ public class ExpenseResource extends GenericResource<Expense> implements IFinanc
 	}
 
 	@Override
-	public Response execute(Integer id, BigDecimal valueExecuted) {
+	public Response execute(Integer id, Payment payment) {
 		try {
-			return Response.status(201).entity(expenseExecutor.execute(id, valueExecuted)).build();
+			return Response.status(201).entity(expenseExecutor.execute(id, payment)).build();
 		} catch (Exception e) {
+			return errorMessage(e);
+		}
+	}
+
+	@Override
+	public Response find(Integer id) {
+		try{
+			return Response.status(200).entity(expenseExecutor.find(id)).build();
+		}catch (Exception e) {
 			return errorMessage(e);
 		}
 	}

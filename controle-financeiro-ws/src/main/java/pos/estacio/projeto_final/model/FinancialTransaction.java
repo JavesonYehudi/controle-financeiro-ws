@@ -5,16 +5,19 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -47,6 +50,11 @@ public class FinancialTransaction implements Serializable {
 
 	@JsonProperty("valueExecuted")
 	protected BigDecimal valueExecuted;
+
+	@OneToMany(mappedBy = "financialTransaction", cascade = CascadeType.ALL)
+	@JsonManagedReference
+	@JsonProperty("payments")
+	protected List<Payment> payments;
 
 	@ManyToOne
 	@JsonProperty("funds")
@@ -110,6 +118,14 @@ public class FinancialTransaction implements Serializable {
 		this.valueExecuted = valueExecuted;
 	}
 
+	public List<Payment> getPayments() {
+		return payments;
+	}
+
+	public void setPayments(List<Payment> payments) {
+		this.payments = payments;
+	}
+
 	public Funds getFunds() {
 		return funds;
 	}
@@ -166,7 +182,11 @@ public class FinancialTransaction implements Serializable {
 	}
 
 	@JsonProperty("isMonthMaturiy")
-	public boolean isMonthMaturiy(){
-		return DateUtils.isMonthMaturity(getMaturityList());
+	public boolean isMonthMaturiy() {
+		return DateUtils.isMonthMaturity(getMaturityList()) || isFixedTransaction();
+	}
+
+	public BigDecimal getTotalPaid() {
+		return this.getPayments().stream().map(Payment::getValuePaid).reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 }

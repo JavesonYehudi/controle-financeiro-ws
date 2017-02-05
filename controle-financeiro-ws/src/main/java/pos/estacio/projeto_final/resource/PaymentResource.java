@@ -1,22 +1,20 @@
 package pos.estacio.projeto_final.resource;
 
 import javax.inject.Inject;
-import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
 import pos.estacio.projeto_final.dao.GenericDao;
-import pos.estacio.projeto_final.model.Funds;
+import pos.estacio.projeto_final.model.Payment;
 
-@Path(value = "/funds")
-public class FundsResource extends GenericResource<Funds> {
+public class PaymentResource extends GenericResource<Payment> {
 
 	@Inject
-	private GenericDao<Funds> fundsDao;
+	private GenericDao<Payment> paymentDao;
 
 	@Override
-	public Response create(Funds funds) {
+	public Response create(Payment payment) {
 		try {
-			return Response.status(201).entity(fundsDao.create(funds)).build();
+			return Response.status(201).entity(paymentDao.create(payment)).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}
@@ -25,7 +23,7 @@ public class FundsResource extends GenericResource<Funds> {
 	@Override
 	public Response list() {
 		try {
-			return Response.status(200).entity(fundsDao.list()).build();
+			return Response.status(200).entity(paymentDao.list()).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}
@@ -34,7 +32,7 @@ public class FundsResource extends GenericResource<Funds> {
 	@Override
 	public Response find(Integer id) {
 		try{
-			return Response.status(200).entity(fundsDao.find(id)).build();
+			return Response.status(200).entity(paymentDao.find(id)).build();
 		}catch (Exception e) {
 			return errorMessage(e);
 		}

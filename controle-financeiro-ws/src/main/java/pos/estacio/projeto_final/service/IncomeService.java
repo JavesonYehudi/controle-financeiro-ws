@@ -1,6 +1,5 @@
 package pos.estacio.projeto_final.service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
@@ -9,6 +8,7 @@ import javax.inject.Named;
 
 import pos.estacio.projeto_final.dao.GenericDao;
 import pos.estacio.projeto_final.model.Income;
+import pos.estacio.projeto_final.model.Payment;
 
 @RequestScoped
 @Named("income")
@@ -18,10 +18,14 @@ public class IncomeService implements IFinancialTransactionService<Income> {
 	private GenericDao<Income> incomeDao;
 
 	@Override
-	public Income execute(int id, BigDecimal valueExecuted) {
+	public Income execute(int id, Payment payment) {
 		Income income = incomeDao.find(id);
-		income.setValueTransaction(valueExecuted.abs());
-		income.setValueExecuted(valueExecuted.abs());
+
+		payment.setValuePaid(payment.getValuePaid().abs());
+		payment.setFinancialTransaction(income);
+
+		income.getPayments().add(payment);
+
 		return incomeDao.update(income);
 	}
 
@@ -34,6 +38,11 @@ public class IncomeService implements IFinancialTransactionService<Income> {
 	@Override
 	public List<Income> list() {
 		return incomeDao.list();
+	}
+
+	@Override
+	public Income find(int id) {
+		return incomeDao.find(id);
 	}
 
 }

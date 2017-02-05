@@ -30,4 +30,13 @@ public class CreditCardResource extends GenericResource<CreditCard> {
 			return errorMessage(e);
 		}
 	}
+
+	@Override
+	public Response find(Integer id) {
+		try{
+			return Response.status(200).entity(creditCardDao.find(id)).build();
+		}catch (Exception e) {
+			return errorMessage(e);
+		}
+	}
 }

@@ -31,4 +31,13 @@ public class BankAccountResource extends GenericResource<BankAccount> {
 		}
 	}
 
+	@Override
+	public Response find(Integer id) {
+		try{
+			return Response.status(200).entity(bankAccountDao.find(id)).build();
+		}catch (Exception e) {
+			return errorMessage(e);
+		}
+	}
+
 }
