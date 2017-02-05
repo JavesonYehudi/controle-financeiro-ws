@@ -85,18 +85,19 @@ public class Funds implements Serializable {
 
 	@JsonProperty("currentIncomePaid")
 	public BigDecimal getCurrentIncomePaid() {
-		Predicate<? super FinancialTransaction> predicate = transaction -> transaction.getClass().equals(Income.class);
-		return this.getFinancialTransactions().stream().filter(predicate)
-				.map(FinancialTransaction::getValueExecuted).reduce(BigDecimal.ZERO, BigDecimal::add);
+		Predicate<? super FinancialTransaction> predicate = transaction -> transaction.getClass().equals(Income.class) && transaction.isMonthMaturiy();
+		return this.getFinancialTransactions().stream().filter(predicate).map(FinancialTransaction::getValueExecuted)
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 
 	@JsonProperty("currentExpensePaid")
 	public BigDecimal getCurrentExpensePaid() {
-		return this.getFinancialTransactions().stream().filter(predicate -> predicate.getClass().equals(Expense.class))
-				.map(FinancialTransaction::getValueExecuted).reduce(BigDecimal.ZERO, BigDecimal::add);
+		Predicate<? super FinancialTransaction> predicate = transaction -> transaction.getClass().equals(Expense.class) && transaction.isMonthMaturiy();
+		return this.getFinancialTransactions().stream().filter(predicate).map(FinancialTransaction::getValueExecuted)
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 
-	@JsonProperty("currentTransactionsPaid")
+	@JsonProperty("balance")
 	public BigDecimal getCurrentBalance() {
 		return this.getFinancialTransactions().stream().map(FinancialTransaction::getValueExecuted)
 				.reduce(BigDecimal.ZERO, BigDecimal::add);

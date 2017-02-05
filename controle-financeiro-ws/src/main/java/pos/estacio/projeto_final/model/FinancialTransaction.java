@@ -3,9 +3,7 @@ package pos.estacio.projeto_final.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -24,6 +23,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import pos.estacio.projeto_final.enumeration.ECalendarPeriod;
 import pos.estacio.projeto_final.enumeration.EFinancialTransactionType;
+import pos.estacio.projeto_final.utils.DateUtils;
 
 @Entity
 @Table(name = "financial_transaction", schema = "financeiro")
@@ -55,13 +55,13 @@ public class FinancialTransaction implements Serializable {
 	@Column(nullable = true)
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	@JsonProperty("dayOfMaturity")
 	protected LocalDate dayOfMaturity;
 
 	@JsonProperty("fixedTransaction")
 	protected boolean fixedTransaction;
 
-	@Column(columnDefinition = "default '0'")
 	@JsonProperty("recurrent")
 	protected int recurrent;
 
@@ -74,6 +74,7 @@ public class FinancialTransaction implements Serializable {
 
 	public FinancialTransaction() {
 		setValueExecuted(BigDecimal.ZERO);
+		setRecurrent(1);
 		setCalendarPeriod(ECalendarPeriod.MONTH);
 	}
 
@@ -157,33 +158,15 @@ public class FinancialTransaction implements Serializable {
 		this.eFinancialTransactionType = eFinancialTransactionType;
 	}
 
-	//@JsonSerialize(using = LocalDateSerializer[].class)
+	@JsonSerialize(contentUsing = LocalDateSerializer.class)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	@JsonProperty("maturityList")
 	public List<LocalDate> getMaturityList() {
-		List<LocalDate> list = new ArrayList<>();
-
-		IntStream.range(0, this.getRecurrent()).forEach(i -> {
-			list.add(this.getDayOfMaturity().plus(i, this.getCalendarPeriod().getChronoUnit()));
-		});
-
-		return list;
+		return DateUtils.listDates(getDayOfMaturity(), getRecurrent(), getCalendarPeriod());
 	}
-	/*
-	 * public boolean isMaturityOfTheMonth() {
-	 * 
-	 * Calendar today = DatesUtils.dayWithoutHours(Calendar.getInstance());
-	 * Calendar thisPeriod =
-	 * DatesUtils.dayWithoutHours(this.getDayOfMaturityCalendar()); Calendar
-	 * thisPeriodWithRecurrent =
-	 * DatesUtils.dayWithoutHours(this.getDayOfMaturityCalendar());
-	 * 
-	 * thisPeriodWithRecurrent.add(this.getCalendarPeriod().getPeriod(),
-	 * getRecurrent());
-	 * 
-	 * boolean t = thisPeriod.get(Calendar.MONTH) == today.get(Calendar.MONTH)
-	 * && thisPeriod.get(Calendar.YEAR) == today.get(Calendar.YEAR);
-	 * 
-	 * return thisPeriod.compareTo(today) >= 0 &&
-	 * thisPeriodWithRecurrent.compareTo(today) <= 0; }
-	 */
+
+	@JsonProperty("isMonthMaturiy")
+	public boolean isMonthMaturiy(){
+		return DateUtils.isMonthMaturity(getMaturityList());
+	}
 }

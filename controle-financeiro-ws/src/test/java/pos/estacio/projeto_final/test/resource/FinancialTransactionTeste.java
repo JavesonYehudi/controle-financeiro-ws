@@ -2,12 +2,10 @@ package pos.estacio.projeto_final.test.resource;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -19,9 +17,9 @@ import javax.ws.rs.core.Response;
 import org.junit.Test;
 
 import pos.estacio.projeto_final.enumeration.ECalendarPeriod;
-import pos.estacio.projeto_final.model.FinancialTransaction;
 import pos.estacio.projeto_final.model.Funds;
 import pos.estacio.projeto_final.model.Income;
+import pos.estacio.projeto_final.utils.DateUtils;
 
 public class FinancialTransactionTeste {
 
@@ -65,19 +63,8 @@ public class FinancialTransactionTeste {
 
 	@Test
 	public void testClass() {
-		System.out.println(ECalendarPeriod.MONTH.getChronoUnit());
-		// date.plus(recurrency, eCalendarPeriod.getChronoUnit());
+		List<LocalDate> list = DateUtils.listDates(LocalDate.of(2016, 1, 02), 5, ECalendarPeriod.MONTH);
+		list = list.stream().filter(date -> LocalDate.now().getMonth().equals(date.getMonth()) && LocalDate.now().getYear() == date.getYear()).collect(Collectors.toList());
+		System.out.println(list.isEmpty());
 	}
-
-	public List<Calendar> getList(Calendar calendar, int qtd) {
-		List<Calendar> calendars = new ArrayList<>();
-		// calendars.stream().reduce(calendar, accumulator)
-		for (int i = 0; i < qtd; i++) {
-			Calendar c = (Calendar) calendar.clone();
-			c.add(Calendar.MONTH, i);
-			calendars.add(c);
-		}
-		return calendars;
-	}
-
 }
