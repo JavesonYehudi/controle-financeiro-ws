@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +15,6 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -24,37 +22,46 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 @Entity
-@Table(name = "payment", schema = "financeiro")
-public class Payment implements Serializable {
+@Table(name = "maturity", schema = "financeiro")
+public class Maturity implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 180233392066903390L;
-
+	private static final long serialVersionUID = 2252052230847560263L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@JsonProperty("id")
 	private int id;
 
 	@Column(nullable = false)
-	@JsonProperty("valuePaid")
-	private BigDecimal valuePaid;
+	@JsonProperty("value")
+	private BigDecimal value;
 
 	@Column(nullable = false)
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-	@JsonProperty("datePayment")
-	private LocalDate datePayment;
+	@JsonProperty("date")
+	private LocalDate date;
 
-	@OneToOne(mappedBy = "payment", cascade = CascadeType.ALL)
-	private Maturity maturity;
+	@OneToOne
+	@JsonProperty("payment")
+	private Payment payment;
 
-	@ManyToOne
 	@JsonBackReference
+	@ManyToOne
 	@JsonProperty("financialTransaction")
 	private FinancialTransaction financialTransaction;
+
+	public Maturity() {
+	}
+
+	public Maturity(BigDecimal value, LocalDate date, FinancialTransaction financialTransaction) {
+		this.value = value;
+		this.date = date;
+		this.financialTransaction = financialTransaction;
+	}
 
 	public int getId() {
 		return id;
@@ -64,30 +71,28 @@ public class Payment implements Serializable {
 		this.id = id;
 	}
 
-	public BigDecimal getValuePaid() {
-		return valuePaid;
+	public BigDecimal getValue() {
+		return value;
 	}
 
-	public void setValuePaid(BigDecimal valuePaid) {
-		this.valuePaid = valuePaid;
+	public void setValue(BigDecimal value) {
+		this.value = value;
 	}
 
-	public LocalDate getDatePayment() {
-		return datePayment;
+	public LocalDate getDate() {
+		return date;
 	}
 
-	public void setDatePayment(LocalDate datePayment) {
-		this.datePayment = datePayment;
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
 
-	@JsonIgnore
-	public Maturity getMaturity() {
-		return maturity;
+	public Payment getPayment() {
+		return payment;
 	}
 
-	@JsonProperty("maturity")
-	public void setMaturity(Maturity maturity) {
-		this.maturity = maturity;
+	public void setPayment(Payment payment) {
+		this.payment = payment;
 	}
 
 	public FinancialTransaction getFinancialTransaction() {
@@ -102,9 +107,8 @@ public class Payment implements Serializable {
 	public String toString() {
 		StringBuffer stringBuffer = new StringBuffer("");
 		stringBuffer.append("Transacao: ").append(financialTransaction.getDescription()).append(", Vencimento: ")
-				.append(maturity.getDate().toString()).append(", Valor do vencimento: ")
-				.append(maturity.getValue().toString()).append(", Data do pagamento: ")
-				.append(this.getDatePayment().toString()).append(", Valor do pagamento: ").append(this.getValuePaid());
-		return super.toString();
+				.append(this.getDate().toString()).append(", Valor: ").append(this.getValue().toString());
+		return stringBuffer.toString();
 	}
+
 }

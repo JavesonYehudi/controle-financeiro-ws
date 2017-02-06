@@ -3,6 +3,7 @@ package pos.estacio.projeto_final.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -26,7 +28,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import pos.estacio.projeto_final.enumeration.ECalendarPeriod;
 import pos.estacio.projeto_final.enumeration.EFinancialTransactionType;
-import pos.estacio.projeto_final.utils.DateUtils;
 
 @Entity
 @Table(name = "financial_transaction", schema = "financeiro")
@@ -40,32 +41,33 @@ public class FinancialTransaction implements Serializable {
 	@JsonProperty("id")
 	protected Integer id;
 
-	@Column(nullable = true)
+	@Column(nullable = false)
 	@JsonProperty("description")
 	protected String description;
 
-	@Column(nullable = true)
+	@Column(nullable = false)
 	@JsonProperty("valueTransaction")
 	protected BigDecimal valueTransaction;
 
-	@JsonProperty("valueExecuted")
-	protected BigDecimal valueExecuted;
-
 	@OneToMany(mappedBy = "financialTransaction", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	@JsonProperty("payments")
+	@JsonProperty("maturityList")
+	protected List<Maturity> maturityList;
+
+	@OneToMany(mappedBy = "financialTransaction", cascade = CascadeType.ALL)
+	@JsonIgnore
 	protected List<Payment> payments;
 
 	@ManyToOne
 	@JsonProperty("funds")
 	protected Funds funds;
 
-	@Column(nullable = true)
+	@Column(nullable = false)
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-	@JsonProperty("dayOfMaturity")
-	protected LocalDate dayOfMaturity;
+	@JsonProperty("firstMaturity")
+	protected LocalDate firstMaturity;
 
 	@JsonProperty("fixedTransaction")
 	protected boolean fixedTransaction;
@@ -81,9 +83,10 @@ public class FinancialTransaction implements Serializable {
 	private EFinancialTransactionType eFinancialTransactionType;
 
 	public FinancialTransaction() {
-		setValueExecuted(BigDecimal.ZERO);
 		setRecurrent(1);
 		setCalendarPeriod(ECalendarPeriod.MONTH);
+		setMaturityList(new ArrayList<>());
+		setPayments(new ArrayList<>());
 	}
 
 	public Integer getId() {
@@ -110,12 +113,12 @@ public class FinancialTransaction implements Serializable {
 		this.valueTransaction = value;
 	}
 
-	public BigDecimal getValueExecuted() {
-		return valueExecuted;
+	public List<Maturity> getMaturityList() {
+		return maturityList;
 	}
 
-	public void setValueExecuted(BigDecimal valueExecuted) {
-		this.valueExecuted = valueExecuted;
+	public void setMaturityList(List<Maturity> maturityList) {
+		this.maturityList = maturityList;
 	}
 
 	public List<Payment> getPayments() {
@@ -134,12 +137,12 @@ public class FinancialTransaction implements Serializable {
 		this.funds = funds;
 	}
 
-	public LocalDate getDayOfMaturity() {
-		return dayOfMaturity;
+	public LocalDate getFirstMaturity() {
+		return firstMaturity;
 	}
 
-	public void setDayOfMaturity(LocalDate dayOfMaturity) {
-		this.dayOfMaturity = dayOfMaturity;
+	public void setFirstMaturity(LocalDate firstMaturity) {
+		this.firstMaturity = firstMaturity;
 	}
 
 	public boolean isFixedTransaction() {
@@ -174,16 +177,12 @@ public class FinancialTransaction implements Serializable {
 		this.eFinancialTransactionType = eFinancialTransactionType;
 	}
 
-	@JsonSerialize(contentUsing = LocalDateSerializer.class)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-	@JsonProperty("maturityList")
-	public List<LocalDate> getMaturityList() {
-		return DateUtils.listDates(getDayOfMaturity(), getRecurrent(), getCalendarPeriod());
+	public void addMaturity(Maturity maturity) {
+		this.getMaturityList().add(maturity);
 	}
 
-	@JsonProperty("isMonthMaturiy")
-	public boolean isMonthMaturiy() {
-		return DateUtils.isMonthMaturity(getMaturityList()) || isFixedTransaction();
+	public void addPayment(Payment payment) {
+		this.getPayments().add(payment);
 	}
 
 	public BigDecimal getTotalPaid() {

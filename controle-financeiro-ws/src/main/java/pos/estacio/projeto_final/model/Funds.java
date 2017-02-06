@@ -83,16 +83,16 @@ public class Funds implements Serializable {
 		return EFundsType.DEFAULT;
 	}
 
-	@JsonProperty("currentIncomePaid")
+	@JsonProperty("totalIncomePaid")
 	public BigDecimal getCurrentIncomePaid() {
-		Predicate<? super FinancialTransaction> predicate = transaction -> transaction.getClass().equals(Income.class) && transaction.isMonthMaturiy();
+		Predicate<? super FinancialTransaction> predicate = transaction -> transaction.getClass().equals(Income.class);
 		return this.getFinancialTransactions().stream().filter(predicate).map(FinancialTransaction::getTotalPaid)
 				.reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 
-	@JsonProperty("currentExpensePaid")
+	@JsonProperty("totalExpensePaid")
 	public BigDecimal getCurrentExpensePaid() {
-		Predicate<? super FinancialTransaction> predicate = (transaction) -> transaction.getClass().equals(Expense.class) && transaction.isMonthMaturiy();
+		Predicate<? super FinancialTransaction> predicate = transaction -> transaction.getClass().equals(Expense.class);
 		return this.getFinancialTransactions().stream().filter(predicate).map(FinancialTransaction::getTotalPaid)
 				.reduce(BigDecimal.ZERO, BigDecimal::add);
 	}

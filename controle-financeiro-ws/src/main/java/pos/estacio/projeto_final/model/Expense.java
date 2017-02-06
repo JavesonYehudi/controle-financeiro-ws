@@ -19,4 +19,9 @@ public class Expense extends FinancialTransaction {
 	public EFinancialTransactionType getEFinancialTransactionType() {
 		return EFinancialTransactionType.EXPENSE;
 	}
+
+	@Override
+	public String toString() {
+		return super.toString();
+	}
 }

@@ -19,7 +19,7 @@ import org.junit.Test;
 import pos.estacio.projeto_final.enumeration.ECalendarPeriod;
 import pos.estacio.projeto_final.model.Funds;
 import pos.estacio.projeto_final.model.Income;
-import pos.estacio.projeto_final.utils.DateUtils;
+import pos.estacio.projeto_final.utils.MaturityUtils;
 
 public class FinancialTransactionTeste {
 
@@ -63,7 +63,7 @@ public class FinancialTransactionTeste {
 
 	@Test
 	public void testClass() {
-		List<LocalDate> list = DateUtils.listDates(LocalDate.of(2016, 1, 02), 5, ECalendarPeriod.MONTH);
+		List<LocalDate> list = MaturityUtils.listDates(LocalDate.of(2016, 1, 02), 5, ECalendarPeriod.MONTH);
 		list = list.stream().filter(date -> LocalDate.now().getMonth().equals(date.getMonth()) && LocalDate.now().getYear() == date.getYear()).collect(Collectors.toList());
 		System.out.println(list.isEmpty());
 	}

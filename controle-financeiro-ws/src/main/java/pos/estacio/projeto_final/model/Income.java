@@ -19,4 +19,9 @@ public class Income extends FinancialTransaction {
 	public EFinancialTransactionType getEFinancialTransactionType() {
 		return EFinancialTransactionType.INCOME;
 	}
+
+	@Override
+	public String toString() {
+		return super.toString();
+	}
 }
