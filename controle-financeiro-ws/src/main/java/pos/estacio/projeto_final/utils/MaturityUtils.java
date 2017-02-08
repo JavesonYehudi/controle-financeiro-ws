@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import pos.estacio.projeto_final.enumeration.ECalendarPeriod;
-import pos.estacio.projeto_final.model.Expense;
+import pos.estacio.projeto_final.model.FinancialTransaction;
 import pos.estacio.projeto_final.model.Maturity;
 
 public class MaturityUtils {
@@ -27,16 +27,16 @@ public class MaturityUtils {
 		return !dates.isEmpty();
 	}
 
-	public static List<Maturity> maturityListBuilder(Expense expense) {
+	public static List<Maturity> maturityListBuilder(FinancialTransaction financialTransaction) {
 		List<Maturity> maturityList = new ArrayList<>();
 
-		LocalDate date = expense.getFirstMaturity();
-		int recurrency = expense.getRecurrent();
-		ECalendarPeriod eCalendarPeriod = expense.getCalendarPeriod();
+		LocalDate date = financialTransaction.getFirstMaturity();
+		int recurrency = financialTransaction.getRecurrent();
+		ECalendarPeriod eCalendarPeriod = financialTransaction.getCalendarPeriod();
 
 		IntStream.range(0, recurrency).forEach(i -> {
-			maturityList.add(new Maturity(expense.getValueTransaction(), date.plus(i, eCalendarPeriod.getChronoUnit()),
-					expense));
+			maturityList.add(new Maturity(financialTransaction.getValueTransaction(), date.plus(i, eCalendarPeriod.getChronoUnit()),
+					financialTransaction));
 		});
 
 		return maturityList;

@@ -34,18 +34,15 @@ public class Payment implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonProperty("id")
 	private int id;
 
 	@Column(nullable = false)
-	@JsonProperty("valuePaid")
 	private BigDecimal valuePaid;
 
 	@Column(nullable = false)
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-	@JsonProperty("datePayment")
 	private LocalDate datePayment;
 
 	@OneToOne(mappedBy = "payment", cascade = CascadeType.ALL)
@@ -53,7 +50,6 @@ public class Payment implements Serializable {
 
 	@ManyToOne
 	@JsonBackReference
-	@JsonProperty("financialTransaction")
 	private FinancialTransaction financialTransaction;
 
 	public int getId() {

@@ -32,10 +32,30 @@ public class CreditCardResource extends GenericResource<CreditCard> {
 	}
 
 	@Override
-	public Response find(Integer id) {
-		try{
+	public Response find(int id) {
+		try {
 			return Response.status(200).entity(creditCardDao.find(id)).build();
-		}catch (Exception e) {
+		} catch (Exception e) {
+			return errorMessage(e);
+		}
+	}
+
+	@Override
+	public Response update(int id, CreditCard creditCard) {
+		creditCard.setId(id);
+		try {
+			return Response.status(200).entity(creditCardDao.update(creditCard)).build();
+		} catch (Exception e) {
+			return errorMessage(e);
+		}
+	}
+
+	@Override
+	public Response delete(int id) {
+		try {
+			creditCardDao.delete(id);
+			return Response.status(200).entity(true).build();
+		} catch (Exception e) {
 			return errorMessage(e);
 		}
 	}

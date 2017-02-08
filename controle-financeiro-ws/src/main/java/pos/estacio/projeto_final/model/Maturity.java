@@ -15,7 +15,6 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -31,27 +30,22 @@ public class Maturity implements Serializable {
 	private static final long serialVersionUID = 2252052230847560263L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonProperty("id")
 	private int id;
 
 	@Column(nullable = false)
-	@JsonProperty("value")
 	private BigDecimal value;
 
 	@Column(nullable = false)
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-	@JsonProperty("date")
 	private LocalDate date;
 
 	@OneToOne
-	@JsonProperty("payment")
 	private Payment payment;
 
 	@JsonBackReference
 	@ManyToOne
-	@JsonProperty("financialTransaction")
 	private FinancialTransaction financialTransaction;
 
 	public Maturity() {

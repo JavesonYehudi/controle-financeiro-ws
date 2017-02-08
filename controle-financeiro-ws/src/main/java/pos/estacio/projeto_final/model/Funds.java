@@ -34,16 +34,13 @@ public class Funds implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonProperty("id")
 	protected Integer id;
 
 	@Column(nullable = false)
-	@JsonProperty("description")
 	protected String description;
 
 	@OneToMany(mappedBy = "funds")
 	@JsonBackReference
-	@JsonProperty("financialTransactions")
 	protected List<FinancialTransaction> financialTransactions;
 
 	public Funds() {
@@ -99,8 +96,8 @@ public class Funds implements Serializable {
 
 	@JsonProperty("balance")
 	public BigDecimal getCurrentBalance() {
-		return this.getFinancialTransactions().stream().map(FinancialTransaction::getTotalPaid)
-				.reduce(BigDecimal.ZERO, BigDecimal::add);
+		return this.getFinancialTransactions().stream().map(FinancialTransaction::getTotalPaid).reduce(BigDecimal.ZERO,
+				BigDecimal::add);
 	}
 
 	@Override

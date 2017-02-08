@@ -35,21 +35,39 @@ public class IncomeResource extends GenericResource<Income> implements IFinancia
 	}
 
 	@Override
-	public Response execute(Integer id, Payment payment) {
+	public Response pay(int id, Payment payment) {
 		try {
-			return Response.status(201).entity(incomeExecutor.execute(id, payment)).build();
+			return Response.status(201).entity(incomeExecutor.pay(id, payment)).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}
 	}
 
 	@Override
-	public Response find(Integer id) {
-		try{
+	public Response find(int id) {
+		try {
 			return Response.status(200).entity(incomeExecutor.find(id)).build();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			return errorMessage(e);
 		}
 	}
 
+	@Override
+	public Response update(int id, Income income) {
+		try {
+			return Response.status(200).entity(incomeExecutor.update(id, income)).build();
+		} catch (Exception e) {
+			return errorMessage(e);
+		}
+	}
+
+	@Override
+	public Response delete(int id) {
+		try {
+			incomeExecutor.delete(id);
+			return Response.status(200).entity(true).build();
+		} catch (Exception e) {
+			return errorMessage(e);
+		}
+	}
 }

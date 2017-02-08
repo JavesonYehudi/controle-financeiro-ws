@@ -13,8 +13,8 @@ import pos.estacio.projeto_final.model.Payment;
 public interface IFinancialTransactionResource{
 	
 	@PUT
-	@Path(value = "/execute/{id}")
+	@Path(value = "/pay/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response execute(@PathParam("id") Integer id, Payment payment);
+	public Response pay(@PathParam("id") int id, Payment payment);
 }

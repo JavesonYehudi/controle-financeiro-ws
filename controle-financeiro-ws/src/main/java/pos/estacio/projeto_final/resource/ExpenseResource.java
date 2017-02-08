@@ -10,12 +10,12 @@ import pos.estacio.projeto_final.model.Payment;
 import pos.estacio.projeto_final.service.IFinancialTransactionService;
 
 @Path(value = "/expense")
-public class ExpenseResource extends GenericResource<Expense> implements IFinancialTransactionResource{
+public class ExpenseResource extends GenericResource<Expense> implements IFinancialTransactionResource {
 
 	@Inject
 	@Named("expense")
 	private IFinancialTransactionService<Expense> expenseExecutor;
-	
+
 	@Override
 	public Response create(Expense expense) {
 		try {
@@ -35,19 +35,38 @@ public class ExpenseResource extends GenericResource<Expense> implements IFinanc
 	}
 
 	@Override
-	public Response execute(Integer id, Payment payment) {
+	public Response pay(int id, Payment payment) {
 		try {
-			return Response.status(201).entity(expenseExecutor.execute(id, payment)).build();
+			return Response.status(201).entity(expenseExecutor.pay(id, payment)).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}
 	}
 
 	@Override
-	public Response find(Integer id) {
-		try{
+	public Response find(int id) {
+		try {
 			return Response.status(200).entity(expenseExecutor.find(id)).build();
-		}catch (Exception e) {
+		} catch (Exception e) {
+			return errorMessage(e);
+		}
+	}
+
+	@Override
+	public Response update(int id, Expense expense) {
+		try {
+			return Response.status(200).entity(expenseExecutor.update(id, expense)).build();
+		} catch (Exception e) {
+			return errorMessage(e);
+		}
+	}
+
+	@Override
+	public Response delete(int id) {
+		try {
+			expenseExecutor.delete(id);
+			return Response.status(200).entity(true).build();
+		} catch (Exception e) {
 			return errorMessage(e);
 		}
 	}

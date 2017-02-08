@@ -38,20 +38,15 @@ public class FinancialTransaction implements Serializable {
 	private static final long serialVersionUID = -3629603514965142970L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonProperty("id")
 	protected Integer id;
 
 	@Column(nullable = false)
-	@JsonProperty("description")
 	protected String description;
 
-	@Column(nullable = false)
-	@JsonProperty("valueTransaction")
 	protected BigDecimal valueTransaction;
 
 	@OneToMany(mappedBy = "financialTransaction", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	@JsonProperty("maturityList")
 	protected List<Maturity> maturityList;
 
 	@OneToMany(mappedBy = "financialTransaction", cascade = CascadeType.ALL)
@@ -59,27 +54,21 @@ public class FinancialTransaction implements Serializable {
 	protected List<Payment> payments;
 
 	@ManyToOne
-	@JsonProperty("funds")
 	protected Funds funds;
 
 	@Column(nullable = false)
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-	@JsonProperty("firstMaturity")
 	protected LocalDate firstMaturity;
 
-	@JsonProperty("fixedTransaction")
 	protected boolean fixedTransaction;
 
-	@JsonProperty("recurrent")
 	protected int recurrent;
 
-	@JsonProperty("period")
 	protected ECalendarPeriod calendarPeriod;
 
 	@Transient
-	@JsonProperty("financialTransactionType")
 	private EFinancialTransactionType eFinancialTransactionType;
 
 	public FinancialTransaction() {
@@ -105,10 +94,12 @@ public class FinancialTransaction implements Serializable {
 		this.description = description;
 	}
 
+	@JsonIgnore
 	public BigDecimal getValueTransaction() {
 		return valueTransaction;
 	}
 
+	@JsonProperty("valueTransaction")
 	public void setValueTransaction(BigDecimal value) {
 		this.valueTransaction = value;
 	}

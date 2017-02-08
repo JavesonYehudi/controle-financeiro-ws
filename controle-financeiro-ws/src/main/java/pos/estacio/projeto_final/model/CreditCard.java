@@ -7,8 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import pos.estacio.projeto_final.enumeration.EFundsType;
 
 @Entity
@@ -20,11 +18,9 @@ public class CreditCard extends Funds implements Serializable {
 	private static final long serialVersionUID = 3219833919121792274L;
 
 	@Column(nullable = false)
-	@JsonProperty("maturity")
 	private Integer maturity;
 
 	@Column(nullable = false)
-	@JsonProperty("limitValue")
 	private BigDecimal limitValue;
 
 	public CreditCard() {

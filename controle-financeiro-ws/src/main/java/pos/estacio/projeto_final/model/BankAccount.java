@@ -5,7 +5,6 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import pos.estacio.projeto_final.enumeration.EFundsType;
@@ -18,12 +17,8 @@ public class BankAccount extends Funds implements Serializable {
 	 */
 	private static final long serialVersionUID = -4435628215627819990L;
 
-	@JsonIgnoreProperties
-	@JsonProperty("account")
 	private String account;
 
-	@JsonIgnoreProperties
-	@JsonProperty("agency")
 	private String agency;
 
 	public BankAccount() {

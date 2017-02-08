@@ -32,10 +32,30 @@ public class FundsResource extends GenericResource<Funds> {
 	}
 
 	@Override
-	public Response find(Integer id) {
-		try{
+	public Response find(int id) {
+		try {
 			return Response.status(200).entity(fundsDao.find(id)).build();
-		}catch (Exception e) {
+		} catch (Exception e) {
+			return errorMessage(e);
+		}
+	}
+
+	@Override
+	public Response update(int id, Funds funds) {
+		funds.setId(id);
+		try {
+			return Response.status(200).entity(fundsDao.update(funds)).build();
+		} catch (Exception e) {
+			return errorMessage(e);
+		}
+	}
+
+	@Override
+	public Response delete(int id) {
+		try {
+			fundsDao.delete(id);
+			return Response.status(200).entity(true).build();
+		} catch (Exception e) {
 			return errorMessage(e);
 		}
 	}
