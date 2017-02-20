@@ -13,10 +13,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -42,6 +44,9 @@ public class Funds implements Serializable {
 	@OneToMany(mappedBy = "funds")
 	@JsonBackReference
 	protected List<FinancialTransaction> financialTransactions;
+
+	@ManyToOne(optional = false)
+	protected User user;
 
 	public Funds() {
 		financialTransactions = new ArrayList<>();
@@ -73,6 +78,16 @@ public class Funds implements Serializable {
 
 	public void setFinancialTransactions(List<FinancialTransaction> financialTransactions) {
 		this.financialTransactions = financialTransactions;
+	}
+
+	@JsonIgnore
+	public User getUser() {
+		return user;
+	}
+
+	@JsonProperty
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@JsonProperty("fundsType")

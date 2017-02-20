@@ -1,0 +1,67 @@
+package pos.estacio.projeto_final.model;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "user", schema = "financeiro")
+public class User implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3311120569192779288L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
+
+	@Column(nullable = false)
+	private String login;
+
+	@Column(nullable = false)
+	private String pass;
+
+	@OneToMany(mappedBy = "user")
+	private List<Funds> funds;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public String getPass() {
+		return pass;
+	}
+
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+
+	public List<Funds> getFunds() {
+		return funds;
+	}
+
+	public void setFunds(List<Funds> funds) {
+		this.funds = funds;
+	}
+}
