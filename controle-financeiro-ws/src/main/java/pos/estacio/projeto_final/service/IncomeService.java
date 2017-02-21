@@ -28,7 +28,7 @@ public class IncomeService implements IFinancialTransactionService<Income> {
 	private GenericDao<Funds> fundsDao;
 
 	@Override
-	public Income pay(int id, Payment payment) {
+	public Income pay(int id, Payment payment) throws Exception {
 		Income income = incomeDao.find(id);
 
 		payment.setMaturity(findMaturity(payment, income));
@@ -40,15 +40,19 @@ public class IncomeService implements IFinancialTransactionService<Income> {
 		return incomeDao.update(income);
 	}
 
-	private Maturity findMaturity(Payment payment, Income income) {
+	private Maturity findMaturity(Payment payment, Income income) throws Exception {
 		Maturity maturity;
-
-		if (income.isFixedTransaction()) {
+		if (income.isFixedTransaction() && payment.getMaturity() == null) {
 			LocalDate date = payment.getDatePayment();
-			date.withDayOfMonth(income.getFirstMaturity().getDayOfMonth());
+			date = date.withDayOfMonth(income.getFirstMaturity().getDayOfMonth());
 			maturity = new Maturity(income.getValueTransaction(), date, income);
+			maturityDao.create(maturity);
 		} else {
-			maturity = maturityDao.find(payment.getMaturity().getId());
+			try {
+				maturity = maturityDao.find(payment.getMaturity().getId());
+			} catch (Exception e) {
+				throw new Exception();
+			}
 		}
 
 		maturity.setPayment(payment);

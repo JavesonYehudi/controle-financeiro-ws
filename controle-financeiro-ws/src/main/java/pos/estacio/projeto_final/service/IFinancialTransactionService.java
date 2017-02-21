@@ -6,7 +6,7 @@ import pos.estacio.projeto_final.model.FinancialTransaction;
 import pos.estacio.projeto_final.model.Payment;
 
 public interface IFinancialTransactionService<T extends FinancialTransaction> {
-	public T pay(int id, Payment payment);
+	public T pay(int id, Payment payment) throws Exception;
 
 	public T create(T t);
 

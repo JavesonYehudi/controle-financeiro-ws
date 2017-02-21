@@ -22,7 +22,7 @@ public class User implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private Integer id;
 
 	@Column(nullable = false)
 	private String login;
@@ -33,11 +33,11 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "user")
 	private List<Funds> funds;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

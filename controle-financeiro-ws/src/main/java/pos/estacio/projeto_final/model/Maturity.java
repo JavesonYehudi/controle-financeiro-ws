@@ -30,7 +30,7 @@ public class Maturity implements Serializable {
 	private static final long serialVersionUID = 2252052230847560263L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private Integer id;
 
 	@Column(nullable = false)
 	private BigDecimal value;
@@ -57,11 +57,11 @@ public class Maturity implements Serializable {
 		this.financialTransaction = financialTransaction;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

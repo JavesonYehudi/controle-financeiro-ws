@@ -20,7 +20,6 @@ import javax.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -68,6 +67,9 @@ public class FinancialTransaction implements Serializable {
 
 	protected ECalendarPeriod calendarPeriod;
 
+	@ManyToOne
+	protected Group group;
+
 	@Transient
 	private EFinancialTransactionType eFinancialTransactionType;
 
@@ -94,12 +96,10 @@ public class FinancialTransaction implements Serializable {
 		this.description = description;
 	}
 
-	@JsonIgnore
 	public BigDecimal getValueTransaction() {
 		return valueTransaction;
 	}
 
-	@JsonProperty("valueTransaction")
 	public void setValueTransaction(BigDecimal value) {
 		this.valueTransaction = value;
 	}
@@ -158,6 +158,14 @@ public class FinancialTransaction implements Serializable {
 
 	public void setCalendarPeriod(ECalendarPeriod calendarPeriod) {
 		this.calendarPeriod = calendarPeriod;
+	}
+
+	public Group getGroup() {
+		return group;
+	}
+
+	public void setGroup(Group group) {
+		this.group = group;
 	}
 
 	public EFinancialTransactionType getEFinancialTransactionType() {
