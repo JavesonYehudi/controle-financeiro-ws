@@ -34,7 +34,7 @@ public abstract class GenericResource<T> {
 	@Path(value = "/find/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public abstract Response find(@PathParam("id") int id);
-
+ 
 	@GET
 	@Path(value = "/list")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -42,6 +42,6 @@ public abstract class GenericResource<T> {
 
 	protected Response errorMessage(Exception e) {
 		String error = "{\"error\" : \"" + e.getMessage() + "\"}";
-		return Response.status(200).entity(error).build();
+		return Response.status(200).entity(error)/*.header("Access-Control-Allow-Origin", "*")*/.build();
 	}
 }

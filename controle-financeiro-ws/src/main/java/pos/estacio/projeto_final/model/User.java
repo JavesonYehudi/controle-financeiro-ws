@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "user", schema = "financeiro")
 public class User implements Serializable {
@@ -31,6 +34,7 @@ public class User implements Serializable {
 	private String pass;
 
 	@OneToMany(mappedBy = "user")
+	@JsonIgnore
 	private List<Funds> funds;
 
 	public Integer getId() {
@@ -49,10 +53,12 @@ public class User implements Serializable {
 		this.login = login;
 	}
 
+	@JsonIgnore
 	public String getPass() {
 		return pass;
 	}
 
+	@JsonProperty
 	public void setPass(String pass) {
 		this.pass = pass;
 	}

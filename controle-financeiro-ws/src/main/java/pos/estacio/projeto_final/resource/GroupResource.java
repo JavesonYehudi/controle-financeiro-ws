@@ -4,19 +4,19 @@ import javax.inject.Inject;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
-import pos.estacio.projeto_final.dao.GenericDao;
 import pos.estacio.projeto_final.model.Group;
+import pos.estacio.projeto_final.service.GroupService;
 
 @Path(value = "group")
 public class GroupResource extends GenericResource<Group> {
 
 	@Inject
-	private GenericDao<Group> groupDao;
+	private GroupService groupService;
 
 	@Override
 	public Response create(Group group) {
 		try {
-			return Response.status(201).entity(groupDao.create(group)).build();
+			return Response.status(201).entity(groupService.create(group)).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}
@@ -26,7 +26,7 @@ public class GroupResource extends GenericResource<Group> {
 	public Response update(int id, Group group) {
 		group.setId(id);
 		try {
-			return Response.status(200).entity(groupDao.update(group)).build();
+			return Response.status(200).entity(groupService.update(id, group)).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}
@@ -35,7 +35,7 @@ public class GroupResource extends GenericResource<Group> {
 	@Override
 	public Response delete(int id) {
 		try {
-			groupDao.delete(id);
+			groupService.delete(id);
 			return Response.status(200).entity(true).build();
 		} catch (Exception e) {
 			return errorMessage(e);
@@ -45,7 +45,7 @@ public class GroupResource extends GenericResource<Group> {
 	@Override
 	public Response find(int id) {
 		try {
-			return Response.status(200).entity(groupDao.find(id)).build();
+			return Response.status(200).entity(groupService.find(id)).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}
@@ -54,7 +54,7 @@ public class GroupResource extends GenericResource<Group> {
 	@Override
 	public Response list() {
 		try {
-			return Response.status(200).entity(groupDao.list()).build();
+			return Response.status(200).entity(groupService.list()).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}

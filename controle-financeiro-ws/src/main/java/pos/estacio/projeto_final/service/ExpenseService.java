@@ -78,8 +78,14 @@ public class ExpenseService implements IFinancialTransactionService<Expense> {
 
 	@Override
 	public Expense update(int id, Expense expense) {
-		expense.setId(id);
-		return expenseDao.update(expense);
+		Expense expenseAux = expenseDao.find(id);
+		expenseAux.setDescription(expense.getDescription());
+		expenseAux.setFunds(expense.getFunds());
+		expenseAux.setGroup(expense.getGroup());
+		expenseAux.setFixedTransaction(expense.isFixedTransaction());
+		expenseAux.setRecurrent(expense.getRecurrent());
+		expenseAux.setValueTransaction(expense.getValueTransaction());
+		return expenseDao.update(expenseAux);
 	}
 
 	@Override

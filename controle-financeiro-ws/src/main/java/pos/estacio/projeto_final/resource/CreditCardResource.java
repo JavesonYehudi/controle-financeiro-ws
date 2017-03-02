@@ -4,19 +4,19 @@ import javax.inject.Inject;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
-import pos.estacio.projeto_final.dao.GenericDao;
 import pos.estacio.projeto_final.model.CreditCard;
+import pos.estacio.projeto_final.service.CreditCardService;
 
 @Path(value = "/credit-card")
 public class CreditCardResource extends GenericResource<CreditCard> {
 
 	@Inject
-	private GenericDao<CreditCard> creditCardDao;
+	private CreditCardService creditCardService;
 
 	@Override
 	public Response create(CreditCard creditCard) {
 		try {
-			return Response.status(201).entity(creditCardDao.create(creditCard)).build();
+			return Response.status(201).entity(creditCardService.create(creditCard)).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}
@@ -25,7 +25,7 @@ public class CreditCardResource extends GenericResource<CreditCard> {
 	@Override
 	public Response list() {
 		try {
-			return Response.status(200).entity(creditCardDao.list()).build();
+			return Response.status(200).entity(creditCardService.list()).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}
@@ -34,7 +34,7 @@ public class CreditCardResource extends GenericResource<CreditCard> {
 	@Override
 	public Response find(int id) {
 		try {
-			return Response.status(200).entity(creditCardDao.find(id)).build();
+			return Response.status(200).entity(creditCardService.find(id)).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}
@@ -44,7 +44,7 @@ public class CreditCardResource extends GenericResource<CreditCard> {
 	public Response update(int id, CreditCard creditCard) {
 		creditCard.setId(id);
 		try {
-			return Response.status(200).entity(creditCardDao.update(creditCard)).build();
+			return Response.status(200).entity(creditCardService.update(id, creditCard)).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}
@@ -53,7 +53,7 @@ public class CreditCardResource extends GenericResource<CreditCard> {
 	@Override
 	public Response delete(int id) {
 		try {
-			creditCardDao.delete(id);
+			creditCardService.delete(id);
 			return Response.status(200).entity(true).build();
 		} catch (Exception e) {
 			return errorMessage(e);

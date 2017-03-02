@@ -79,8 +79,14 @@ public class IncomeService implements IFinancialTransactionService<Income> {
 
 	@Override
 	public Income update(int id, Income income) {
-		income.setId(id);
-		return incomeDao.update(income);
+		Income incomeAux = incomeDao.find(id);
+		incomeAux.setDescription(income.getDescription());
+		incomeAux.setFunds(income.getFunds());
+		incomeAux.setGroup(income.getGroup());
+		incomeAux.setFixedTransaction(income.isFixedTransaction());
+		incomeAux.setRecurrent(income.getRecurrent());
+		incomeAux.setValueTransaction(income.getValueTransaction());
+		return incomeDao.update(incomeAux);
 	}
 
 	@Override
