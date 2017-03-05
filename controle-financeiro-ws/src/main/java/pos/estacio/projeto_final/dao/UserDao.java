@@ -8,4 +8,8 @@ public class UserDao extends GenericDao<User> {
 		super(User.class);
 	}
 
+	@Override
+	public User findBy(Object...objects){
+		return (User) this.entityManager.createQuery("select u from User u where u.login = :login").setParameter("login", objects[0]).getSingleResult();
+	}
 }

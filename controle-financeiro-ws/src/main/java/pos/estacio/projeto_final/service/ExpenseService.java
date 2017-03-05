@@ -16,7 +16,7 @@ import pos.estacio.projeto_final.utils.MaturityUtils;
 
 @RequestScoped
 @Named("expense")
-public class ExpenseService implements IFinancialTransactionService<Expense> {
+public class ExpenseService extends BaseService implements IFinancialTransactionService<Expense>{
 
 	@Inject
 	private GenericDao<Expense> expenseDao;
@@ -68,7 +68,7 @@ public class ExpenseService implements IFinancialTransactionService<Expense> {
 
 	@Override
 	public List<Expense> list() {
-		return expenseDao.list();
+		return expenseDao.list(this.getUserSession().getUser());
 	}
 
 	@Override

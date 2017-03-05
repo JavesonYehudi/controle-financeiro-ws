@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import pos.estacio.projeto_final.dao.GenericDao;
 import pos.estacio.projeto_final.model.Group;
 
-public class GroupService {
+public class GroupService extends BaseService{
 	@Inject
 	private GenericDao<Group> groupDao;
 
@@ -16,7 +16,7 @@ public class GroupService {
 	}
 
 	public List<Group> list() {
-		return groupDao.list();
+		return groupDao.list(this.getUserSession().getUser());
 	}
 
 	public Group find(int id) {

@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import pos.estacio.projeto_final.dao.GenericDao;
 import pos.estacio.projeto_final.model.CreditCard;
 
-public class CreditCardService {
+public class CreditCardService extends BaseService{
 	@Inject
 	private GenericDao<CreditCard> creditCardDao;
 
@@ -16,7 +16,7 @@ public class CreditCardService {
 	}
 
 	public List<CreditCard> list() {
-			return creditCardDao.list();
+			return creditCardDao.list(this.getUserSession().getUser());
 	}
 
 	public CreditCard find(int id) {

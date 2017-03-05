@@ -4,19 +4,19 @@ import javax.inject.Inject;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
-import pos.estacio.projeto_final.dao.GenericDao;
 import pos.estacio.projeto_final.model.User;
+import pos.estacio.projeto_final.service.UserService;
 
 @Path(value = "/user")
 public class UserResource extends GenericResource<User> {
 
 	@Inject
-	private GenericDao<User> userDao;
+	private UserService userService;
 	
 	@Override
 	public Response create(User user) {
 		try {
-			return Response.status(201).entity(userDao.create(user)).build();
+			return Response.status(201).entity(userService.create(user)).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}

@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -27,7 +28,7 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String login;
 
 	@Column(nullable = false)
@@ -36,6 +37,10 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore
 	private List<Funds> funds;
+
+	@Transient
+	@JsonIgnore
+	private String token;
 
 	public Integer getId() {
 		return id;
@@ -69,5 +74,18 @@ public class User implements Serializable {
 
 	public void setFunds(List<Funds> funds) {
 		this.funds = funds;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	@Override
+	public String toString() {
+		return this.login;
 	}
 }

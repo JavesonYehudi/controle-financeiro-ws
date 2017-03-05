@@ -7,6 +7,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import pos.estacio.projeto_final.model.User;
+
 public class GenericDao<T extends Serializable>{
 
 	private Class<T> entityClass;
@@ -43,7 +45,7 @@ public class GenericDao<T extends Serializable>{
 	public T find(Object id) {
 		return entityManager.find(entityClass, id);
 	}
-
+	
 	public T update(T entity) {
 		entityManager.getTransaction().begin();
 		entityManager.merge(entity);
@@ -53,8 +55,12 @@ public class GenericDao<T extends Serializable>{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<T> list() {
-		Query query = entityManager.createQuery("from " + entityClass.getName());
+	public List<T> list(User user) {
+		Query query = entityManager.createQuery("from " + entityClass.getName() + " where user = :user").setParameter("user", user);
 		return query.getResultList();
+	}
+	
+	public T findBy(Object...objects){
+		return null;
 	}
 }

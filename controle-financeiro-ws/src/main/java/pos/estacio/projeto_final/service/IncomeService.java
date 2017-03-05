@@ -16,7 +16,7 @@ import pos.estacio.projeto_final.utils.MaturityUtils;
 
 @RequestScoped
 @Named("income")
-public class IncomeService implements IFinancialTransactionService<Income> {
+public class IncomeService extends BaseService implements IFinancialTransactionService<Income> {
 
 	@Inject
 	private GenericDao<Income> incomeDao;
@@ -69,7 +69,7 @@ public class IncomeService implements IFinancialTransactionService<Income> {
 
 	@Override
 	public List<Income> list() {
-		return incomeDao.list();
+		return incomeDao.list(this.getUserSession().getUser());
 	}
 
 	@Override

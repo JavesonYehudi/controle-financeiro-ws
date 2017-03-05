@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import pos.estacio.projeto_final.dao.GenericDao;
 import pos.estacio.projeto_final.model.Funds;
 
-public class FundsService {
+public class FundsService extends BaseService{
 	@Inject
 	private GenericDao<Funds> fundsDao;
 
@@ -16,7 +16,7 @@ public class FundsService {
 	}
 
 	public List<Funds> list() {
-		return fundsDao.list();
+		return fundsDao.list(this.getUserSession().getUser());
 	}
 
 	public Funds find(int id) {
