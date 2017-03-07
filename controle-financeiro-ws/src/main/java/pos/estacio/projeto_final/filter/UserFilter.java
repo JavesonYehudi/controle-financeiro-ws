@@ -19,11 +19,13 @@ public class UserFilter implements ContainerRequestFilter {
 	private GenericDao<User> genericDao;
 	@Inject
 	private UserSession userSession;
-	
+
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
-		String login = TokenUtils.verifyToken(requestContext.getHeaderString("authorization"));
-		userSession.setUser(genericDao.findBy(login));
+		if (!requestContext.getMethod().equalsIgnoreCase("options")) {
+			String login = TokenUtils.verifyToken(requestContext.getHeaderString("Authorization"));
+			userSession.setUser(genericDao.findBy(login));
+		}
 	}
 
 }
