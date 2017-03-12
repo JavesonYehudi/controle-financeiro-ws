@@ -11,8 +11,8 @@ public class GroupService extends BaseService{
 	@Inject
 	private GenericDao<Group> groupDao;
 
-	public Group create(Group funds) {
-		return groupDao.create(funds);
+	public Group create(Group group) {
+		return groupDao.create(group);
 	}
 
 	public List<Group> list() {

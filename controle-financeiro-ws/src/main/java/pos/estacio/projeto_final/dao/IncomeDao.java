@@ -1,6 +1,11 @@
 package pos.estacio.projeto_final.dao;
 
+import java.util.List;
+
+import javax.persistence.Query;
+
 import pos.estacio.projeto_final.model.Income;
+import pos.estacio.projeto_final.model.User;
 
 public class IncomeDao extends GenericDao<Income> {
 
@@ -8,4 +13,12 @@ public class IncomeDao extends GenericDao<Income> {
 		super(Income.class);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Income> list(User user){
+		entityManager.getTransaction().begin();
+		Query query = entityManager.createQuery("select i from Income i inner join i.funds f where f.user = :user").setParameter("user", user);
+		List<Income> resultList = query.getResultList();
+		this.closeEntityManager();
+		return resultList;
+	}
 }

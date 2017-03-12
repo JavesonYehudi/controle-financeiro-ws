@@ -22,7 +22,7 @@ public class UserFilter implements ContainerRequestFilter {
 
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
-		if (!requestContext.getMethod().equalsIgnoreCase("options")) {
+		if (!requestContext.getMethod().equalsIgnoreCase("options") && !requestContext.getUriInfo().getPath().contains("user")) {
 			String login = TokenUtils.verifyToken(requestContext.getHeaderString("Authorization"));
 			userSession.setUser(genericDao.findBy(login));
 		}

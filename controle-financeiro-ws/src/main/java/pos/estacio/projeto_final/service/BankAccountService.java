@@ -7,16 +7,17 @@ import javax.inject.Inject;
 import pos.estacio.projeto_final.dao.GenericDao;
 import pos.estacio.projeto_final.model.BankAccount;
 
-public class BankAccountService extends BaseService{
+public class BankAccountService extends BaseService {
 	@Inject
 	private GenericDao<BankAccount> bankAccountDao;
 
 	public BankAccount create(BankAccount bankAccount) {
-			return bankAccountDao.create(bankAccount);
+		bankAccount.setUser(this.getUserSession().getUser());
+		return bankAccountDao.create(bankAccount);
 	}
 
 	public List<BankAccount> list() {
-			return bankAccountDao.list(this.getUserSession().getUser());
+		return bankAccountDao.list(this.getUserSession().getUser());
 	}
 
 	public BankAccount find(int id) {

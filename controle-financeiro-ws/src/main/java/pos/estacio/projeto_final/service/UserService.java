@@ -22,6 +22,13 @@ public class UserService extends BaseService{
 		return userDao.find(id);
 	}
 
+	public User find(User user) throws Exception {
+		User userAux = userDao.findBy(user.getLogin());
+		if(!userAux.getPass().equals(user.getPass()))
+			throw new Exception("login or pass incorrect");
+		return user;
+	}
+
 	public User update(int id, User user) {
 		User userAux = userDao.find(id);
 		userAux.setLogin(user.getLogin());

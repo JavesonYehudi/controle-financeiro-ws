@@ -12,6 +12,7 @@ public class FundsService extends BaseService{
 	private GenericDao<Funds> fundsDao;
 
 	public Funds create(Funds funds) {
+		funds.setUser(this.getUserSession().getUser());
 		return fundsDao.create(funds);
 	}
 

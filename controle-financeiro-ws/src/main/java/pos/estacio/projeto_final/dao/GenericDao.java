@@ -21,43 +21,54 @@ public class GenericDao<T extends Serializable>{
 	}
 
 	public long count() {
+		entityManager.getTransaction().begin();
 		String entity = entityClass.getSimpleName();
 		final StringBuffer queryString = new StringBuffer("select count(ent) from " + entity + " ent");
 		final Query query = this.entityManager.createQuery(queryString.toString());
-		return (Long) query.getSingleResult();
+		Long singleResult = (Long) query.getSingleResult();
+		closeEntityManager();
+		return singleResult;
 	}
 
 	public T create(T entity) {
 		entityManager.getTransaction().begin();
 		entityManager.persist(entity);
-		entityManager.flush();
-		entityManager.getTransaction().commit();
+		closeEntityManager();
 		return entity;
 	}
 
 	public void delete(Object id) {
 		entityManager.getTransaction().begin();
 		entityManager.remove(entityManager.getReference(entityClass, id));
-		entityManager.flush();
-		entityManager.getTransaction().commit();
+		closeEntityManager();
 	}
 
 	public T find(Object id) {
-		return entityManager.find(entityClass, id);
+		entityManager.getTransaction().begin();
+		T find = entityManager.find(entityClass, id);
+		closeEntityManager();
+		return find;
 	}
 	
 	public T update(T entity) {
 		entityManager.getTransaction().begin();
 		entityManager.merge(entity);
-		entityManager.flush();
-		entityManager.getTransaction().commit();
+		closeEntityManager();
 		return entity;
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<T> list(User user) {
+		entityManager.getTransaction().begin();
 		Query query = entityManager.createQuery("from " + entityClass.getName() + " where user = :user").setParameter("user", user);
-		return query.getResultList();
+		List<T> resultList = query.getResultList();
+		closeEntityManager();
+		return resultList;
+	}
+
+	protected void closeEntityManager() {
+		entityManager.flush();
+		entityManager.getTransaction().commit();
 	}
 	
 	public T findBy(Object...objects){
