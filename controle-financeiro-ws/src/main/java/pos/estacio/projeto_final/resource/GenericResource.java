@@ -42,6 +42,6 @@ public abstract class GenericResource<T> {
 
 	protected Response errorMessage(Exception e) {
 		String error = "{\"error\" : \"" + e.getMessage() + "\"}";
-		return Response.status(200).entity(error)/*.header("Access-Control-Allow-Origin", "*")*/.build();
+		return Response.status(200).entity(error).build();
 	}
 }

@@ -1,14 +1,12 @@
 package pos.estacio.projeto_final.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -33,10 +31,6 @@ public class User implements Serializable {
 
 	@Column(nullable = false)
 	private String pass;
-
-	@OneToMany(mappedBy = "user")
-	@JsonIgnore
-	private List<Funds> funds;
 
 	@Transient
 	@JsonIgnore
@@ -66,14 +60,6 @@ public class User implements Serializable {
 	@JsonProperty
 	public void setPass(String pass) {
 		this.pass = pass;
-	}
-
-	public List<Funds> getFunds() {
-		return funds;
-	}
-
-	public void setFunds(List<Funds> funds) {
-		this.funds = funds;
 	}
 
 	public String getToken() {

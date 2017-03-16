@@ -21,4 +21,5 @@ public class FinancialTransactionDao extends GenericDao<FinancialTransaction> {
 		this.closeEntityManager();
 		return resultList;
 	}
+	
 }

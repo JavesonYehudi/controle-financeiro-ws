@@ -4,13 +4,7 @@
              http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
 	version="2.1">
 
-	<persistence-unit name="postgres" transaction-type="RESOURCE_LOCAL">
-		<!-- entidade mapeada
-		<class>pos.estacio.projeto_final.model.Funds</class>
-		<class>pos.estacio.projeto_final.model.BankAccount</class>
-		<class>pos.estacio.projeto_final.model.CreditCard</class>
-		<class>pos.estacio.projeto_final.model.FinancialTransaction</class>
-		-->
+	<persistence-unit name="postgres">
 		<properties>
 			<!-- propriedades do hibernate -->
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
@@ -19,18 +13,28 @@
 
 			<!-- dados da conexao -->
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
-			
-			
-			<property name="hibernate.connection.username" value="javeson" />
-			<property name="hibernate.connection.password" value="150192" />
-			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/controlefinanceiro" />
-<!--
- 			<property name="hibernate.connection.username" value="javesonanjos" />
+
+			<!-- <property name="hibernate.connection.username" value="javeson" /> 
+				<property name="hibernate.connection.password" value="150192" /> <property 
+				name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/controlefinanceiro" 
+				/> -->
+			<property name="hibernate.connection.username" value="javesonanjos" />
 			<property name="hibernate.connection.password" value="15gd15as" />
 			<property name="hibernate.connection.url" value="jdbc:postgresql://10.3.3.7:5432/blumar" />
--->
+
 			<!-- atualiza o banco, gera as tabelas se for preciso -->
-			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<!-- <property name="hibernate.hbm2ddl.auto" value="update" /> -->
+
+			<!-- pool de conexão -->
+			<property name="hibernate.connection.provider_class"
+				value="org.hibernate.connection.C3P0ConnectionProvider" />
+
+			<property name="hibernate.c3p0.max_size" value="100" />
+			<property name="hibernate.c3p0.min_size" value="0" />
+			<property name="hibernate.c3p0.acquire_increment" value="1" />
+			<property name="hibernate.c3p0.idle_test_period" value="300" />
+			<property name="hibernate.c3p0.max_statements" value="0" />
+			<property name="hibernate.c3p0.timeout" value="100" />
 
 		</properties>
 	</persistence-unit>
