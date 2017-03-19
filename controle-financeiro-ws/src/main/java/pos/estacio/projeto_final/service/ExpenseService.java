@@ -2,6 +2,7 @@ package pos.estacio.projeto_final.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -16,7 +17,7 @@ import pos.estacio.projeto_final.utils.MaturityUtils;
 
 @RequestScoped
 @Named("expense")
-public class ExpenseService extends BaseService implements IFinancialTransactionService<Expense>{
+public class ExpenseService extends BaseService implements IFinancialTransactionService<Expense> {
 
 	@Inject
 	private GenericDao<Expense> expenseDao;
@@ -26,6 +27,9 @@ public class ExpenseService extends BaseService implements IFinancialTransaction
 
 	@Inject
 	private GenericDao<Funds> fundsDao;
+
+	@Inject
+	private MaturityUtils maturityUtils;
 
 	@Override
 	public Expense pay(int id, Payment payment) throws Exception {
@@ -61,7 +65,7 @@ public class ExpenseService extends BaseService implements IFinancialTransaction
 	@Override
 	public Expense create(Expense expense) {
 		expense.setValueTransaction(expense.getValueTransaction().abs().negate());
-		expense.setMaturityList(MaturityUtils.maturityListBuilder(expense));
+		expense.setMaturityList(maturityUtils.maturityListBuilder(expense));
 		expense.setFunds(fundsDao.find(expense.getFunds().getId()));
 		return expenseDao.create(expense);
 	}
@@ -83,8 +87,12 @@ public class ExpenseService extends BaseService implements IFinancialTransaction
 		expenseAux.setFunds(expense.getFunds());
 		expenseAux.setGroup(expense.getGroup());
 		expenseAux.setFixedTransaction(expense.isFixedTransaction());
-		expenseAux.setRecurrent(expense.getRecurrent());
 		expenseAux.setValueTransaction(expense.getValueTransaction());
+		expenseAux.setRecurrent(expense.getRecurrent());
+		Set<Maturity> maturityListBuilder = maturityUtils.maturityListBuilder(expenseAux);
+		expenseAux.getMaturityList().removeAll(expenseAux.getMaturityList());
+		expenseAux.getMaturityList().addAll(maturityListBuilder);
+		
 		return expenseDao.update(expenseAux);
 	}
 

@@ -2,6 +2,7 @@ package pos.estacio.projeto_final.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -26,6 +27,9 @@ public class IncomeService extends BaseService implements IFinancialTransactionS
 
 	@Inject
 	private GenericDao<Funds> fundsDao;
+	
+	@Inject
+	private MaturityUtils maturityUtils;
 
 	@Override
 	public Income pay(int id, Payment payment) throws Exception {
@@ -42,7 +46,7 @@ public class IncomeService extends BaseService implements IFinancialTransactionS
 
 	private Maturity findMaturity(Payment payment, Income income) throws Exception {
 		Maturity maturity;
-		if (income.isFixedTransaction() && payment.getMaturity() == null) {
+		if (income.isFixedTransaction() && payment.getMaturity().getId() == null) {
 			LocalDate date = payment.getDatePayment();
 			date = date.withDayOfMonth(income.getFirstMaturity().getDayOfMonth());
 			maturity = new Maturity(income.getValueTransaction(), date, income);
@@ -51,7 +55,7 @@ public class IncomeService extends BaseService implements IFinancialTransactionS
 			try {
 				maturity = maturityDao.find(payment.getMaturity().getId());
 			} catch (Exception e) {
-				throw new Exception();
+				throw new Exception("Não foi possivel encontrar o vencimento");
 			}
 		}
 
@@ -62,7 +66,7 @@ public class IncomeService extends BaseService implements IFinancialTransactionS
 	@Override
 	public Income create(Income income) {
 		income.setValueTransaction(income.getValueTransaction().abs());
-		income.setMaturityList(MaturityUtils.maturityListBuilder(income));
+		income.setMaturityList(maturityUtils.maturityListBuilder(income));
 		income.setFunds(fundsDao.find(income.getFunds().getId()));
 		return incomeDao.create(income);
 	}
@@ -84,8 +88,12 @@ public class IncomeService extends BaseService implements IFinancialTransactionS
 		incomeAux.setFunds(income.getFunds());
 		incomeAux.setGroup(income.getGroup());
 		incomeAux.setFixedTransaction(income.isFixedTransaction());
-		incomeAux.setRecurrent(income.getRecurrent());
 		incomeAux.setValueTransaction(income.getValueTransaction());
+		incomeAux.setRecurrent(income.getRecurrent());
+		Set<Maturity> maturityListBuilder = maturityUtils.maturityListBuilder(incomeAux);
+		incomeAux.getMaturityList().removeAll(incomeAux.getMaturityList());
+		incomeAux.getMaturityList().addAll(maturityListBuilder);
+		
 		return incomeDao.update(incomeAux);
 	}
 

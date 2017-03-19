@@ -15,6 +15,8 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -95,6 +97,12 @@ public class Maturity implements Serializable {
 
 	public void setFinancialTransaction(FinancialTransaction financialTransaction) {
 		this.financialTransaction = financialTransaction;
+	}
+
+	@JsonIgnore
+	@JsonProperty("paid")
+	public boolean isPaid() {
+		return this.getPayment() != null;
 	}
 
 	@Override

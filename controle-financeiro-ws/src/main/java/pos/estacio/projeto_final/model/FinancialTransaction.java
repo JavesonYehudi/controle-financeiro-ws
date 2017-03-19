@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,7 +21,9 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -30,6 +34,7 @@ import pos.estacio.projeto_final.enumeration.EFinancialTransactionType;
 
 @Entity
 @Table(name = "financial_transaction", schema = "financeiro")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FinancialTransaction implements Serializable {
 	/**
 	 * 
@@ -44,11 +49,11 @@ public class FinancialTransaction implements Serializable {
 
 	protected BigDecimal valueTransaction;
 
-	@OneToMany(mappedBy = "financialTransaction", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "financialTransaction", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonManagedReference
-	protected List<Maturity> maturityList;
+	protected Set<Maturity> maturityList;
 
-	@OneToMany(mappedBy = "financialTransaction", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "financialTransaction", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	protected List<Payment> payments;
 
@@ -76,7 +81,7 @@ public class FinancialTransaction implements Serializable {
 	public FinancialTransaction() {
 		setRecurrent(1);
 		setCalendarPeriod(ECalendarPeriod.MONTH);
-		setMaturityList(new ArrayList<>());
+		setMaturityList(new HashSet<>());
 		setPayments(new ArrayList<>());
 	}
 
@@ -104,11 +109,11 @@ public class FinancialTransaction implements Serializable {
 		this.valueTransaction = value;
 	}
 
-	public List<Maturity> getMaturityList() {
+	public Set<Maturity> getMaturityList() {
 		return maturityList;
 	}
 
-	public void setMaturityList(List<Maturity> maturityList) {
+	public void setMaturityList(Set<Maturity> maturityList) {
 		this.maturityList = maturityList;
 	}
 
@@ -168,10 +173,12 @@ public class FinancialTransaction implements Serializable {
 		this.group = group;
 	}
 
+	@JsonProperty("financialTransactionType")
 	public EFinancialTransactionType getEFinancialTransactionType() {
 		return eFinancialTransactionType;
 	}
 
+	@JsonIgnore
 	public void setEFinancialTransactionType(EFinancialTransactionType eFinancialTransactionType) {
 		this.eFinancialTransactionType = eFinancialTransactionType;
 	}
@@ -184,6 +191,7 @@ public class FinancialTransaction implements Serializable {
 		this.getPayments().add(payment);
 	}
 
+	@JsonIgnore
 	public BigDecimal getTotalPaid() {
 		return this.getPayments().stream().map(Payment::getValuePaid).reduce(BigDecimal.ZERO, BigDecimal::add);
 	}

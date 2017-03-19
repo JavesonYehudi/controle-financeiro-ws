@@ -67,7 +67,6 @@ public class GenericDao<T extends Serializable>{
 	}
 
 	protected void closeEntityManager() {
-		entityManager.flush();
 		entityManager.getTransaction().commit();
 	}
 	

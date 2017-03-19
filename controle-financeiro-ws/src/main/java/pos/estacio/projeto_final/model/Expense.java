@@ -2,11 +2,13 @@ package pos.estacio.projeto_final.model;
 
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import pos.estacio.projeto_final.enumeration.EFinancialTransactionType;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Expense extends FinancialTransaction {
 
 	/**
