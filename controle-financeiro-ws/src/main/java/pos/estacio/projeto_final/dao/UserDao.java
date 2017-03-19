@@ -11,7 +11,7 @@ public class UserDao extends GenericDao<User> {
 	@Override
 	public User findBy(Object...objects){
 		entityManager.getTransaction().begin();
-		User singleResult = (User) this.entityManager.createQuery("select u from User u where u.login = :login").setParameter("login", objects[0]).getSingleResult();
+		User singleResult = (User) this.entityManager.createQuery("select u from User u where upper(u.login) = upper(:login)").setParameter("login", objects[0]).getSingleResult();
 		this.closeEntityManager();
 		return singleResult;
 	}
