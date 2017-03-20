@@ -14,14 +14,14 @@
 			<!-- dados da conexao -->
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
 
+			<property name="hibernate.temp.use_jdbc_metadata_defaults"
+				value="false" />
+
 			<property name="hibernate.connection.username" value="javeson" />
 			<property name="hibernate.connection.password" value="150192" />
 			<property name="hibernate.connection.url"
 				value="jdbc:postgresql://localhost:5432/controlefinanceiro" />
-			<!-- <property name="hibernate.connection.username" value="javesonanjos" 
-				/> <property name="hibernate.connection.password" value="15gd15as" /> <property 
-				name="hibernate.connection.url" value="jdbc:postgresql://10.3.3.7:5432/blumar" 
-				/> -->
+
 			<!-- atualiza o banco, gera as tabelas se for preciso -->
 			<!-- <property name="hibernate.hbm2ddl.auto" value="update" /> -->
 

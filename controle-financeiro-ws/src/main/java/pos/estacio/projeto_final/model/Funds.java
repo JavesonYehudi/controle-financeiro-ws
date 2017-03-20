@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,7 +41,7 @@ public class Funds implements Serializable {
 	@Column(nullable = false)
 	protected String description;
 
-	@OneToMany(mappedBy = "funds")
+	@OneToMany(mappedBy = "funds", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonBackReference
 	protected List<FinancialTransaction> financialTransactions;
 

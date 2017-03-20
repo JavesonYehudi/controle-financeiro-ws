@@ -1,10 +1,10 @@
 package pos.estacio.projeto_final.session;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 
 import pos.estacio.projeto_final.model.User;
 
-@ApplicationScoped
+@RequestScoped
 public class UserSession {
 	private User user;
 

@@ -59,10 +59,8 @@ public class GenericDao<T extends Serializable>{
 
 	@SuppressWarnings("unchecked")
 	public List<T> list(User user) {
-		entityManager.getTransaction().begin();
 		Query query = entityManager.createQuery("from " + entityClass.getName() + " where user = :user").setParameter("user", user);
 		List<T> resultList = query.getResultList();
-		closeEntityManager();
 		return resultList;
 	}
 
