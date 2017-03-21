@@ -15,10 +15,7 @@ public class ExpenseDao extends GenericDao<Expense> {
 
 	@SuppressWarnings("unchecked")
 	public List<Expense> list(User user){
-		entityManager.getTransaction().begin();
 		Query query = entityManager.createQuery("select e from Expense e inner join e.funds f where f.user = :user").setParameter("user", user);
-		List<Expense> resultList = query.getResultList();
-		this.closeEntityManager();
-		return resultList;
+		return query.getResultList();
 	}
 }

@@ -21,13 +21,10 @@ public class GenericDao<T extends Serializable>{
 	}
 
 	public long count() {
-		entityManager.getTransaction().begin();
 		String entity = entityClass.getSimpleName();
 		final StringBuffer queryString = new StringBuffer("select count(ent) from " + entity + " ent");
 		final Query query = this.entityManager.createQuery(queryString.toString());
-		Long singleResult = (Long) query.getSingleResult();
-		closeEntityManager();
-		return singleResult;
+		return (Long) query.getSingleResult();
 	}
 
 	public T create(T entity) {
@@ -44,10 +41,7 @@ public class GenericDao<T extends Serializable>{
 	}
 
 	public T find(Object id) {
-		entityManager.getTransaction().begin();
-		T find = entityManager.find(entityClass, id);
-		closeEntityManager();
-		return find;
+		return entityManager.find(entityClass, id);
 	}
 	
 	public T update(T entity) {

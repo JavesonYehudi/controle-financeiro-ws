@@ -14,12 +14,11 @@ public class FinancialTransactionDao extends GenericDao<FinancialTransaction> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<FinancialTransaction> list(User user){
-		entityManager.getTransaction().begin();
-		Query query = entityManager.createQuery("select ft from FinancialTransaction ft inner join ft.funds f where f.user = :user").setParameter("user", user);
-		List<FinancialTransaction> resultList = query.getResultList();
-		this.closeEntityManager();
-		return resultList;
+	public List<FinancialTransaction> list(User user) {
+		Query query = entityManager
+				.createQuery("select ft from FinancialTransaction ft inner join ft.funds f where f.user = :user")
+				.setParameter("user", user);
+		return query.getResultList();
 	}
-	
+
 }

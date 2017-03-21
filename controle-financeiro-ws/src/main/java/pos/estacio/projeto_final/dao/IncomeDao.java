@@ -14,11 +14,9 @@ public class IncomeDao extends GenericDao<Income> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Income> list(User user){
-		entityManager.getTransaction().begin();
-		Query query = entityManager.createQuery("select i from Income i inner join i.funds f where f.user = :user").setParameter("user", user);
-		List<Income> resultList = query.getResultList();
-		this.closeEntityManager();
-		return resultList;
+	public List<Income> list(User user) {
+		Query query = entityManager.createQuery("select i from Income i inner join i.funds f where f.user = :user")
+				.setParameter("user", user);
+		return query.getResultList();
 	}
 }
