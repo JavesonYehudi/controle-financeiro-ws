@@ -1,1 +1,1 @@
-web: java -jar target/controle-financeiro-ws.war
+web: java -jar target/dependency/webapp-runner.jar target/*.war
