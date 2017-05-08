@@ -1,0 +1,35 @@
+package br.com.controlefinanceiro.service;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import br.com.controlefinanceiro.dao.GenericDao;
+import br.com.controlefinanceiro.model.BankAccount;
+
+public class BankAccountService extends BaseService {
+	@Inject
+	private GenericDao<BankAccount> bankAccountDao;
+
+	public BankAccount create(BankAccount bankAccount) {
+		bankAccount.setUser(this.getUserSession().getUser());
+		return bankAccountDao.create(bankAccount);
+	}
+
+	public List<BankAccount> list() {
+		return bankAccountDao.list(this.getUserSession().getUser());
+	}
+
+	public BankAccount find(int id) {
+		return bankAccountDao.find(id);
+	}
+
+	public BankAccount update(int id, BankAccount bankAccount) {
+		BankAccount bankAccountAux = bankAccountDao.find(id);
+		bankAccountAux.setAccount(bankAccount.getAccount());
+		bankAccountAux.setAgency(bankAccount.getAgency());
+		bankAccountAux.setDescription(bankAccount.getDescription());
+		return bankAccountDao.update(bankAccountAux);
+	}
+
+}
