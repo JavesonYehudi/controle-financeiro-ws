@@ -17,23 +17,17 @@ public class MongoDBProducer implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private Datastore datastore;
-	//private final String uri = "";
-	
+
 	public MongoDBProducer() {
 		Morphia morphia = new Morphia();
 		morphia.mapPackage("br.com.controlefinanceiro");
-		MongoClientURI mongoClientURI = new MongoClientURI(System.getenv("MONGO_DB"));
-		datastore = morphia.createDatastore(new MongoClient(mongoClientURI), "test");
+		datastore = morphia.createDatastore(new MongoClient(new MongoClientURI(System.getenv("MONGO_DB_CONNECTOR"))), "test"/*System.getenv("MONGO_DB")*/);
 	}
 
-	public void dispose(@Disposes Datastore datastore) {
-		datastore.getMongo().close();
-	}
+	public void dispose(@Disposes Datastore datastore) { datastore.getMongo().close(); }
 
 	@RequestScoped
 	@Produces
-	public Datastore provide() {
-		return datastore;
-	}
+	public Datastore provide() { return datastore; }
 
 }
