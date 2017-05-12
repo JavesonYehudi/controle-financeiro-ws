@@ -5,9 +5,9 @@ import { HttpModule, XHRBackend }    from '@angular/http';
 import { ExtendedXHRBackend } from './extended-xhr-backend'
 import { LoggedInGuard } from './logged-in-guard'
 import { UserService } from './user.service'
+import { AuthHttp, AuthConfig } from 'angular2-jwt';
 
 import { AppRoutingModule } from './app-routing.module';
-
 
 import { AppComponent }                from './app.component';
 
@@ -36,6 +36,10 @@ import { CalendarComponent } from "angular2-fullcalendar/src/calendar/calendar";
 import { ScheduleModule } from 'primeng/primeng';
 import { DialogModule } from 'primeng/primeng';
 
+export function authHttpServiceFactory(http: Http, options: RequestOptions) {
+  return new AuthHttp(new AuthConfig(), http, options);
+}
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -61,8 +65,24 @@ import { DialogModule } from 'primeng/primeng';
     MyCalendarComponent,
     AuthComponent
   ],
-  providers: [ FundsService, CreditCardService, BankAccountService, IncomeService, ExpenseService, { provide: XHRBackend, useClass: ExtendedXHRBackend },
-              LoggedInGuard, UserService ],
+  providers: [ 
+	FundsService, 
+	CreditCardService, 
+	BankAccountService, 
+	IncomeService, 
+	ExpenseService,
+	{
+	   provide: AuthHttp,
+	   useFactory: authHttpServiceFactory,
+	   deps: [ Http, RequestOptions ]
+	},
+	{ 
+		provide: XHRBackend, 
+		useClass: ExtendedXHRBackend 
+	},
+    LoggedInGuard, 
+	UserService 
+  ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { 
