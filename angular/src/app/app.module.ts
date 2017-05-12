@@ -6,6 +6,7 @@ import { ExtendedXHRBackend } from './extended-xhr-backend'
 import { LoggedInGuard } from './logged-in-guard'
 import { UserService } from './user.service'
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
+import { Http, RequestOptions } from '@angular/http';
 
 import { AppRoutingModule } from './app-routing.module';
 
