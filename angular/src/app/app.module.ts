@@ -7,7 +7,7 @@ import { LoggedInGuard } from './logged-in-guard'
 import { UserService } from './user.service'
 
 import { AppRoutingModule } from './app-routing.module';
-import { AuthModule } from './auth.module.ts';
+
 
 import { AppComponent }                from './app.component';
 
@@ -43,8 +43,7 @@ import { DialogModule } from 'primeng/primeng';
     HttpModule,
     AppRoutingModule,
     ScheduleModule,
-    DialogModule,
-    AuthModule
+    DialogModule
   ],
   declarations: [
     AppComponent,
