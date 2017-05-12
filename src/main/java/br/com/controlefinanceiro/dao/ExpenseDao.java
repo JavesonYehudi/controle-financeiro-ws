@@ -12,6 +12,6 @@ public class ExpenseDao extends GenericDao<Expense> {
 	}
 
 	public List<Expense> list(User user) {
-		return datastore.createQuery(Expense.class).filter("user", user).asList();
+		return datastore.find(Expense.class).field("funds.user").equal(user).asList();
 	}
 }

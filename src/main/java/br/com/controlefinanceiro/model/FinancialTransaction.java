@@ -8,15 +8,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -33,7 +32,7 @@ public class FinancialTransaction implements Serializable {
 	 */
 	private static final long serialVersionUID = -3629603514965142970L;
 	@Id
-	protected Integer id;
+	protected ObjectId id;
 	protected String description;
 	protected BigDecimal valueTransaction;
 	@JsonManagedReference
@@ -49,8 +48,7 @@ public class FinancialTransaction implements Serializable {
 	protected int recurrent;
 	protected ECalendarPeriod calendarPeriod;
 	protected Group group;
-	@Transient
-	private EFinancialTransactionType eFinancialTransactionType;
+	protected EFinancialTransactionType eFinancialTransactionType;
 
 	public FinancialTransaction() {
 		setRecurrent(1);
@@ -59,11 +57,11 @@ public class FinancialTransaction implements Serializable {
 		setPayments(new ArrayList<>());
 	}
 
-	public Integer getId() {
+	public ObjectId getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(ObjectId id) {
 		this.id = id;
 	}
 
@@ -147,14 +145,8 @@ public class FinancialTransaction implements Serializable {
 		this.group = group;
 	}
 
-	@JsonProperty("financialTransactionType")
 	public EFinancialTransactionType getEFinancialTransactionType() {
 		return eFinancialTransactionType;
-	}
-
-	@JsonIgnore
-	public void setEFinancialTransactionType(EFinancialTransactionType eFinancialTransactionType) {
-		this.eFinancialTransactionType = eFinancialTransactionType;
 	}
 
 	public void addMaturity(Maturity maturity) {

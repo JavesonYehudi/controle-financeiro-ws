@@ -12,6 +12,6 @@ public class FinancialTransactionDao extends GenericDao<FinancialTransaction> {
 	}
 
 	public List<FinancialTransaction> list(User user) {
-		return datastore.createQuery(FinancialTransaction.class).filter("user", user).asList();
+		return datastore.find(FinancialTransaction.class).field("user").equal(user).asList();
 	}
 }

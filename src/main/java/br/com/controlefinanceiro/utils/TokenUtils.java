@@ -2,8 +2,8 @@ package br.com.controlefinanceiro.utils;
 
 import java.util.Base64;
 import java.util.Date;
-import java.util.UUID;
 
+import br.com.controlefinanceiro.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -12,15 +12,15 @@ public class TokenUtils {
 	private static final byte[] secretBytes = "secret".getBytes();
 	private static final String base64SecretBytes = Base64.getEncoder().encodeToString(secretBytes);
 
-	public static String generateToken(String login, String pass) {
-		String id = UUID.randomUUID().toString().replace("-", "");
-		Date now = new Date();
+	public static String generateToken(User user) {
+		//String id = ;//UUID.randomUUID().toString().replace("-", "");
+		//Date now = ;
 
 		String token = Jwts.builder()
-				.claim("login", login)
-				.claim("pass", pass)
-				.setId(id)
-				.setIssuedAt(now)
+				.claim("login", user.getLogin())
+				.claim("pass", user.getPass())
+				.setId(user.getId().toString().replace("-", ""))
+				.setIssuedAt(new Date())
 				.signWith(SignatureAlgorithm.HS256, base64SecretBytes).compact();
 
 		return token;

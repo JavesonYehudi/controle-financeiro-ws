@@ -14,7 +14,7 @@ public class UserService extends BaseService{
 
 	public User create(User user) throws UnsupportedEncodingException {
 		userDao.create(user);
-		user.setToken(TokenUtils.generateToken(user.getLogin(), user.getPass()));
+		user.setToken(TokenUtils.generateToken(user));
 		return user;
 	}
 
@@ -26,7 +26,7 @@ public class UserService extends BaseService{
 		User userAux = userDao.findBy(user.getLogin());
 		if(!userAux.getPass().equals(user.getPass()))
 			throw new Exception("login or pass incorrect");
-		return user;
+		return userAux;
 	}
 
 	public User update(int id, User user) {

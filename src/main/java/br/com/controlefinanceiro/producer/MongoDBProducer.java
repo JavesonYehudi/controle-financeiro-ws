@@ -10,7 +10,6 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
 import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
 
 @RequestScoped
 public class MongoDBProducer implements Serializable{
@@ -21,7 +20,7 @@ public class MongoDBProducer implements Serializable{
 	public MongoDBProducer() {
 		Morphia morphia = new Morphia();
 		morphia.mapPackage("br.com.controlefinanceiro");
-		datastore = morphia.createDatastore(new MongoClient(new MongoClientURI(System.getenv("MONGO_DB_CONNECTOR"))), "test"/*System.getenv("MONGO_DB")*/);
+		datastore = morphia.createDatastore(new MongoClient(/*new MongoClientURI(System.getenv("MONGO_DB_CONNECTOR"))*/), "test"/*System.getenv("MONGO_DB")*/);
 	}
 
 	public void dispose(@Disposes Datastore datastore) { datastore.getMongo().close(); }

@@ -2,6 +2,8 @@ package br.com.controlefinanceiro.model;
 
 import java.io.Serializable;
 
+import org.bson.types.ObjectId;
+
 public class Group implements Serializable {
 
 	/**
@@ -9,7 +11,7 @@ public class Group implements Serializable {
 	 */
 	private static final long serialVersionUID = 7026294608513613215L;
 
-	private Integer id;
+	private ObjectId id;
 	private String description;
 
 	public Group() {
@@ -19,11 +21,11 @@ public class Group implements Serializable {
 		this.description = description;
 	}
 
-	public Integer getId() {
+	public ObjectId getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(ObjectId id) {
 		this.id = id;
 	}
 

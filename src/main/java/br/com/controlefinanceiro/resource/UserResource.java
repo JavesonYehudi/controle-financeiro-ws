@@ -48,9 +48,8 @@ public class UserResource extends GenericResource<User> {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response validateToken(User user) {
 		try {
-			userService.find(user);
-
-			String token = TokenUtils.generateToken(user.getLogin(), user.getPass());
+			user = userService.find(user);
+			String token = TokenUtils.generateToken(user);
 			TokenUtils.verifyToken(token);
 
 			return Response.status(200).entity("{\"token\": \"" + token + "\"}").build();

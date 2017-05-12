@@ -24,7 +24,6 @@ public class GroupResource extends GenericResource<Group> {
 
 	@Override
 	public Response update(int id, Group group) {
-		group.setId(id);
 		try {
 			return Response.status(200).entity(groupService.update(id, group)).build();
 		} catch (Exception e) {

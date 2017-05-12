@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Reference;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -21,7 +22,7 @@ public class Maturity implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 2252052230847560263L;
-	private Integer id;
+	private ObjectId id;
 	private BigDecimal value;
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
@@ -40,11 +41,11 @@ public class Maturity implements Serializable {
 		this.financialTransaction = financialTransaction;
 	}
 
-	public Integer getId() {
+	public ObjectId getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(ObjectId id) {
 		this.id = id;
 	}
 

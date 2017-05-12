@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import org.bson.types.ObjectId;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,7 +21,7 @@ public class Payment implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 180233392066903390L;
-	private Integer id;
+	private ObjectId id;
 	private BigDecimal valuePaid;
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
@@ -29,11 +31,11 @@ public class Payment implements Serializable {
 	@JsonBackReference
 	private FinancialTransaction financialTransaction;
 
-	public Integer getId() {
+	public ObjectId getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(ObjectId id) {
 		this.id = id;
 	}
 
