@@ -1,10 +1,10 @@
-import { ControleFinanceiroPage } from './app.po';
+import { AngularPage } from './app.po';
 
-describe('controle-financeiro App', () => {
-  let page: ControleFinanceiroPage;
+describe('angular App', () => {
+  let page: AngularPage;
 
   beforeEach(() => {
-    page = new ControleFinanceiroPage();
+    page = new AngularPage();
   });
 
   it('should display message saying app works', () => {
