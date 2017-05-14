@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class LoginService {
-  private OauthLoginEndPointUrl = 'http://www.hintcash.com/ws/user/log-in';  // Oauth Login EndPointUrl to web API
+  private OauthLoginEndPointUrl = localStorage.getItem('url') + '/user/log-in';  // Oauth Login EndPointUrl to web API
   user: User = new User();
 
   constructor(public http: Http) {}

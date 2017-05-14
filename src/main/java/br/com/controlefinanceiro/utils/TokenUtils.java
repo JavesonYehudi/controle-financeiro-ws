@@ -13,9 +13,6 @@ public class TokenUtils {
 	private static final String base64SecretBytes = Base64.getEncoder().encodeToString(secretBytes);
 
 	public static String generateToken(User user) {
-		//String id = ;//UUID.randomUUID().toString().replace("-", "");
-		//Date now = ;
-
 		String token = Jwts.builder()
 				.claim("login", user.getLogin())
 				.claim("pass", user.getPass())

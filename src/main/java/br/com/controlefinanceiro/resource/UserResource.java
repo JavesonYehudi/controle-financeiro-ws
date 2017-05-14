@@ -51,8 +51,8 @@ public class UserResource extends GenericResource<User> {
 			user = userService.find(user);
 			String token = TokenUtils.generateToken(user);
 			TokenUtils.verifyToken(token);
-
-			return Response.status(200).entity("{\"token\": \"" + token + "\"}").build();
+			user.setToken(token);
+			return Response.status(200).entity(user).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}

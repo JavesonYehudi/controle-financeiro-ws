@@ -23,10 +23,16 @@ public class UserService extends BaseService{
 	}
 
 	public User find(User user) throws Exception {
-		User userAux = userDao.findBy(user.getLogin());
-		if(!userAux.getPass().equals(user.getPass()))
+		try{
+			User userAux = userDao.findBy(user.getLogin());
+
+			if(!userAux.getPass().equals(user.getPass()))
+				throw new Exception("login or pass incorrect");
+
+			return userAux;
+		}catch (NullPointerException e) {
 			throw new Exception("login or pass incorrect");
-		return userAux;
+		}
 	}
 
 	public User update(int id, User user) {

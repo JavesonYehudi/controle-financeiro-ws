@@ -23,7 +23,6 @@ public class User implements Serializable {
 	private String login;
 	private String pass;
 	@Transient
-	@JsonIgnore
 	private String token;
 
 	public ObjectId getId() {
