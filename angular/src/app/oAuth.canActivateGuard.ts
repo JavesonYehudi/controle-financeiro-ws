@@ -6,10 +6,10 @@ export class CanActivateViaOAuthGuard implements CanActivate {
 	constructor(public router : Router) {}
 	
 	canActivate() {
-		console.log(localStorage.getItem("token"));
-		if(localStorage.getItem("token") === null){
+		console.log(JSON.parse(localStorage.getItem("user")) === null || JSON.parse(localStorage.getItem("user")).token === undefined);
+		if(JSON.parse(localStorage.getItem("user")) === null || JSON.parse(localStorage.getItem("user")).token === undefined)
 			this.router.navigateByUrl('/login');
-		}
-		return (localStorage.getItem("token") === null) ? false : true;
+
+		return !(JSON.parse(localStorage.getItem("user")) === null) && !(JSON.parse(localStorage.getItem("user")).token === undefined);
 	}
 }

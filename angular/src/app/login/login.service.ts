@@ -1,14 +1,15 @@
-import { Injectable }                                               from '@angular/core';
+import { Injectable }                                                        from '@angular/core';
 import { Http , RequestOptions , Response, RequestMethod, Request, Headers } from '@angular/http';
-import { Observable }                                               from 'rxjs/Rx';
-import { User }                                                     from '../model/user';
+import { Observable }                                                        from 'rxjs/Rx';
+import { User }                                                              from '../model/user';
+import { environment }                                                       from '../../environments/environment'
 
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 
 @Injectable()
 export class LoginService {
-  private OauthLoginEndPointUrl = localStorage.getItem('url') + '/user/log-in';  // Oauth Login EndPointUrl to web API
+  private OauthLoginEndPointUrl = environment.rootPath + '/user/log-in';  // Oauth Login EndPointUrl to web API
   user: User = new User();
 
   constructor(public http: Http) {}

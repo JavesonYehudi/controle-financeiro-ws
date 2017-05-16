@@ -24,7 +24,13 @@ public class User implements Serializable {
 	private String pass;
 	@Transient
 	private String token;
+	@Transient
+	private boolean status;
 
+	public User() {
+		setStatus(false);
+	}
+	
 	public ObjectId getId() {
 		return id;
 	}
@@ -57,6 +63,14 @@ public class User implements Serializable {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public boolean getStatus(){
+		return status;
+	}
+
+	public void setStatus(boolean status){
+		this.status = status;
 	}
 
 	@Override

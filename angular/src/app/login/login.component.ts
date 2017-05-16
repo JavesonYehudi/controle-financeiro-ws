@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Rx';
+import { Component }    from '@angular/core';
+import { Router }       from '@angular/router';
+import { Observable }   from 'rxjs/Rx';
 import { LoginService } from './login.service';
-import { User }                                                     from '../model/user';
+import { User }         from '../model/user';
 
 @Component({
   selector: 'my-login',
@@ -19,8 +19,12 @@ export class LoginComponent {
     event.preventDefault();
     this.loginService.login(this.user).then(
       response => {
-        localStorage.setItem('token', response.json().token);
-        this.router.navigateByUrl('/home');
+        if(response.json().token === undefined)
+          alert(response.json().error);
+        else{
+          localStorage.setItem('user', JSON.stringify(response.json()));
+          this.router.navigateByUrl('/home');
+        }
       },
       error => {alert(error);}
     );
