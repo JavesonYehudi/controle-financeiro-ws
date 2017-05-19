@@ -8,13 +8,16 @@ import { AppComponent }             from './app.component';
 import { AppRoutesModule }          from './app.routes.module';
 import { LoginComponent }           from './login/login.component';
 import { HomeComponent }            from './home/home.component';
+import { MyCalendarComponent }      from './calendar/my-calendar.component';
+import { FacebookLoginComponent }      from './login/facebook-login.component';
+
 
 import { CanActivateViaOAuthGuard } from './oAuth.canActivateGuard';
 
 import { CalendarComponent }          from "ap-angular2-fullcalendar/src/calendar/calendar";
 import { ScheduleModule }           from 'primeng/primeng';
 import { DialogModule }             from 'primeng/primeng';
-import { MyCalendarComponent }      from './calendar/my-calendar.component';
+
 
 @NgModule({
   declarations: [ 
@@ -22,7 +25,8 @@ import { MyCalendarComponent }      from './calendar/my-calendar.component';
     HomeComponent, 
     LoginComponent,
     CalendarComponent,
-    MyCalendarComponent
+    MyCalendarComponent,
+    FacebookLoginComponent
   ],
   imports: [
     BrowserModule,
