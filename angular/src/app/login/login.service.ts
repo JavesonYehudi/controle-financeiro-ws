@@ -1,6 +1,7 @@
 import { Injectable }                                                        from '@angular/core';
+import { Router }                                                            from '@angular/router';
 import { Http , RequestOptions , Response, RequestMethod, Request, Headers } from '@angular/http';
-import { Observable }                                                        from 'rxjs/Rx';
+import { Observable }                                                        from 'rxjs/Observable';
 import { User }                                                              from '../model/user';
 import { environment }                                                       from '../../environments/environment'
 
@@ -9,27 +10,50 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class LoginService {
-  private OauthLoginEndPointUrl = environment.rootPath + '/user/log-in';  // Oauth Login EndPointUrl to web API
-  user: User = new User();
+  private OauthLoginEndPointUrl = environment.rootPath + '/user';  // Oauth Login EndPointUrl to web API
 
-  constructor(public http: Http) {}
+  constructor(private router: Router, private http: Http) {}
 
   login(user: User) : Promise<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
     var requestoptions = new RequestOptions({
       method: RequestMethod.Post,
-      url: this.OauthLoginEndPointUrl,
-      body: JSON.stringify(user),
-      headers: headers
+      url: `${this.OauthLoginEndPointUrl}/login`,
+      body: JSON.stringify(user)
     });
 
-    return this.http.request(new Request(requestoptions)).toPromise();
+    return this.http.request(new Request(requestoptions)).toPromise().then(
+      response => {
+        localStorage.setItem('user', this.handleData(response));
+        this.router.navigate(['home']);
+      },
+      error => this.handleError(error)
+    );
+
+  }
+
+  loginFacebook(user: User) : Promise<any> {
+    console.log(JSON.stringify(user));
+    var requestoptions = new RequestOptions({
+      method: RequestMethod.Post,
+      url: `${this.OauthLoginEndPointUrl}/facebook-login/${user.connections[0].id}`,
+      body: JSON.stringify(user)
+    });
+
+    console.log(`${this.OauthLoginEndPointUrl}/facebook-login/${user.connections[0].id}`);
+
+    return this.http.request(new Request(requestoptions)).toPromise().then(
+      response => {
+        localStorage.setItem('user', this.handleData(response));
+        this.router.navigate(['home']);
+      },
+      error => this.handleError(error)
+    );
 
   }
 
   private handleData(res: Response) {
     let body = res.json();
-    return body;
+    return JSON.stringify(body);
   }
 
   private handleError (error: any) {

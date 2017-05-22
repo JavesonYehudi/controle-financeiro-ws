@@ -1,5 +1,7 @@
 package br.com.controlefinanceiro.utils;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Base64;
 import java.util.Date;
 
@@ -16,10 +18,10 @@ public class TokenUtils {
 		String token = Jwts.builder()
 				.claim("login", user.getLogin())
 				.claim("pass", user.getPass())
-				.setId(user.getId().toString().replace("-", ""))
+				.setId(user.getId().toString())
 				.setIssuedAt(new Date())
+				.setExpiration(Date.from(LocalDateTime.now().plusDays(1).atZone(ZoneId.systemDefault()).toInstant()))
 				.signWith(SignatureAlgorithm.HS256, base64SecretBytes).compact();
-
 		return token;
 	}
 

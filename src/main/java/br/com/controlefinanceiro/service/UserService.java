@@ -4,33 +4,45 @@ import java.io.UnsupportedEncodingException;
 
 import javax.inject.Inject;
 
-import br.com.controlefinanceiro.dao.GenericDao;
+import org.bson.types.ObjectId;
+
+import br.com.controlefinanceiro.dao.UserDao;
+import br.com.controlefinanceiro.enumeration.EExternalConnections;
+import br.com.controlefinanceiro.model.ExternalConnection;
 import br.com.controlefinanceiro.model.User;
 import br.com.controlefinanceiro.utils.TokenUtils;
 
-public class UserService extends BaseService{
+public class UserService extends BaseService {
 	@Inject
-	private GenericDao<User> userDao;
+	private UserDao userDao;
 
 	public User create(User user) throws UnsupportedEncodingException {
-		userDao.create(user);
+		user = userDao.create(user);
 		user.setToken(TokenUtils.generateToken(user));
 		return user;
 	}
 
-	public User find(int id) {
+	public User find(ObjectId id) {
 		return userDao.find(id);
 	}
 
+	public User login(String externalId, EExternalConnections type, User user) throws UnsupportedEncodingException {
+		ExternalConnection externalConnection = new ExternalConnection(externalId, type);
+		User userAux = userDao.find(externalConnection);
+
+		if (userAux == null)
+			return this.create(user);
+
+		userAux.setToken(TokenUtils.generateToken(userAux));
+		return userAux;
+	}
+
 	public User find(User user) throws Exception {
-		try{
-			User userAux = userDao.findBy(user.getLogin());
-
-			if(!userAux.getPass().equals(user.getPass()))
-				throw new Exception("login or pass incorrect");
-
-			return userAux;
-		}catch (NullPointerException e) {
+		try {
+			user = userDao.findBy(user.getLogin(), user.getPass());
+			user.setToken(TokenUtils.generateToken(user));
+			return user;
+		} catch (NullPointerException e) {
 			throw new Exception("login or pass incorrect");
 		}
 	}

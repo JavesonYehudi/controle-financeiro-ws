@@ -1,6 +1,8 @@
 package br.com.controlefinanceiro.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
@@ -20,6 +22,9 @@ public class User implements Serializable {
 
 	@Id
 	private ObjectId id;
+	private List<ExternalConnection> connections;
+	private String name;
+	private String email;
 	private String login;
 	private String pass;
 	@Transient
@@ -28,11 +33,12 @@ public class User implements Serializable {
 	private boolean status;
 
 	public User() {
+		this.connections = new ArrayList<>();
 		setStatus(false);
 	}
-	
-	public ObjectId getId() {
-		return id;
+
+	public String getId() {
+		return id.toString();
 	}
 
 	public void setId(ObjectId id) {
@@ -45,6 +51,30 @@ public class User implements Serializable {
 
 	public void setLogin(String login) {
 		this.login = login;
+	}
+
+	public List<ExternalConnection> getConnections() {
+		return connections;
+	}
+
+	public void setConnections(List<ExternalConnection> connections) {
+		this.connections = connections;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	@JsonIgnore
@@ -65,11 +95,11 @@ public class User implements Serializable {
 		this.token = token;
 	}
 
-	public boolean getStatus(){
+	public boolean getStatus() {
 		return status;
 	}
 
-	public void setStatus(boolean status){
+	public void setStatus(boolean status) {
 		this.status = status;
 	}
 

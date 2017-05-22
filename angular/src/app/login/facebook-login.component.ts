@@ -1,5 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
+import {Component, OnInit}  from '@angular/core';
+import {Router}             from "@angular/router";
+import { LoginService }     from './login.service';
+import {User}               from "../model/user";
+import {ExternalConnection} from "../model/external-connection";
 
 
 declare const FB:any;
@@ -11,7 +14,7 @@ declare const FB:any;
 
 export class FacebookLoginComponent implements OnInit {
 
-    constructor() {
+    constructor(private loginService: LoginService) {
         FB.init({
             appId      : '1469434273099383',
             cookie     : false,  // enable cookies to allow the server to access the session
@@ -26,8 +29,15 @@ export class FacebookLoginComponent implements OnInit {
 
     statusChangeCallback(resp) {
         if (resp.status === 'connected') {
-            // connect here with your server for facebook login by passing access token given by facebook
-            console.log(resp);
+            FB.api(`me?access_token=${resp.authResponse.accessToken}`, response => {
+            let user = new User();
+            user.name = response.name;
+            user.email = response.email;
+            user.connections[0] = new ExternalConnection(response.id.toString(), 'FACEBOOK');
+
+            this.loginService.loginFacebook(user);
+
+        });
         }else if (resp.status === 'not_authorized') {
             
         }else {
@@ -37,10 +47,6 @@ export class FacebookLoginComponent implements OnInit {
     ngOnInit() {
         FB.getLoginStatus(response => {
             this.statusChangeCallback(response);
-        });
-
-        FB.api('/me?access_token=EAAU4cVPebncBAIl4ctWGvF4ve6dxDuE3U3SHwbZAOzzRCgH7DqYZCu7NgllMNhEtvVdaHk24LhZBKtdeqyajsFhmSZCwKbEsuCDIGb37VTxsohvEGxWztycMZCGZB8xZBkZC2R9P52nkgZCZCT8ajlwW4Ua0DkLbVnqLAWX1rcrqOcRZAmAJPp6hC38cDZBrpncrIrcZD', response => {
-            console.log(response);
         });
     }
 }

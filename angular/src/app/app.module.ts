@@ -2,14 +2,15 @@ import { BrowserModule }            from '@angular/platform-browser';
 import { NgbModule } 				        from '@ng-bootstrap/ng-bootstrap';
 import { NgModule }                 from '@angular/core';
 import { FormsModule }              from '@angular/forms';
-import { HttpModule }               from '@angular/http';
+import { HttpModule, XHRBackend }   from '@angular/http';
+import { ExtendedXHRBackend }       from './extended-xhr-backend'
 
 import { AppComponent }             from './app.component';
 import { AppRoutesModule }          from './app.routes.module';
 import { LoginComponent }           from './login/login.component';
 import { HomeComponent }            from './home/home.component';
 import { MyCalendarComponent }      from './calendar/my-calendar.component';
-import { FacebookLoginComponent }      from './login/facebook-login.component';
+import { FacebookLoginComponent }   from './login/facebook-login.component';
 
 
 import { CanActivateViaOAuthGuard } from './oAuth.canActivateGuard';
@@ -37,7 +38,10 @@ import { DialogModule }             from 'primeng/primeng';
     ScheduleModule,
     DialogModule
   ],
-  providers: [ CanActivateViaOAuthGuard ],
+  providers: [
+    { provide: XHRBackend, useClass: ExtendedXHRBackend },
+    CanActivateViaOAuthGuard 
+  ],
   bootstrap: [ 
     AppComponent
   ]
