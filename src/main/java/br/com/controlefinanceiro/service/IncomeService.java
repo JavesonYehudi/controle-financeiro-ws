@@ -15,10 +15,10 @@ import br.com.controlefinanceiro.model.Payment;
 
 @RequestScoped
 @Named("income")
-public class IncomeService extends BaseService implements IFinancialTransactionService<Income> {
+public class IncomeService extends GenericService<Income> implements IFinancialTransactionService<Income> {
 
 	@Inject
-	private GenericDao<Income> incomeDao;
+	private GenericDao<Income> dao;
 
 	@Inject
 	private GenericDao<Maturity> maturityDao;
@@ -28,7 +28,7 @@ public class IncomeService extends BaseService implements IFinancialTransactionS
 
 	@Override
 	public Income pay(int id, Payment payment) throws Exception {
-		Income income = incomeDao.find(id);
+		Income income = dao.find(id);
 
 		payment.setMaturity(findMaturity(payment, income));
 		payment.setValuePaid(payment.getValuePaid().abs());
@@ -36,7 +36,7 @@ public class IncomeService extends BaseService implements IFinancialTransactionS
 
 		income.addPayment(payment);
 
-		return incomeDao.update(income);
+		return dao.update(income);
 	}
 
 	private Maturity findMaturity(Payment payment, Income income) throws Exception {
@@ -61,22 +61,22 @@ public class IncomeService extends BaseService implements IFinancialTransactionS
 	public Income create(Income income) {
 		income.setValueTransaction(income.getValueTransaction().abs());
 		income.setFunds(fundsDao.find(income.getFunds().getId()));
-		return incomeDao.create(income);
+		return dao.create(income);
 	}
 
 	@Override
 	public List<Income> list() {
-		return incomeDao.list(this.getUserSession().getUser());
+		return dao.list(this.getUserSession().getUser());
 	}
 
 	@Override
 	public Income find(int id) {
-		return incomeDao.find(id);
+		return dao.find(id);
 	}
 
 	@Override
 	public Income update(int id, Income income) {
-		Income incomeAux = incomeDao.find(id);
+		Income incomeAux = dao.find(id);
 		incomeAux.setDescription(income.getDescription());
 		incomeAux.setFunds(income.getFunds());
 		incomeAux.setGroup(income.getGroup());
@@ -84,6 +84,6 @@ public class IncomeService extends BaseService implements IFinancialTransactionS
 		incomeAux.setValueTransaction(income.getValueTransaction());
 		incomeAux.setRecurrent(income.getRecurrent());
 		
-		return incomeDao.update(incomeAux);
+		return dao.update(incomeAux);
 	}
 }

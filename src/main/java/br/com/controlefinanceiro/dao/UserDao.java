@@ -16,6 +16,5 @@ public class UserDao extends GenericDao<User> {
 	
 	public User find(ExternalConnection connection){
 		return (User) this.datastore.createQuery(User.class).criteria("connections").hasThisOne(connection).getQuery().get(); 
-		//field("connections").equal(connection).get();
 	}
 }

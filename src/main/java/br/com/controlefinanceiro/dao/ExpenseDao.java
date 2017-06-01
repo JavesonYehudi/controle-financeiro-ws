@@ -11,6 +11,7 @@ public class ExpenseDao extends GenericDao<Expense> {
 		super(Expense.class);
 	}
 
+	@Override
 	public List<Expense> list(User user) {
 		return datastore.find(Expense.class).field("funds.user").equal(user).asList();
 	}

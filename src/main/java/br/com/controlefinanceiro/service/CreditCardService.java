@@ -2,33 +2,27 @@ package br.com.controlefinanceiro.service;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
-import br.com.controlefinanceiro.dao.GenericDao;
 import br.com.controlefinanceiro.model.CreditCard;
 
-public class CreditCardService extends BaseService {
-	@Inject
-	private GenericDao<CreditCard> creditCardDao;
-
+public class CreditCardService extends GenericService<CreditCard> {
 	public CreditCard create(CreditCard creditCard) {
 		creditCard.setUser(this.getUserSession().getUser());
-		return creditCardDao.create(creditCard);
+		return dao.create(creditCard);
 	}
 
 	public List<CreditCard> list() {
-		return creditCardDao.list(this.getUserSession().getUser());
+		return dao.list(this.getUserSession().getUser());
 	}
 
 	public CreditCard find(int id) {
-		return creditCardDao.find(id);
+		return dao.find(id);
 	}
 
 	public CreditCard update(int id, CreditCard creditCard) {
-		CreditCard creditCardAux = creditCardDao.find(id);
+		CreditCard creditCardAux = dao.find(id);
 		creditCardAux.setLimitValue(creditCard.getLimitValue());
 		creditCardAux.setMaturity(creditCard.getMaturity());
 		creditCardAux.setDescription(creditCard.getDescription());
-		return creditCardDao.update(creditCardAux);
+		return dao.update(creditCardAux);
 	}
 }

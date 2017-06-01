@@ -1,4 +1,4 @@
-import {Component, OnInit}  from '@angular/core';
+import {Component, OnInit, NgZone}  from '@angular/core';
 import {Router}             from "@angular/router";
 import { LoginService }     from './login.service';
 import {User}               from "../model/user";
@@ -14,17 +14,23 @@ declare const FB:any;
 
 export class FacebookLoginComponent implements OnInit {
 
-    constructor(private loginService: LoginService) {
+    constructor(private loginService: LoginService, private zone: NgZone) {
         FB.init({
             appId      : '1469434273099383',
             cookie     : false,  // enable cookies to allow the server to access the session
             xfbml      : true,  // parse social plugins on this page
             version    : 'v2.9' // use graph api version 2.5
         });
+
+        (<any>window).angularComponentRef = {
+            zone: this.zone, 
+            componentFn: () => this.getLoginStatus(), 
+            component: this
+        };
     }
 
     onFacebookLoginClick() {
-        FB.login();
+        FB.login({ scope: 'user_friends' });
     }
 
     statusChangeCallback(resp) {
@@ -44,9 +50,16 @@ export class FacebookLoginComponent implements OnInit {
             
         }
     };
-    ngOnInit() {
+
+    getLoginStatus(){
+        console.log('loginStatus - passe aqui');
         FB.getLoginStatus(response => {
             this.statusChangeCallback(response);
-        });
+        });    
     }
+
+    ngOnInit() {
+        this.getLoginStatus();
+    }
+
 }

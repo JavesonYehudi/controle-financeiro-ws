@@ -12,23 +12,23 @@ import br.com.controlefinanceiro.model.ExternalConnection;
 import br.com.controlefinanceiro.model.User;
 import br.com.controlefinanceiro.utils.TokenUtils;
 
-public class UserService extends BaseService {
+public class UserService extends GenericService<User> {
 	@Inject
-	private UserDao userDao;
+	private UserDao dao;
 
 	public User create(User user) throws UnsupportedEncodingException {
-		user = userDao.create(user);
+		user = dao.create(user);
 		user.setToken(TokenUtils.generateToken(user));
 		return user;
 	}
 
 	public User find(ObjectId id) {
-		return userDao.find(id);
+		return dao.find(id);
 	}
 
 	public User login(String externalId, EExternalConnections type, User user) throws UnsupportedEncodingException {
 		ExternalConnection externalConnection = new ExternalConnection(externalId, type);
-		User userAux = userDao.find(externalConnection);
+		User userAux = dao.find(externalConnection);
 
 		if (userAux == null)
 			return this.create(user);
@@ -39,7 +39,7 @@ public class UserService extends BaseService {
 
 	public User find(User user) throws Exception {
 		try {
-			user = userDao.findBy(user.getLogin(), user.getPass());
+			user = dao.findBy(user.getLogin(), user.getPass());
 			user.setToken(TokenUtils.generateToken(user));
 			return user;
 		} catch (NullPointerException e) {
@@ -48,10 +48,10 @@ public class UserService extends BaseService {
 	}
 
 	public User update(int id, User user) {
-		User userAux = userDao.find(id);
+		User userAux = dao.find(id);
 		userAux.setLogin(user.getLogin());
 		userAux.setPass(user.getPass());
-		return userDao.update(userAux);
+		return dao.update(userAux);
 	}
 
 }

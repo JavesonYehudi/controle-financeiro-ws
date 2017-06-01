@@ -1,12 +1,17 @@
 package br.com.controlefinanceiro.service;
 
+import java.io.Serializable;
+
 import javax.inject.Inject;
 
+import br.com.controlefinanceiro.dao.GenericDao;
 import br.com.controlefinanceiro.session.UserSession;
 
-public class BaseService {
+public abstract class GenericService<T extends Serializable> {
 	@Inject
-	private UserSession userSession;
+	protected UserSession userSession;
+	@Inject
+	protected GenericDao<T> dao;
 
 	public UserSession getUserSession() {
 		return userSession;

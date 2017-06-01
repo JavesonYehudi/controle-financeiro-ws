@@ -2,31 +2,26 @@ package br.com.controlefinanceiro.service;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
-import br.com.controlefinanceiro.dao.GenericDao;
 import br.com.controlefinanceiro.model.Funds;
 
-public class FundsService extends BaseService{
-	@Inject
-	private GenericDao<Funds> fundsDao;
+public class FundsService extends GenericService<Funds>{
 
 	public Funds create(Funds funds) {
 		funds.setUser(this.getUserSession().getUser());
-		return fundsDao.create(funds);
+		return dao.create(funds);
 	}
 
 	public List<Funds> list() {
-		return fundsDao.list(this.getUserSession().getUser());
+		return dao.list(this.getUserSession().getUser());
 	}
 
 	public Funds find(int id) {
-		return fundsDao.find(id);
+		return dao.find(id);
 	}
 
 	public Funds update(int id, Funds funds) {
-		Funds fundsAux = fundsDao.find(id);
+		Funds fundsAux = dao.find(id);
 		fundsAux.setDescription(funds.getDescription());
-		return fundsDao.update(fundsAux);
+		return dao.update(fundsAux);
 	}
 }

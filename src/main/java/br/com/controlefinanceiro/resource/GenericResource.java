@@ -13,13 +13,13 @@ import javax.ws.rs.core.Response;
 public abstract class GenericResource<T> {
 
 	@POST
-	@Path(value = "/create")
+	@Path(value = "")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public abstract Response create(T t);
 
 	@PUT
-	@Path(value = "/update/{id}")
+	@Path(value = "{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public abstract Response update(@PathParam("id") int id, T t);
@@ -30,12 +30,12 @@ public abstract class GenericResource<T> {
 	public abstract Response delete(@PathParam("id") int id);
 */
 	@GET
-	@Path(value = "/find/{id}")
+	@Path(value = "{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public abstract Response find(@PathParam("id") int id);
  
 	@GET
-	@Path(value = "/list")
+	@Path(value = "")
 	@Produces(MediaType.APPLICATION_JSON)
 	public abstract Response list();
 

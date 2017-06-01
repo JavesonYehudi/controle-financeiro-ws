@@ -15,10 +15,7 @@ import br.com.controlefinanceiro.model.Payment;
 
 @RequestScoped
 @Named("expense")
-public class ExpenseService extends BaseService implements IFinancialTransactionService<Expense> {
-
-	@Inject
-	private GenericDao<Expense> expenseDao;
+public class ExpenseService extends GenericService<Expense> implements IFinancialTransactionService<Expense> {
 
 	@Inject
 	private GenericDao<Maturity> maturityDao;
@@ -28,7 +25,7 @@ public class ExpenseService extends BaseService implements IFinancialTransaction
 
 	@Override
 	public Expense pay(int id, Payment payment) throws Exception {
-		Expense expense = expenseDao.find(id);
+		Expense expense = dao.find(id);
 
 		payment.setMaturity(findMaturity(payment, expense));
 		payment.setValuePaid(payment.getValuePaid().abs().negate());
@@ -36,7 +33,7 @@ public class ExpenseService extends BaseService implements IFinancialTransaction
 
 		expense.addPayment(payment);
 
-		return expenseDao.update(expense);
+		return dao.update(expense);
 	}
 
 	private Maturity findMaturity(Payment payment, Expense expense) throws Exception {
@@ -61,22 +58,22 @@ public class ExpenseService extends BaseService implements IFinancialTransaction
 	public Expense create(Expense expense) {
 		expense.setValueTransaction(expense.getValueTransaction().abs().negate());
 		expense.setFunds(fundsDao.find(expense.getFunds().getId()));
-		return expenseDao.create(expense);
+		return dao.create(expense);
 	}
 
 	@Override
 	public List<Expense> list() {
-		return expenseDao.list(this.getUserSession().getUser());
+		return dao.list(this.getUserSession().getUser());
 	}
 
 	@Override
 	public Expense find(int id) {
-		return expenseDao.find(id);
+		return dao.find(id);
 	}
 
 	@Override
 	public Expense update(int id, Expense expense) {
-		Expense expenseAux = expenseDao.find(id);
+		Expense expenseAux = dao.find(id);
 		expenseAux.setDescription(expense.getDescription());
 		expenseAux.setFunds(expense.getFunds());
 		expenseAux.setGroup(expense.getGroup());
@@ -84,6 +81,6 @@ public class ExpenseService extends BaseService implements IFinancialTransaction
 		expenseAux.setValueTransaction(expense.getValueTransaction());
 		expenseAux.setRecurrent(expense.getRecurrent());
 		
-		return expenseDao.update(expenseAux);
+		return dao.update(expenseAux);
 	}
 }
