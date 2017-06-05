@@ -18,12 +18,12 @@ public class CreditCard extends Funds implements Serializable {
 
 	public CreditCard() {
 		super();
-		this.eFundsType = EFundsType.CREDIT_CARD;
+		this.eFundsType = EFundsType.CREDIT_CARD.getId();
 	}
 
 	public CreditCard(String description, Integer maturity, BigDecimal limitValue) {
 		super(description);
-		this.eFundsType = EFundsType.CREDIT_CARD;
+		this.eFundsType = EFundsType.CREDIT_CARD.getId();
 		this.maturity = maturity;
 		this.limitValue = limitValue;
 	}
@@ -45,7 +45,7 @@ public class CreditCard extends Funds implements Serializable {
 	}
 
 	@JsonProperty("fundsType")
-	public EFundsType getEFundsType() {
+	public int getEFundsType() {
 		return this.eFundsType;
 	}
 }

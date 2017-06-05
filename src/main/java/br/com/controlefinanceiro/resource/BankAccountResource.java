@@ -4,6 +4,8 @@ import javax.inject.Inject;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
+import org.bson.types.ObjectId;
+
 import br.com.controlefinanceiro.model.BankAccount;
 import br.com.controlefinanceiro.service.BankAccountService;
 
@@ -32,7 +34,7 @@ public class BankAccountResource extends GenericResource<BankAccount> {
 	}
 
 	@Override
-	public Response find(int id) {
+	public Response find(ObjectId id) {
 		try {
 			return Response.status(200).entity(bankAccountService.find(id)).build();
 		} catch (Exception e) {
@@ -41,7 +43,7 @@ public class BankAccountResource extends GenericResource<BankAccount> {
 	}
 
 	@Override
-	public Response update(int id, BankAccount bankAccount) {
+	public Response update(ObjectId id, BankAccount bankAccount) {
 		try {
 			return Response.status(200).entity(bankAccountService.update(id, bankAccount)).build();
 		} catch (Exception e) {

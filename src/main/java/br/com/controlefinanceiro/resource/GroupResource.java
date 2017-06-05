@@ -4,6 +4,8 @@ import javax.inject.Inject;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
+import org.bson.types.ObjectId;
+
 import br.com.controlefinanceiro.model.Group;
 import br.com.controlefinanceiro.service.GroupService;
 
@@ -23,7 +25,7 @@ public class GroupResource extends GenericResource<Group> {
 	}
 
 	@Override
-	public Response update(int id, Group group) {
+	public Response update(ObjectId id, Group group) {
 		try {
 			return Response.status(200).entity(groupService.update(id, group)).build();
 		} catch (Exception e) {
@@ -32,7 +34,7 @@ public class GroupResource extends GenericResource<Group> {
 	}
 
 	@Override
-	public Response find(int id) {
+	public Response find(ObjectId id) {
 		try {
 			return Response.status(200).entity(groupService.find(id)).build();
 		} catch (Exception e) {

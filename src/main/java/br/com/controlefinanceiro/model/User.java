@@ -11,6 +11,9 @@ import org.mongodb.morphia.annotations.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import br.com.controlefinanceiro.serializer.NoObjectIdSerializer;
 
 @Entity(noClassnameStored = true)
 public class User implements Serializable {
@@ -21,6 +24,7 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 3311120569192779288L;
 
 	@Id
+	@JsonSerialize(using = NoObjectIdSerializer.class)
 	private ObjectId id;
 	private List<ExternalConnection> connections;
 	private String name;
@@ -37,8 +41,8 @@ public class User implements Serializable {
 		setStatus(false);
 	}
 
-	public String getId() {
-		return id.toString();
+	public ObjectId getId() {
+		return id;
 	}
 
 	public void setId(ObjectId id) {

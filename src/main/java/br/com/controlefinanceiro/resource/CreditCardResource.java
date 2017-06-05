@@ -4,6 +4,8 @@ import javax.inject.Inject;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
+import org.bson.types.ObjectId;
+
 import br.com.controlefinanceiro.model.CreditCard;
 import br.com.controlefinanceiro.service.CreditCardService;
 
@@ -32,7 +34,7 @@ public class CreditCardResource extends GenericResource<CreditCard> {
 	}
 
 	@Override
-	public Response find(int id) {
+	public Response find(ObjectId id) {
 		try {
 			return Response.status(200).entity(creditCardService.find(id)).build();
 		} catch (Exception e) {
@@ -41,7 +43,7 @@ public class CreditCardResource extends GenericResource<CreditCard> {
 	}
 
 	@Override
-	public Response update(int id, CreditCard creditCard) {
+	public Response update(ObjectId id, CreditCard creditCard) {
 		try {
 			return Response.status(200).entity(creditCardService.update(id, creditCard)).build();
 		} catch (Exception e) {

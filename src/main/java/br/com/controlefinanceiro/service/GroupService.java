@@ -2,6 +2,8 @@ package br.com.controlefinanceiro.service;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
+
 import br.com.controlefinanceiro.model.Group;
 
 public class GroupService extends GenericService<Group>{
@@ -11,14 +13,14 @@ public class GroupService extends GenericService<Group>{
 	}
 
 	public List<Group> list() {
-		return dao.list(this.getUserSession().getUser());
+		return dao.list();
 	}
 
-	public Group find(int id) {
+	public Group find(ObjectId id) {
 		return dao.find(id);
 	}
 
-	public Group update(int id, Group group) {
+	public Group update(ObjectId id, Group group) {
 		Group groupAux = dao.find(id);
 		groupAux.setDescription(group.getDescription());
 		return dao.update(groupAux);

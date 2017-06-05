@@ -10,15 +10,20 @@ import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Index;
+import org.mongodb.morphia.annotations.Indexes;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.com.controlefinanceiro.enumeration.EFundsType;
+import br.com.controlefinanceiro.serializer.NoObjectIdSerializer;
 
 @Entity(noClassnameStored = true, value = "funds")
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Indexes({ @Index("user") })
 public class Funds implements Serializable {
 	/**
 	 * 
@@ -26,17 +31,18 @@ public class Funds implements Serializable {
 	private static final long serialVersionUID = 3769024446632244523L;
 
 	@Id
+	@JsonSerialize(using = NoObjectIdSerializer.class)
 	protected ObjectId id;
 	protected String description;
 	@JsonBackReference
 	protected List<FinancialTransaction> financialTransactions;
 	@Embedded
 	protected User user;
-	protected EFundsType eFundsType;
+	protected int eFundsType;
 
 	public Funds() {
 		financialTransactions = new ArrayList<>();
-		eFundsType = EFundsType.DEFAULT;
+		eFundsType = EFundsType.DEFAULT.getId();
 	}
 
 	public Funds(String description) {
@@ -76,7 +82,7 @@ public class Funds implements Serializable {
 	}
 
 	@JsonProperty("fundsType")
-	public EFundsType getEFundsType() {
+	public int getEFundsType() {
 		return this.eFundsType;
 	}
 
@@ -103,7 +109,7 @@ public class Funds implements Serializable {
 	@Override
 	public String toString() {
 		StringBuffer stringBuffer = new StringBuffer();
-		stringBuffer.append(this.getEFundsType().getName()).append(": ").append(this.getDescription());
+		stringBuffer.append(this.getEFundsType()).append(": ").append(this.getDescription());
 		stringBuffer.append(" Current Balance: ").append(this.getCurrentBalance());
 		return stringBuffer.toString();
 	}

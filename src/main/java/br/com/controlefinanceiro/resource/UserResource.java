@@ -9,6 +9,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.bson.types.ObjectId;
+
 import br.com.controlefinanceiro.enumeration.EExternalConnections;
 import br.com.controlefinanceiro.model.User;
 import br.com.controlefinanceiro.service.UserService;
@@ -29,12 +31,12 @@ public class UserResource extends GenericResource<User> {
 	}
 
 	@Override
-	public Response update(int id, User t) {
+	public Response update(ObjectId id, User t) {
 		return null;
 	}
 
 	@Override
-	public Response find(int id) {
+	public Response find(ObjectId id) {
 		return null;
 	}
 

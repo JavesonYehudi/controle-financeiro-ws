@@ -1,6 +1,10 @@
 package br.com.controlefinanceiro.dao;
 
+import java.util.List;
+
+import br.com.controlefinanceiro.enumeration.EFundsType;
 import br.com.controlefinanceiro.model.BankAccount;
+import br.com.controlefinanceiro.model.User;
 
 public class BankAccountDao extends GenericDao<BankAccount> {
 
@@ -8,4 +12,7 @@ public class BankAccountDao extends GenericDao<BankAccount> {
 		super(BankAccount.class);
 	}
 
+	public List<BankAccount> list(User user) {
+		return getQuery().filter("eFundsType", EFundsType.BANK_ACCOUNT.getId()).asList();
+	}
 }

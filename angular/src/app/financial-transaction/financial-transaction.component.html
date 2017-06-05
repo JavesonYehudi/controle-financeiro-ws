@@ -1,0 +1,12 @@
+<h2>Minhas Transações</h2>
+<div *ngIf="!financialTransactions">
+	Nada para mostrar por enquanto.
+</div>
+
+<ul>
+	<li *ngFor="let transaction of financialTransactions">
+		{{transaction.description}}
+		<span>{{transaction.valueTransaction}}</span>
+		<span>{{EFinancialTransactionType[transaction.eFinancialTransactionType]}}</span>
+	</li>
+</ul>

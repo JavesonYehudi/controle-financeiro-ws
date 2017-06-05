@@ -1,5 +1,21 @@
-<div>
-	<button type="submit" class="btn btn-primary btn-block btn-large" (click)="logout()">Logout</button>
-</div>
-
-<cf-calendar></cf-calendar>
+<ul class="timeline">
+  <li *ngFor="let transaction of financialTransactions">
+    <div class="timeline-badge info"><i class="glyphicon glyphicon-floppy-disk"></i></div>
+    <div class="timeline-panel">
+      <div class="timeline-heading">
+        <h4 class="timeline-title">{{transaction.description}}</h4>
+      </div>
+    <div class="timeline-body">
+      <p>{{transaction.valueTransaction | number : '1.2-2'}}</p>
+      <hr>
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Ações</button>
+        <div class="dropdown-menu" aria-labelledby="dropdownBasic1">
+          <button class="dropdown-item">Pagar</button>
+          <button class="dropdown-item">Deletar</button>
+        </div>
+      </div>
+    </div>
+    </div>
+  </li>
+</ul>

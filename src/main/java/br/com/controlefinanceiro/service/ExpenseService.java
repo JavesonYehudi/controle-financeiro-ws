@@ -7,6 +7,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.bson.types.ObjectId;
+
 import br.com.controlefinanceiro.dao.GenericDao;
 import br.com.controlefinanceiro.model.Expense;
 import br.com.controlefinanceiro.model.Funds;
@@ -24,7 +26,7 @@ public class ExpenseService extends GenericService<Expense> implements IFinancia
 	private GenericDao<Funds> fundsDao;
 
 	@Override
-	public Expense pay(int id, Payment payment) throws Exception {
+	public Expense pay(ObjectId id, Payment payment) throws Exception {
 		Expense expense = dao.find(id);
 
 		payment.setMaturity(findMaturity(payment, expense));
@@ -63,16 +65,16 @@ public class ExpenseService extends GenericService<Expense> implements IFinancia
 
 	@Override
 	public List<Expense> list() {
-		return dao.list(this.getUserSession().getUser());
+		return dao.list();
 	}
 
 	@Override
-	public Expense find(int id) {
+	public Expense find(ObjectId id) {
 		return dao.find(id);
 	}
 
 	@Override
-	public Expense update(int id, Expense expense) {
+	public Expense update(ObjectId id, Expense expense) {
 		Expense expenseAux = dao.find(id);
 		expenseAux.setDescription(expense.getDescription());
 		expenseAux.setFunds(expense.getFunds());

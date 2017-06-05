@@ -4,6 +4,8 @@ import javax.inject.Inject;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
+import org.bson.types.ObjectId;
+
 import br.com.controlefinanceiro.model.Funds;
 import br.com.controlefinanceiro.service.FundsService;
 
@@ -11,12 +13,12 @@ import br.com.controlefinanceiro.service.FundsService;
 public class FundsResource extends GenericResource<Funds> {
 
 	@Inject
-	private FundsService fundsService;
+	private FundsService service;
 
 	@Override
 	public Response create(Funds funds) {
 		try {
-			return Response.status(201).entity(fundsService.create(funds)).build();
+			return Response.status(201).entity(service.create(funds)).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}
@@ -25,25 +27,25 @@ public class FundsResource extends GenericResource<Funds> {
 	@Override
 	public Response list() {
 		try {
-			return Response.status(200).entity(fundsService.list()).build();
+			return Response.status(200).entity(service.list()).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}
 	}
 
 	@Override
-	public Response find(int id) {
+	public Response find(ObjectId id) {
 		try {
-			return Response.status(200).entity(fundsService.find(id)).build();
+			return Response.status(200).entity(service.find(id)).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}
 	}
 
 	@Override
-	public Response update(int id, Funds funds) {
+	public Response update(ObjectId id, Funds funds) {
 		try {
-			return Response.status(200).entity(fundsService.update(id, funds)).build();
+			return Response.status(200).entity(service.update(id, funds)).build();
 		} catch (Exception e) {
 			return errorMessage(e);
 		}

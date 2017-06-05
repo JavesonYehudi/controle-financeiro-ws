@@ -22,7 +22,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import br.com.controlefinanceiro.enumeration.ECalendarPeriod;
-import br.com.controlefinanceiro.enumeration.EFinancialTransactionType;
+import br.com.controlefinanceiro.serializer.NoObjectIdSerializer;
 
 @Entity(noClassnameStored = true, value = "financialTransaction")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -32,6 +32,7 @@ public class FinancialTransaction implements Serializable {
 	 */
 	private static final long serialVersionUID = -3629603514965142970L;
 	@Id
+	@JsonSerialize(using = NoObjectIdSerializer.class)
 	protected ObjectId id;
 	protected String description;
 	protected BigDecimal valueTransaction;
@@ -48,7 +49,7 @@ public class FinancialTransaction implements Serializable {
 	protected int recurrent;
 	protected ECalendarPeriod calendarPeriod;
 	protected Group group;
-	protected EFinancialTransactionType eFinancialTransactionType;
+	protected int eFinancialTransactionType;
 
 	public FinancialTransaction() {
 		setRecurrent(1);
@@ -145,7 +146,7 @@ public class FinancialTransaction implements Serializable {
 		this.group = group;
 	}
 
-	public EFinancialTransactionType getEFinancialTransactionType() {
+	public int getEFinancialTransactionType() {
 		return eFinancialTransactionType;
 	}
 

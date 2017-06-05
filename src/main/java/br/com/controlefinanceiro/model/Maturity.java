@@ -16,12 +16,15 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
+import br.com.controlefinanceiro.serializer.NoObjectIdSerializer;
+
 public class Maturity implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2252052230847560263L;
+	@JsonSerialize(using = NoObjectIdSerializer.class)
 	private ObjectId id;
 	private BigDecimal value;
 	@JsonSerialize(using = LocalDateSerializer.class)

@@ -2,8 +2,8 @@ package br.com.controlefinanceiro.dao;
 
 import java.util.List;
 
+import br.com.controlefinanceiro.enumeration.EFinancialTransactionType;
 import br.com.controlefinanceiro.model.Expense;
-import br.com.controlefinanceiro.model.User;
 
 public class ExpenseDao extends GenericDao<Expense> {
 
@@ -12,7 +12,13 @@ public class ExpenseDao extends GenericDao<Expense> {
 	}
 
 	@Override
-	public List<Expense> list(User user) {
-		return datastore.find(Expense.class).field("funds.user").equal(user).asList();
+	public String getFieldUser() {
+		return "funds.user.login";
 	}
+	
+	@Override
+	public List<Expense> list() {
+		return getQuery().filter("eFinancialTransactionType", EFinancialTransactionType.EXPENSE.ordinal()).asList();
+	}
+
 }

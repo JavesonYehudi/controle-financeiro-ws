@@ -1,6 +1,7 @@
 package br.com.controlefinanceiro.service;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -16,7 +17,7 @@ public class UserService extends GenericService<User> {
 	@Inject
 	private UserDao dao;
 
-	public User create(User user) throws UnsupportedEncodingException {
+	public User create(User user) {
 		user = dao.create(user);
 		user.setToken(TokenUtils.generateToken(user));
 		return user;
@@ -47,11 +48,16 @@ public class UserService extends GenericService<User> {
 		}
 	}
 
-	public User update(int id, User user) {
+	public User update(ObjectId id, User user) {
 		User userAux = dao.find(id);
 		userAux.setLogin(user.getLogin());
 		userAux.setPass(user.getPass());
 		return dao.update(userAux);
+	}
+
+	@Override
+	public List<User> list() {
+		return dao.list();
 	}
 
 }

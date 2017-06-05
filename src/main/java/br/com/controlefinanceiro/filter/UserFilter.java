@@ -8,6 +8,7 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.ext.Provider;
 
 import br.com.controlefinanceiro.dao.GenericDao;
+import br.com.controlefinanceiro.dao.UserDao;
 import br.com.controlefinanceiro.model.User;
 import br.com.controlefinanceiro.session.UserSession;
 import br.com.controlefinanceiro.utils.TokenUtils;
@@ -24,7 +25,7 @@ public class UserFilter implements ContainerRequestFilter {
 	public void filter(ContainerRequestContext requestContext) throws IOException {
 		if (!isOptionsRequest(requestContext) && !isUserRequest(requestContext)) {
 			String login = TokenUtils.verifyToken(requestContext.getHeaderString("Authorization"));
-			userSession.setUser(genericDao.findBy(login));
+			userSession.setUser(((UserDao)genericDao).find(login));
 		}
 	}
 
