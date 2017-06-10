@@ -162,4 +162,13 @@ public class FinancialTransaction implements Serializable {
 	public BigDecimal getTotalPaid() {
 		return this.getPayments().stream().map(Payment::getValuePaid).reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
+	
+	@Override
+	public String toString() {
+		StringBuffer stringBuffer = new StringBuffer();
+		stringBuffer
+		.append("description: ").append(description)
+		.append(", value: ").append(valueTransaction);
+		return stringBuffer.toString();
+	}
 }

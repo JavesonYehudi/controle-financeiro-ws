@@ -21,33 +21,18 @@ export class LoginService {
       body: JSON.stringify(user)
     });
 
-    return this.http.request(new Request(requestoptions)).toPromise().then(
-      response => {
-        localStorage.setItem('user', this.handleData(response));
-        this.router.navigate(['home']);
-      },
-      error => this.handleError(error)
-    );
+    return this.http.request(new Request(requestoptions)).toPromise();
 
   }
 
   loginFacebook(user: User) : Promise<any> {
-    console.log(JSON.stringify(user));
     var requestoptions = new RequestOptions({
       method: RequestMethod.Post,
       url: `${this.OauthLoginEndPointUrl}/facebook-login/${user.connections[0].id}`,
       body: JSON.stringify(user)
     });
 
-    console.log(`${this.OauthLoginEndPointUrl}/facebook-login/${user.connections[0].id}`);
-
-    return this.http.request(new Request(requestoptions)).toPromise().then(
-      response => {
-        localStorage.setItem('user', this.handleData(response));
-        this.router.navigate(['home']);
-      },
-      error => this.handleError(error)
-    );
+    return this.http.request(new Request(requestoptions)).toPromise();
 
   }
 

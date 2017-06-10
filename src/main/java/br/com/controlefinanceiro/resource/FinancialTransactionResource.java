@@ -32,7 +32,11 @@ public class FinancialTransactionResource extends GenericResource<FinancialTrans
 
 	@Override
 	public Response list() {
-		return Response.status(200).entity(service.list()).build();
+		try{
+			return Response.status(200).entity(service.list()).build();			
+		}catch (Exception e) {
+			return errorMessage(e);
+		}
 	}
 
 }

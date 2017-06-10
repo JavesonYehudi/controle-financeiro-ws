@@ -39,7 +39,18 @@ public class BankAccount extends Funds implements Serializable {
 	}
 
 	@JsonProperty("fundsType")
+	@Override
 	public int getEFundsType() {
 		return this.eFundsType;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuffer stringBuffer = new StringBuffer();
+		stringBuffer
+		.append("account: ").append(account)
+		.append(", agency: ").append(agency);
+
+		return stringBuffer.toString();
 	}
 }

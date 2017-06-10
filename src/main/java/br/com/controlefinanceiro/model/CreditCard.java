@@ -45,7 +45,9 @@ public class CreditCard extends Funds implements Serializable {
 	}
 
 	@JsonProperty("fundsType")
+	@Override
 	public int getEFundsType() {
 		return this.eFundsType;
 	}
+
 }

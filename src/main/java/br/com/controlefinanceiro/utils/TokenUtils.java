@@ -7,6 +7,7 @@ import java.util.Date;
 
 import br.com.controlefinanceiro.model.User;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -26,7 +27,11 @@ public class TokenUtils {
 	}
 
 	public static String verifyToken(String token) {
-		Claims claims = Jwts.parser().setSigningKey(base64SecretBytes).parseClaimsJws(token).getBody();
-		return claims.get("login").toString();
+		try{
+			Claims claims = Jwts.parser().setSigningKey(base64SecretBytes).parseClaimsJws(token).getBody();
+			return claims.get("login").toString();
+		} catch (ExpiredJwtException e) {
+			throw e;
+		}
 	}
 }

@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 
 import br.com.controlefinanceiro.dao.GenericDao;
@@ -12,6 +14,7 @@ import br.com.controlefinanceiro.dao.UserDao;
 import br.com.controlefinanceiro.model.User;
 import br.com.controlefinanceiro.session.UserSession;
 import br.com.controlefinanceiro.utils.TokenUtils;
+import io.jsonwebtoken.ExpiredJwtException;
 
 @Provider
 public class UserFilter implements ContainerRequestFilter {
@@ -22,10 +25,14 @@ public class UserFilter implements ContainerRequestFilter {
 	private UserSession userSession;
 
 	@Override
-	public void filter(ContainerRequestContext requestContext) throws IOException {
+	public void filter(ContainerRequestContext requestContext) throws IOException{
 		if (!isOptionsRequest(requestContext) && !isUserRequest(requestContext)) {
-			String login = TokenUtils.verifyToken(requestContext.getHeaderString("Authorization"));
-			userSession.setUser(((UserDao)genericDao).find(login));
+			try{
+				String login = TokenUtils.verifyToken(requestContext.getHeaderString("Authorization"));
+				userSession.setUser(((UserDao)genericDao).find(login));				
+			}catch (ExpiredJwtException e) {
+				requestContext.abortWith(Response.status(Status.UNAUTHORIZED).build());
+			}
 		}
 	}
 

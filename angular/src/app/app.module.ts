@@ -1,25 +1,25 @@
-import { BrowserModule }                 from '@angular/platform-browser';
-import { NgbModule } 				             from '@ng-bootstrap/ng-bootstrap';
 import { NgModule }                      from '@angular/core';
-import { FormsModule }                   from '@angular/forms';
 import { HttpModule, XHRBackend }        from '@angular/http';
+import { FormsModule }                   from '@angular/forms';
 import { ExtendedXHRBackend }            from './extended-xhr-backend'
+import { BrowserModule }                 from '@angular/platform-browser';
+import { NgbModule }                     from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent }                  from './app.component';
 import { AppRoutesModule }               from './app.routes.module';
-import { LoginComponent }                from './login/login.component';
 import { HomeComponent }                 from './home/home.component';
 import { FundsComponent }                from './funds/funds.component';
-import { FinancialTransactionComponent } from './financial-transaction/financial-transaction.component';
+import { LoginComponent }                from './login/login.component';
+import { TimelineComponent }             from './timeline/time-line.component';
 import { MyCalendarComponent }           from './calendar/my-calendar.component';
-import { FacebookLoginComponent }        from './login/facebook-login.component';
-
+import { FacebookLoginComponent }        from './login/facebook-login/facebook-login.component';
+import { FinancialTransactionComponent } from './financial-transaction/financial-transaction.component';
 
 import { CanActivateViaOAuthGuard }      from './oAuth.canActivateGuard';
 
-import { CalendarComponent }             from "ap-angular2-fullcalendar/src/calendar/calendar";
 import { ScheduleModule }                from 'primeng/primeng';
 import { DialogModule }                  from 'primeng/primeng';
+import { CalendarComponent }             from 'ap-angular2-fullcalendar/src/calendar/calendar';
 
 
 @NgModule({
@@ -28,6 +28,7 @@ import { DialogModule }                  from 'primeng/primeng';
     HomeComponent, 
     FundsComponent,
     LoginComponent,
+    TimelineComponent,
     CalendarComponent,
     MyCalendarComponent,
     FacebookLoginComponent,

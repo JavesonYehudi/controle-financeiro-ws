@@ -9,6 +9,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.bson.types.ObjectId;
 
@@ -43,6 +44,6 @@ public abstract class GenericResource<T> {
 
 	protected Response errorMessage(Exception e) {
 		String error = "{\"error\" : \"" + e.getMessage() + "\"}";
-		return Response.status(403).entity(error).build();
+		return Response.status(Status.FORBIDDEN).entity(error).build();
 	}
 }

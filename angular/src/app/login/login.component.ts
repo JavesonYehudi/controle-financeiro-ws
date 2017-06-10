@@ -7,6 +7,7 @@ import { User }         from '../model/user';
 @Component({
   selector: 'my-login',
   templateUrl: './login.html',
+  styleUrls: ['./login.css'],
   providers: [LoginService]
 })
 export class LoginComponent {
@@ -17,6 +18,15 @@ export class LoginComponent {
     this.user.login = username;
     this.user.pass = password;
     event.preventDefault();
-    this.loginService.login(this.user);
+    this.loginService.login(this.user).then(
+      response => {
+        localStorage.setItem('user', this.handleData(response));
+        this.router.navigate(['']);
+      });
   }
+  private handleData(res: Response) {
+    let body = res.json();
+    return JSON.stringify(body);
+  }
+
 }

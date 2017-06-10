@@ -1,19 +1,29 @@
-<div class="row">
-  <div class="login jumbotron center-block col-md-6">
-    <h1>Login</h1>
-    <form role="form" (submit)="login($event, username.value, password.value)">
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" #username class="form-control" id="username" placeholder="Username">
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" #password class="form-control" id="password" placeholder="Password">
-      </div>
-      <button type="submit" class="btn btn-primary btn-block btn-large">Submit</button>
-    </form>
+<div class="container" >
+  <div class="row justify-content-center margin-top-login">
+    <div class="login col-5">
+      <h1 style="text-align: center;">Entrar no HintCash</h1>
+    </div>
   </div>
-  <div class="col-md-6">
-    <facebook-login></facebook-login>
+
+  <div class="row justify-content-center margin-top-login">
+    <div class="col col-4 rounded login-box">
+      <form role="form" (submit)="login($event, username.value, password.value)">
+        <div class="form-group">
+          <label for="username">Username or email address</label>
+          <input type="text" #username class="form-control" id="username" placeholder="Username">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" #password class="form-control" id="password" placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block btn-large">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="row justify-content-center margin-top-login">
+    <div class="col col-4">
+      <facebook-login></facebook-login>
+    </div>
   </div>
 </div>
