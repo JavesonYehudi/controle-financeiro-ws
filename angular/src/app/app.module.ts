@@ -9,6 +9,7 @@ import { AppComponent }                  from './app.component';
 import { AppRoutesModule }               from './app.routes.module';
 import { HomeComponent }                 from './home/home.component';
 import { FundsComponent }                from './funds/funds.component';
+import { NewFundComponent }              from './funds/new/new-fund.component';
 import { LoginComponent }                from './login/login.component';
 import { TimelineComponent }             from './timeline/time-line.component';
 import { MyCalendarComponent }           from './calendar/my-calendar.component';
@@ -27,6 +28,7 @@ import { CalendarComponent }             from 'ap-angular2-fullcalendar/src/cale
     AppComponent, 
     HomeComponent, 
     FundsComponent,
+    NewFundComponent,
     LoginComponent,
     TimelineComponent,
     CalendarComponent,

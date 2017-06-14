@@ -16,9 +16,14 @@ export const appRoutes: Routes = [
 	{ path: '', component: HomeComponent , canActivate : [CanActivateViaOAuthGuard], children: 
 		[
 			{ path: '', component: TimelineComponent, canActivate : [CanActivateViaOAuthGuard] },
-			{ path: 'funds', component: FundsComponent, canActivate : [CanActivateViaOAuthGuard] },
+			{ path: 'funds', component: FundsComponent, canActivate : [CanActivateViaOAuthGuard], children:
+				[ 
+					{ path: 'new', component: FundsComponent, canActivate : [CanActivateViaOAuthGuard] }
+				]
+			},
 			{ path: 'transaction', component: FinancialTransactionComponent, canActivate : [CanActivateViaOAuthGuard] }
-    	]},
+    	]
+    },
 	{ path: 'login', component: LoginComponent },
 	{ path: '',  redirectTo: '/',  pathMatch: 'full' },
 ];

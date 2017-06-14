@@ -8,7 +8,7 @@ import { FinancialTransactionService } 	from './financial-transaction.service';
 
 @Component({
     selector: 'my-transactions',
-    templateUrl: './financial-transaction.component.html',
+    templateUrl: './financial-transaction.html',
     providers : [ FinancialTransactionService ]
 })
 export class FinancialTransactionComponent implements OnInit{
