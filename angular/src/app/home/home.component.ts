@@ -1,12 +1,13 @@
-import { Component, OnInit } 			from '@angular/core';
-import { Router } 						from '@angular/router';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Router } 						        from '@angular/router';
 
-import { LoginService } 				from '../login/login.service';
+import { LoginService } 				        from '../login/login.service';
 
 @Component({
     selector: 'my-home',
     templateUrl: './home.html',
     styleUrls: ['./home.css'],
+    encapsulation: ViewEncapsulation.None,
     providers : [ LoginService ]
 })
 export class HomeComponent implements OnInit{

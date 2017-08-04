@@ -9,7 +9,7 @@ import org.bson.types.ObjectId;
 import br.com.controlefinanceiro.model.Funds;
 import br.com.controlefinanceiro.service.FundsService;
 
-@Path(value = "/funds")
+@Path("funds")
 public class FundsResource extends GenericResource<Funds> {
 
 	@Inject

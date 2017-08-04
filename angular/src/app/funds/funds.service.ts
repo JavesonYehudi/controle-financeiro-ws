@@ -23,16 +23,6 @@ export class FundsService {
     return this.http.request(new Request(requestoptions)).toPromise().then(handleData);
   }
 
-  saveFund(fund: Funds) : Promise<any> {
-    var requestoptions = new RequestOptions({
-      method: RequestMethod.Post,
-      url: this.fundsUrl,
-      body: JSON.stringify(fund)
-    });
-
-    return this.http.request(new Request(requestoptions)).toPromise(); 
-  }
-
   private handleError (error: any) {
     // In a real world app, we might use a remote logging infrastructure
     // We'd also dig deeper into the error to get a better message

@@ -1,28 +1,28 @@
-<div class="container" >
+<div class="container-fluid" >
   <div class="row justify-content-center margin-top-login">
-    <div class="login col-5">
-      <h1 style="text-align: center;" i18n>Sign up HintCash</h1>
+    <div class="login" style="text-align: center; font-size: 24px; width: 340px; margin: 0 auto;">
+      <h1 i18n="@@login.signUpHintCash">Sign up HintCash</h1>
     </div>
   </div>
 
   <div class="row justify-content-center margin-top-login">
-    <div class="col col-4 rounded login-box">
+    <div class="rounded login-box" style=";padding: 20px; font-size: 14px; width: 340px; margin: 0 auto;">
       <form role="form" (submit)="login($event, username.value, password.value)">
         <div class="form-group">
-          <label for="username">Username or email address</label>
-          <input type="text" #username class="form-control" id="username" placeholder="Username">
+          <label for="username" i18n="@@login.userName">Username or email address</label>
+          <input type="text" #username class="form-control" id="username" >
         </div>
         <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" #password class="form-control" id="password" placeholder="Password">
+          <label for="password" i18n="@@login.password">Password</label>
+          <input type="password" #password class="form-control" id="password">
         </div>
-        <button type="submit" class="btn btn-primary btn-block btn-large">Submit</button>
+        <button type="submit" class="btn btn-primary btn-block btn-large" i18n="@@login.submmit">Submit</button>
       </form>
     </div>
   </div>
 
   <div class="row justify-content-center margin-top-login">
-    <div class="col col-4">
+    <div>
       <facebook-login></facebook-login>
     </div>
   </div>

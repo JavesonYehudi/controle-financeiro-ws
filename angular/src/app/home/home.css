@@ -1,16 +1,50 @@
-.navbar-light .navbar-nav .nav-link {
-    color: #175422 !important;
+.example-sidenav-fab-container {
+  height: 100%;
 }
 
-.navbar {
-    background-color: #fae700 !important;
+.example-sidenav-fab-container md-sidenav {
+  min-width: 200px;
 }
 
-.btn-outline-primary {
-    color: #175422 !important;
-    border-color: #175422 !important;
+.example-sidenav-fab-container .mat-sidenav-content,
+.example-sidenav-fab-container md-sidenav {
+  display: flex;
+  overflow: visible;
 }
 
-.dropdown-item {
-    color: #175422 !important;
+.example-scrolling-content {
+  overflow: auto;
+  width: 100%;
+  text-align: center;
+}
+
+.button_outline {
+  outline: thin dotted !important;
+  outline: 0px auto -webkit-focus-ring-color !important;
+  outline-offset: 0px !important;
+}
+
+.button_add {
+  position: absolute !important;
+  right: 20px;
+  bottom: 10px;
+}
+
+nav a {
+  padding: 5px 10px;
+  text-decoration: none;
+  margin-top: 10px;
+  display: inline-block;
+  background-color: #eee;
+  border-radius: 4px;
+}
+nav a:visited, a:link {
+  color: #607D8B;
+}
+nav a:hover {
+  color: #039be5;
+  background-color: #CFD8DC;
+}
+nav a.active {
+  color: #039be5;
 }
