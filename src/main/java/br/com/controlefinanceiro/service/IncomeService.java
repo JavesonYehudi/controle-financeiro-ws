@@ -1,6 +1,5 @@
 package br.com.controlefinanceiro.service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
@@ -13,7 +12,6 @@ import br.com.controlefinanceiro.dao.GenericDao;
 import br.com.controlefinanceiro.model.Funds;
 import br.com.controlefinanceiro.model.Income;
 import br.com.controlefinanceiro.model.Maturity;
-import br.com.controlefinanceiro.model.Payment;
 
 @RequestScoped
 @Named("income")
@@ -29,34 +27,25 @@ public class IncomeService extends GenericService<Income> implements IFinancialT
 	private GenericDao<Funds> fundsDao;
 
 	@Override
-	public Income pay(ObjectId id, Payment payment) throws Exception {
-		Income income = dao.find(id);
-
-		payment.setMaturity(findMaturity(payment, income));
-		payment.setValuePaid(payment.getValuePaid().abs());
-		payment.setFinancialTransaction(income);
-
-		income.addPayment(payment);
-
-		return dao.update(income);
+	public Income pay(ObjectId id, Maturity payment) throws Exception {
+		Income expense = dao.find(id);
+		payment = findMaturity(payment);
+		payment.setFinancialTransaction(expense);
+		return dao.update(expense);
 	}
 
-	private Maturity findMaturity(Payment payment, Income income) throws Exception {
-		Maturity maturity;
-		if (payment.getMaturity().getId() == null) {
-			LocalDate date = payment.getDatePayment();
-			date = date.withDayOfMonth(income.getFirstMaturity().getDayOfMonth());
-			maturity = new Maturity(income.getValueTransaction(), date, income);
-		} else {
-			try {
-				maturity = maturityDao.find(payment.getMaturity().getId());
-			} catch (Exception e) {
-				throw new Exception("Não foi possivel encontrar o vencimento");
-			}
+	private Maturity findMaturity(Maturity payment) throws Exception {
+		if(payment.getId() != null) {
+			Maturity maturity = new Maturity();
+			maturity = maturityDao.find(payment.getId());
+			maturity.setValuePaid(payment.getValuePaid().abs().negate());
+			maturity.setDatePayment(payment.getDatePayment());
+			return maturity;
+		}else {
+			payment.setValue(payment.getValuePaid().abs().negate());
+			payment.setDate(payment.getDatePayment());
+			return payment;
 		}
-
-		maturity.setPayment(payment);
-		return maturity;
 	}
 
 	@Override

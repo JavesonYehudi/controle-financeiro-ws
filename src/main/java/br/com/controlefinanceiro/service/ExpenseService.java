@@ -1,6 +1,5 @@
 package br.com.controlefinanceiro.service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
@@ -13,7 +12,6 @@ import br.com.controlefinanceiro.dao.GenericDao;
 import br.com.controlefinanceiro.model.Expense;
 import br.com.controlefinanceiro.model.Funds;
 import br.com.controlefinanceiro.model.Maturity;
-import br.com.controlefinanceiro.model.Payment;
 
 @RequestScoped
 @Named("expense")
@@ -26,34 +24,26 @@ public class ExpenseService extends GenericService<Expense> implements IFinancia
 	private GenericDao<Funds> fundsDao;
 
 	@Override
-	public Expense pay(ObjectId id, Payment payment) throws Exception {
+	public Expense pay(ObjectId id, Maturity payment) throws Exception {
 		Expense expense = dao.find(id);
-
-		payment.setMaturity(findMaturity(payment, expense));
-		payment.setValuePaid(payment.getValuePaid().abs().negate());
 		payment.setFinancialTransaction(expense);
-
-		expense.addPayment(payment);
-
+		payment = findMaturity(payment);
+		expense.getMaturityList().add(payment);
 		return dao.update(expense);
 	}
 
-	private Maturity findMaturity(Payment payment, Expense expense) throws Exception {
-		Maturity maturity;
-		if (payment.getMaturity().getId() == null) {
-			LocalDate date = payment.getDatePayment();
-			date = date.withDayOfMonth(expense.getFirstMaturity().getDayOfMonth());
-			maturity = new Maturity(expense.getValueTransaction(), date, expense);
-		} else {
-			try {
-				maturity = maturityDao.find(payment.getMaturity().getId());
-			} catch (Exception e) {
-				throw new Exception("Não foi possivel encontrar o vencimento");
-			}
+	private Maturity findMaturity(Maturity payment) throws Exception {
+		if(payment.getId() != null) {
+			Maturity maturity = maturityDao.find(payment.getId());
+			maturity.setValuePaid(payment.getValuePaid().abs().negate());
+			maturity.setDatePayment(payment.getDatePayment());
+			return maturityDao.update(maturity);
+		}else {
+			payment.setValue(payment.getValuePaid().abs().negate());
+			payment.setValuePaid(payment.getValuePaid().abs().negate());
+			payment.setDate(payment.getDatePayment());
+			return maturityDao.create(payment);
 		}
-
-		maturity.setPayment(payment);
-		return maturity;
 	}
 
 	@Override

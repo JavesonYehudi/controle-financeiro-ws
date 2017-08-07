@@ -1,38 +1,34 @@
-<section>
-  <md-sidenav-container class="example-sidenav-fab-container" fullscreen>
-    <md-sidenav #sidenav mode="side" opened="true">
-      <div class="example-scrolling-content">
-        <nav>
-          <ul class="nav navbar-nav">
-            <li class="nav-item">
-              <a class="nav-item nav-link " routerLink="/">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-item nav-link " routerLink="/funds" routerLinkActive="active">Fundos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-item nav-link " routerLink="/transaction" routerLinkActive="active">Transações</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </md-sidenav>
-    <button md-icon-button class="button_outline" (click)="sidenav.toggle()">
-      <md-icon class="md-24" >menu</md-icon>
-    </button>
-
-    <button md-mini-fab [mdMenuTriggerFor]="menu" class="button_add button_outline">
-      <md-icon>add</md-icon>
-    </button>
-    <md-menu #menu="mdMenu">
-      <button md-menu-item>
-        <span>Transações</span>
-      </button>
-    </md-menu>
-    <div>
-      <div class="container">
-        <router-outlet></router-outlet>
-      </div>
+<md-sidenav-container class="example-sidenav-fab-container" fullscreen>
+  <md-sidenav #sidenav mode="side" opened="false" >
+    <div class="example-scrolling-content">
+      <nav>
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-item nav-link " routerLink="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-item nav-link " routerLink="/funds" routerLinkActive="active">Fundos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-item nav-link " routerLink="/transaction" routerLinkActive="active">Transações</a>
+          </li>
+        </ul>
+      </nav>
     </div>
-  </md-sidenav-container>
-</section>
+  </md-sidenav>
+  <button md-icon-button class="button_outline" (click)="sidenav.toggle()">
+    <md-icon class="md-24" >menu</md-icon>
+  </button>
+
+  <button md-mini-fab [mdMenuTriggerFor]="menu" class="button_add button_outline">
+    <md-icon>add</md-icon>
+  </button>
+  <md-menu #menu="mdMenu">
+    <button md-menu-item>
+      <span>Transações</span>
+    </button>
+  </md-menu>
+  <div class="example-scrolling-content">
+    <router-outlet></router-outlet>
+  </div>
+</md-sidenav-container>

@@ -25,6 +25,7 @@
 }
 
 .button_add {
+  z-index:99999;
   position: absolute !important;
   right: 20px;
   bottom: 10px;

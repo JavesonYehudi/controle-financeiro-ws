@@ -6,17 +6,31 @@
 <urlrewrite>
 
 	<rule match-type="wildcard">
-		<from>*/home</from>
+		<from>*/br/home</from>
+		<to>index.html</to>
+	</rule>
+	
+	<rule match-type="wildcard">
+		<from>*/en/home</from>
 		<to>index.html</to>
 	</rule>
 
 	<rule match-type="wildcard">
-		<from>*/funds</from>
+		<from>*/br/funds</from>
+		<to>index.html</to>
+	</rule>
+	
+	<rule match-type="wildcard">
+		<from>*/en/funds</from>
 		<to>index.html</to>
 	</rule>
 
 	<rule match-type="wildcard">
-		<from>*/login</from>
+		<from>*/br/login</from>
+		<to>index.html</to>
+	</rule>
+	<rule match-type="wildcard">
+		<from>*/en/login</from>
 		<to>index.html</to>
 	</rule>
 

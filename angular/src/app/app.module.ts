@@ -53,6 +53,7 @@ import { FacebookLoginComponent }        from './login/facebook-login/facebook-l
 import { FinancialTransactionComponent } from './financial-transaction/financial-transaction.component';
 
 import { CanActivateViaOAuthGuard }      from './oAuth.canActivateGuard';
+import { MaturityDataSortPipe }          from './maturity-data-sort.pipe'
 
 @NgModule({
   exports: [
@@ -102,7 +103,8 @@ export class MaterialModule {}
     LoginComponent,
     TimelineComponent,
     FacebookLoginComponent,
-    FinancialTransactionComponent
+    FinancialTransactionComponent,
+    MaturityDataSortPipe
   ],
   imports: [
     BrowserModule,

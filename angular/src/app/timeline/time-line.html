@@ -1,25 +1,70 @@
-<div *ngIf="!financialTransactions">
-  Carregando...
-</div>
-
-<ul class="timeline" *ngIf="financialTransactions">
-  <li *ngFor="let transaction of financialTransactions">
-    <div class="timeline-badge info"><i class="glyphicon glyphicon-floppy-disk"></i></div>
-    <div class="timeline-panel">
-      <div class="timeline-heading">
-        <h4 class="timeline-title">{{transaction.description}}</h4>
+<!-- <div class="container">
+  <ul class="timeline" >
+    <li *ngFor="let data of timelinedatas | maturityDataSort; let index=index; let odd=odd;" [class.timeline-inverted]="odd">
+      <div class="timeline-badge info"> <span style="font-size: 14px;">{{data.date | date: 'dd/MM'}}</span></div>
+      <div class="timeline-panel">
+        <div class="timeline-heading">
+          {{even}}
+        </div>
+      <div class="timeline-body">
+        <ul>
+          <li *ngFor="let transaction of data.transactions">
+            <span>{{transaction.description }}</span> ({{transaction.value | number : '1.2-2'}}) 
+            <button md-icon-button class="button_outline">
+              <md-icon>attach_money</md-icon>
+            </button>
+          </li>
+        </ul>
       </div>
-    <div class="timeline-body">
-      <p>{{transaction.valueTransaction | number : '1.2-2'}}</p>
-      <hr>
-      <div ngbDropdown class="d-inline-block">
-        <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Ações</button>
-        <div class="dropdown-menu" aria-labelledby="dropdownBasic1">
-          <button class="dropdown-item">Pagar</button>
-          <button class="dropdown-item">Deletar</button>
+      </div>
+    </li>
+  </ul>
+</div> -->
+
+<div class="container">
+  <div id="timeline">
+
+    <div class="row timeline-movement timeline-movement-top">
+
+      <div class="timeline-badge timeline-future-movement">
+        <a href="#">
+          <span class="glyphicon glyphicon-plus"></span>
+        </a>
+      </div>
+
+      <div class="timeline-badge timeline-filter-movement">
+        <a href="#">
+          <span class="glyphicon glyphicon-time"></span>
+        </a>
+      </div>
+
+    </div>
+
+
+    <div *ngFor="let maturity of maturityViewList | maturityDataSort" class="row timeline-movement">
+
+      <div class="timeline-badge">
+        <span class="timeline-balloon-date-day">{{ maturity.date | date: 'dd' }}</span>
+        <span class="timeline-balloon-date-month">{{ maturity.date | date: 'MMM' }}</span>
+      </div>
+
+      <div *ngIf="maturity.transactions" >
+      <div *ngFor="let transaction of maturity.transactions" class="col-sm-offset-6 col-sm-6  timeline-item">
+        <div class="row">
+          <div class="col-sm-offset-1 col-sm-11">
+            <div class="timeline-panel debits">
+              <ul class="timeline-panel-ul">
+                <li><span class="importo">{{transaction.description }}</span></li>
+                <li><span class="causale">{{transaction.value | number : '1.2-2'}} </span> </li>
+                <li><span class="causale">{{EFinancialTransactionType[transaction.type]}} </span> </li>
+                <li><p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ maturity.date | date }}</small></p> </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
+</div>
     </div>
-    </div>
-  </li>
-</ul>
+
+  </div>
+</div>

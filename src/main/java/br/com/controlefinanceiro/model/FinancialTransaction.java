@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
@@ -37,6 +38,7 @@ public class FinancialTransaction implements Serializable {
 	protected String description;
 	protected BigDecimal valueTransaction;
 	@JsonManagedReference
+	@Embedded
 	protected Set<Maturity> maturityList;
 	@JsonIgnore
 	protected List<Payment> payments;
@@ -49,7 +51,7 @@ public class FinancialTransaction implements Serializable {
 	protected int recurrent;
 	protected ECalendarPeriod calendarPeriod;
 	protected Group group;
-	protected int eFinancialTransactionType;
+	protected int financialTransactionType;
 
 	public FinancialTransaction() {
 		setRecurrent(1);
@@ -146,8 +148,8 @@ public class FinancialTransaction implements Serializable {
 		this.group = group;
 	}
 
-	public int getEFinancialTransactionType() {
-		return eFinancialTransactionType;
+	public int getFinancialTransactionType() {
+		return financialTransactionType;
 	}
 
 	public void addMaturity(Maturity maturity) {

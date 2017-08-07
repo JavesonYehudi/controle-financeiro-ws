@@ -5,12 +5,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Reference;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -18,6 +17,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import br.com.controlefinanceiro.serializer.NoObjectIdSerializer;
 
+@Entity(noClassnameStored = true, value = "maturity")
 public class Maturity implements Serializable {
 
 	/**
@@ -27,16 +27,24 @@ public class Maturity implements Serializable {
 	@JsonSerialize(using = NoObjectIdSerializer.class)
 	private ObjectId id;
 	private BigDecimal value;
+	private BigDecimal valuePaid;
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate date;
-	private Payment payment;
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	private LocalDate datePayment;
+	//@Reference
+	//@Embedded
+	//private Payment payment;
 	@Reference
 	@JsonBackReference
 	private FinancialTransaction financialTransaction;
 
-	public Maturity() {}
+	public Maturity() {
+	}
 
 	public Maturity(BigDecimal value, LocalDate date, FinancialTransaction financialTransaction) {
 		this.value = value;
@@ -60,6 +68,14 @@ public class Maturity implements Serializable {
 		this.value = value;
 	}
 
+	public BigDecimal getValuePaid() {
+		return valuePaid;
+	}
+
+	public void setValuePaid(BigDecimal valuePaid) {
+		this.valuePaid = valuePaid;
+	}
+	
 	public LocalDate getDate() {
 		return date;
 	}
@@ -67,14 +83,22 @@ public class Maturity implements Serializable {
 	public void setDate(LocalDate date) {
 		this.date = date;
 	}
+	
+	public LocalDate getDatePayment() {
+		return datePayment;
+	}
 
-	public Payment getPayment() {
+	public void setDatePayment(LocalDate datePayment) {
+		this.datePayment = datePayment;
+	}
+
+/*	public Payment getPayment() {
 		return payment;
 	}
 
 	public void setPayment(Payment payment) {
 		this.payment = payment;
-	}
+	}*/
 
 	public FinancialTransaction getFinancialTransaction() {
 		return financialTransaction;
@@ -84,11 +108,11 @@ public class Maturity implements Serializable {
 		this.financialTransaction = financialTransaction;
 	}
 
-	@JsonIgnore
+/*	@JsonIgnore
 	@JsonProperty("paid")
 	public boolean isPaid() {
 		return this.getPayment() != null;
-	}
+	}*/
 
 	@Override
 	public String toString() {

@@ -7,7 +7,7 @@ import javax.ws.rs.core.Response;
 import org.bson.types.ObjectId;
 
 import br.com.controlefinanceiro.model.Expense;
-import br.com.controlefinanceiro.model.Payment;
+import br.com.controlefinanceiro.model.Maturity;
 import br.com.controlefinanceiro.service.ExpenseService;
 
 @Path(value = "/expense")
@@ -35,7 +35,7 @@ public class ExpenseResource extends GenericResource<Expense> implements IFinanc
 	}
 
 	@Override
-	public Response pay(ObjectId id, Payment payment) {
+	public Response pay(ObjectId id, Maturity payment) {
 		try {
 			return Response.status(201).entity(service.pay(id, payment)).build();
 		} catch (Exception e) {
