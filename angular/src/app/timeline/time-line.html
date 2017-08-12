@@ -41,29 +41,29 @@
     </div>
 
 
-    <div *ngFor="let maturity of maturityViewList | maturityDataSort" class="row timeline-movement">
+    <div *ngFor="let timelineItem of timelineItems | maturityDataSort" class="row timeline-movement">
 
       <div class="timeline-badge">
-        <span class="timeline-balloon-date-day">{{ maturity.date | date: 'dd' }}</span>
-        <span class="timeline-balloon-date-month">{{ maturity.date | date: 'MMM' }}</span>
+        <span class="timeline-balloon-date-day">{{ timelineItem.date | date: 'dd' }}</span>
+        <span class="timeline-balloon-date-month">{{ timelineItem.date | date: 'MMM' }}</span>
       </div>
 
-      <div *ngIf="maturity.transactions" >
-      <div *ngFor="let transaction of maturity.transactions" class="col-sm-offset-6 col-sm-6  timeline-item">
-        <div class="row">
-          <div class="col-sm-offset-1 col-sm-11">
-            <div class="timeline-panel debits">
-              <ul class="timeline-panel-ul">
-                <li><span class="importo">{{transaction.description }}</span></li>
-                <li><span class="causale">{{transaction.value | number : '1.2-2'}} </span> </li>
-                <li><span class="causale">{{EFinancialTransactionType[transaction.type]}} </span> </li>
-                <li><p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ maturity.date | date }}</small></p> </li>
-              </ul>
+      <div *ngIf="timelineItem.transactions" >
+        <div *ngFor="let transaction of timelineItem.transactions; let odd=odd;" class="col-sm-6 timeline-item" [class.col-sm-offset-6]="odd" >
+          <div class="row">
+            <div class="col-sm-11" [class.col-sm-offset-1]="odd">
+              <div class="timeline-panel" [class.debits]="transaction.type == 1" [class.credits]="transaction.type == 0">
+                <ul class="timeline-panel-ul">
+                  <li><span class="importo">{{transaction.description }}</span></li>
+                  <li><span class="causale">{{transaction.value | number : '1.2-2'}} </span> </li>
+                  <li><span class="causale">{{EFinancialTransactionType[transaction.type]}} </span> </li>
+                  <li><p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ timelineItem.date | date }}</small></p> </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </div>
-</div>
     </div>
 
   </div>

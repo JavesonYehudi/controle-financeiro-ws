@@ -1,4 +1,4 @@
-export class MaturityView {
+export class TimelineItem {
 	date: Date;
 	transactions = new Array<Transaction>();
 }

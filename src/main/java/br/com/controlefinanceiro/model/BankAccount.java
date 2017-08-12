@@ -15,7 +15,7 @@ public class BankAccount extends Funds implements Serializable {
 	private String agency;
 
 	public BankAccount() {
-		eFundsType = EFundsType.BANK_ACCOUNT.getId();
+		fundsType = EFundsType.BANK_ACCOUNT.getId();
 	}
 
 	public BankAccount(String description) {
@@ -40,8 +40,8 @@ public class BankAccount extends Funds implements Serializable {
 
 	@JsonProperty("fundsType")
 	@Override
-	public int getEFundsType() {
-		return this.eFundsType;
+	public int getFundsType() {
+		return this.fundsType;
 	}
 	
 	@Override

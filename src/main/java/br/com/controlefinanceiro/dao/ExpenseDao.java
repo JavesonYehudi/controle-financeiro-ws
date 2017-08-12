@@ -18,7 +18,7 @@ public class ExpenseDao extends GenericDao<Expense> {
 	
 	@Override
 	public List<Expense> list() {
-		return getQuery().filter("eFinancialTransactionType", EFinancialTransactionType.EXPENSE.ordinal()).asList();
+		return getQuery().filter("financialTransactionType", EFinancialTransactionType.EXPENSE.ordinal()).asList();
 	}
 
 }

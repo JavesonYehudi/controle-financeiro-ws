@@ -14,16 +14,17 @@ public class CreditCard extends Funds implements Serializable {
 	private static final long serialVersionUID = 3219833919121792274L;
 
 	private Integer maturity;
+	private Integer closingDate;
 	private BigDecimal limitValue;
 
 	public CreditCard() {
 		super();
-		this.eFundsType = EFundsType.CREDIT_CARD.getId();
+		this.fundsType = EFundsType.CREDIT_CARD.getId();
 	}
 
 	public CreditCard(String description, Integer maturity, BigDecimal limitValue) {
 		super(description);
-		this.eFundsType = EFundsType.CREDIT_CARD.getId();
+		this.fundsType = EFundsType.CREDIT_CARD.getId();
 		this.maturity = maturity;
 		this.limitValue = limitValue;
 	}
@@ -36,6 +37,14 @@ public class CreditCard extends Funds implements Serializable {
 		this.maturity = maturity;
 	}
 
+	public Integer getClosingDate() {
+		return closingDate;
+	}
+
+	public void setClosingDate(Integer closingDate) {
+		this.closingDate = closingDate;
+	}
+
 	public BigDecimal getLimitValue() {
 		return limitValue;
 	}
@@ -46,8 +55,18 @@ public class CreditCard extends Funds implements Serializable {
 
 	@JsonProperty("fundsType")
 	@Override
-	public int getEFundsType() {
-		return this.eFundsType;
+	public int getFundsType() {
+		return this.fundsType;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuffer stringBuffer = new StringBuffer();
+		stringBuffer.append(super.toString());
+		stringBuffer.append(", Dia de fechamento: ").append(this.closingDate);
+		stringBuffer.append(", Dia de vencimento: ").append(this.maturity);
+		stringBuffer.append(", Limite da fatura: ").append(this.limitValue);
+		return stringBuffer.toString();
 	}
 
 }

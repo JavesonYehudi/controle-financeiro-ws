@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response;
 
 import org.bson.types.ObjectId;
 
-import br.com.controlefinanceiro.model.Maturity;
+import br.com.controlefinanceiro.model.Payment;
 
 public interface IFinancialTransactionResource{
 	
@@ -18,5 +18,5 @@ public interface IFinancialTransactionResource{
 	@Path(value = "/pay/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response pay(@PathParam("id") ObjectId id, Maturity payment);
+	public Response pay(@PathParam("id") ObjectId id, Payment payment);
 }

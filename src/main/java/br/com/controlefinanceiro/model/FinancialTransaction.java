@@ -3,9 +3,7 @@ package br.com.controlefinanceiro.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
@@ -14,9 +12,7 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -37,16 +33,17 @@ public class FinancialTransaction implements Serializable {
 	protected ObjectId id;
 	protected String description;
 	protected BigDecimal valueTransaction;
-	@JsonManagedReference
 	@Embedded
-	protected Set<Maturity> maturityList;
-	@JsonIgnore
-	protected List<Payment> payments;
+	protected Set<Payment> payments;
 	protected Funds funds;
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	protected LocalDate firstMaturity;
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	protected LocalDate lastMaturity;
 	protected boolean fixedTransaction;
 	protected int recurrent;
 	protected ECalendarPeriod calendarPeriod;
@@ -54,10 +51,9 @@ public class FinancialTransaction implements Serializable {
 	protected int financialTransactionType;
 
 	public FinancialTransaction() {
-		setRecurrent(1);
+		setRecurrent(0);
 		setCalendarPeriod(ECalendarPeriod.MONTH);
-		setMaturityList(new HashSet<>());
-		setPayments(new ArrayList<>());
+		setPayments(new HashSet<>());
 	}
 
 	public ObjectId getId() {
@@ -84,19 +80,11 @@ public class FinancialTransaction implements Serializable {
 		this.valueTransaction = value;
 	}
 
-	public Set<Maturity> getMaturityList() {
-		return maturityList;
-	}
-
-	public void setMaturityList(Set<Maturity> maturityList) {
-		this.maturityList = maturityList;
-	}
-
-	public List<Payment> getPayments() {
+	public Set<Payment> getPayments() {
 		return payments;
 	}
 
-	public void setPayments(List<Payment> payments) {
+	public void setPayments(Set<Payment> payments) {
 		this.payments = payments;
 	}
 
@@ -114,6 +102,14 @@ public class FinancialTransaction implements Serializable {
 
 	public void setFirstMaturity(LocalDate firstMaturity) {
 		this.firstMaturity = firstMaturity;
+	}
+	
+	public LocalDate getLastMaturity() {
+		return lastMaturity;
+	}
+
+	public void setLastMaturity(LocalDate lastMaturity) {
+		this.lastMaturity = lastMaturity;
 	}
 
 	public boolean isFixedTransaction() {
@@ -152,25 +148,17 @@ public class FinancialTransaction implements Serializable {
 		return financialTransactionType;
 	}
 
-	public void addMaturity(Maturity maturity) {
-		this.getMaturityList().add(maturity);
-	}
-
 	public void addPayment(Payment payment) {
 		this.getPayments().add(payment);
 	}
 
-	@JsonIgnore
-	public BigDecimal getTotalPaid() {
-		return this.getPayments().stream().map(Payment::getValuePaid).reduce(BigDecimal.ZERO, BigDecimal::add);
-	}
-	
 	@Override
 	public String toString() {
 		StringBuffer stringBuffer = new StringBuffer();
-		stringBuffer
-		.append("description: ").append(description)
-		.append(", value: ").append(valueTransaction);
+		stringBuffer.append("description: ").append(description);
+		stringBuffer.append(", value: ").append(valueTransaction);
+		stringBuffer.append(", firstMaturity: ").append(firstMaturity);
+		stringBuffer.append(", lastMaturity: ").append(lastMaturity);
 		return stringBuffer.toString();
 	}
 }

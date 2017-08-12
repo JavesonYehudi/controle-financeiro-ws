@@ -1,10 +1,8 @@
 package br.com.controlefinanceiro.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Embedded;
@@ -38,11 +36,11 @@ public class Funds implements Serializable {
 	protected List<FinancialTransaction> financialTransactions;
 	@Embedded
 	protected User user;
-	protected int eFundsType;
+	protected int fundsType;
 
 	public Funds() {
 		financialTransactions = new ArrayList<>();
-		eFundsType = EFundsType.DEFAULT.getId();
+		fundsType = EFundsType.DEFAULT.getId();
 	}
 
 	public Funds(String description) {
@@ -82,35 +80,14 @@ public class Funds implements Serializable {
 	}
 
 	@JsonProperty("fundsType")
-	public int getEFundsType() {
-		return this.eFundsType;
-	}
-
-	@JsonProperty("totalIncomePaid")
-	public BigDecimal getCurrentIncomePaid() {
-		Predicate<? super FinancialTransaction> predicate = transaction -> transaction.getClass().equals(Income.class);
-		return this.getFinancialTransactions().stream().filter(predicate).map(FinancialTransaction::getTotalPaid)
-				.reduce(BigDecimal.ZERO, BigDecimal::add);
-	}
-
-	@JsonProperty("totalExpensePaid")
-	public BigDecimal getCurrentExpensePaid() {
-		Predicate<? super FinancialTransaction> predicate = transaction -> transaction.getClass().equals(Expense.class);
-		return this.getFinancialTransactions().stream().filter(predicate).map(FinancialTransaction::getTotalPaid)
-				.reduce(BigDecimal.ZERO, BigDecimal::add);
-	}
-
-	@JsonProperty("balance")
-	public BigDecimal getCurrentBalance() {
-		return this.getFinancialTransactions().stream().map(FinancialTransaction::getTotalPaid).reduce(BigDecimal.ZERO,
-				BigDecimal::add);
+	public int getFundsType() {
+		return this.fundsType;
 	}
 
 	@Override
 	public String toString() {
 		StringBuffer stringBuffer = new StringBuffer();
-		stringBuffer.append(this.getEFundsType()).append(": ").append(this.getDescription());
-		stringBuffer.append(" Current Balance: ").append(this.getCurrentBalance());
+		stringBuffer.append(this.getFundsType()).append(": ").append(this.getDescription());
 		return stringBuffer.toString();
 	}
 

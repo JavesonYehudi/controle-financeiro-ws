@@ -11,45 +11,27 @@ import org.bson.types.ObjectId;
 import br.com.controlefinanceiro.dao.GenericDao;
 import br.com.controlefinanceiro.model.Expense;
 import br.com.controlefinanceiro.model.Funds;
-import br.com.controlefinanceiro.model.Maturity;
+import br.com.controlefinanceiro.model.Payment;
 
 @RequestScoped
 @Named("expense")
 public class ExpenseService extends GenericService<Expense> implements IFinancialTransactionService<Expense> {
 
 	@Inject
-	private GenericDao<Maturity> maturityDao;
-
-	@Inject
 	private GenericDao<Funds> fundsDao;
 
 	@Override
-	public Expense pay(ObjectId id, Maturity payment) throws Exception {
+	public Expense pay(ObjectId id, Payment payment) {
 		Expense expense = dao.find(id);
-		payment.setFinancialTransaction(expense);
-		payment = findMaturity(payment);
-		expense.getMaturityList().add(payment);
+		expense.addPayment(payment);
 		return dao.update(expense);
-	}
-
-	private Maturity findMaturity(Maturity payment) throws Exception {
-		if(payment.getId() != null) {
-			Maturity maturity = maturityDao.find(payment.getId());
-			maturity.setValuePaid(payment.getValuePaid().abs().negate());
-			maturity.setDatePayment(payment.getDatePayment());
-			return maturityDao.update(maturity);
-		}else {
-			payment.setValue(payment.getValuePaid().abs().negate());
-			payment.setValuePaid(payment.getValuePaid().abs().negate());
-			payment.setDate(payment.getDatePayment());
-			return maturityDao.create(payment);
-		}
 	}
 
 	@Override
 	public Expense create(Expense expense) {
 		expense.setValueTransaction(expense.getValueTransaction().abs().negate());
 		expense.setFunds(fundsDao.find(expense.getFunds().getId()));
+		expense.setLastMaturity(expense.getFirstMaturity().plus(expense.getRecurrent(), expense.getCalendarPeriod().getChronoUnit()));
 		return dao.create(expense);
 	}
 
@@ -72,7 +54,7 @@ public class ExpenseService extends GenericService<Expense> implements IFinancia
 		expenseAux.setFixedTransaction(expense.isFixedTransaction());
 		expenseAux.setValueTransaction(expense.getValueTransaction());
 		expenseAux.setRecurrent(expense.getRecurrent());
-		
+
 		return dao.update(expenseAux);
 	}
 }

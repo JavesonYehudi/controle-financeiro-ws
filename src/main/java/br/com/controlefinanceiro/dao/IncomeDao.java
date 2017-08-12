@@ -18,6 +18,6 @@ public class IncomeDao extends GenericDao<Income> {
 
 	@Override
 	public List<Income> list() {
-		return getQuery().filter("eFinancialTransactionType", EFinancialTransactionType.INCOME.ordinal()).asList();
+		return getQuery().filter("financialTransactionType", EFinancialTransactionType.INCOME.ordinal()).asList();
 	}
 }

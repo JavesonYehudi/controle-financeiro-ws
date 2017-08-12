@@ -11,7 +11,7 @@ import org.bson.types.ObjectId;
 import br.com.controlefinanceiro.dao.GenericDao;
 import br.com.controlefinanceiro.model.Funds;
 import br.com.controlefinanceiro.model.Income;
-import br.com.controlefinanceiro.model.Maturity;
+import br.com.controlefinanceiro.model.Payment;
 
 @RequestScoped
 @Named("income")
@@ -21,37 +21,20 @@ public class IncomeService extends GenericService<Income> implements IFinancialT
 	private GenericDao<Income> dao;
 
 	@Inject
-	private GenericDao<Maturity> maturityDao;
-
-	@Inject
 	private GenericDao<Funds> fundsDao;
 
 	@Override
-	public Income pay(ObjectId id, Maturity payment) throws Exception {
-		Income expense = dao.find(id);
-		payment = findMaturity(payment);
-		payment.setFinancialTransaction(expense);
-		return dao.update(expense);
-	}
-
-	private Maturity findMaturity(Maturity payment) throws Exception {
-		if(payment.getId() != null) {
-			Maturity maturity = new Maturity();
-			maturity = maturityDao.find(payment.getId());
-			maturity.setValuePaid(payment.getValuePaid().abs().negate());
-			maturity.setDatePayment(payment.getDatePayment());
-			return maturity;
-		}else {
-			payment.setValue(payment.getValuePaid().abs().negate());
-			payment.setDate(payment.getDatePayment());
-			return payment;
-		}
+	public Income pay(ObjectId id, Payment payment) throws Exception {
+		Income income = dao.find(id);
+		income.addPayment(payment);
+		return dao.update(income);
 	}
 
 	@Override
 	public Income create(Income income) {
 		income.setValueTransaction(income.getValueTransaction().abs());
 		income.setFunds(fundsDao.find(income.getFunds().getId()));
+		income.setLastMaturity(income.getFirstMaturity().plus(income.getRecurrent(), income.getCalendarPeriod().getChronoUnit()));
 		return dao.create(income);
 	}
 
