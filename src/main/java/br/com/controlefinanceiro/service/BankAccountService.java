@@ -9,6 +9,7 @@ import br.com.controlefinanceiro.model.BankAccount;
 public class BankAccountService extends GenericService<BankAccount> {
 
 	public BankAccount create(BankAccount bankAccount) {
+		bankAccount.setUser(userSession.getUser());
 		return dao.create(bankAccount);
 	}
 

@@ -27,15 +27,12 @@ export class TimelineService {
 		params.set("date.start", start);
 		params.set("date.end", end);
 
-		console.log(params);
-
 		var requestOptions = new RequestOptions({
 			method: RequestMethod.Get,
 			url: this.timeLineUrl,
 			params: params
 		});
 
-		//return this.http.get(this.timeLineUrl, {search: params}).toPromise().then(handleData);
 		return this.http.request(new Request(requestOptions)).toPromise().then(handleData);
 	}
 

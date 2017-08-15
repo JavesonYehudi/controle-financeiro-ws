@@ -52,10 +52,10 @@ public class GenericDao<T extends Serializable>{
 	}
 	
 	public String getFieldUser(){
-		return "user.login";
+		return "user.id";
 	}
 
 	public Query<T> getQuery() {
-		return datastore.find(entityClass).filter(getFieldUser(), getUser().getLogin());
+		return datastore.find(entityClass).filter(getFieldUser(), getUser().getId());
 	}
 }

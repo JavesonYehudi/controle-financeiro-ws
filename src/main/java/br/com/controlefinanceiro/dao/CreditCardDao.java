@@ -13,6 +13,6 @@ public class CreditCardDao extends GenericDao<CreditCard> {
 
 	@Override
 	public List<CreditCard> list() {
-		return getQuery().filter("eFundsType", EFundsType.CREDIT_CARD.getId()).asList();
+		return getQuery().filter("fundsType", EFundsType.CREDIT_CARD.getId()).asList();
 	}
 }

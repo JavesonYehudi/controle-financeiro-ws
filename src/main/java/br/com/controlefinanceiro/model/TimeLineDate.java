@@ -16,7 +16,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import br.com.controlefinanceiro.serializer.NoObjectIdSerializer;
 
-public class TimelineItem implements Serializable {
+public class TimeLineDate implements Serializable {
 	/**
 	 * 
 	 */
@@ -25,16 +25,16 @@ public class TimelineItem implements Serializable {
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate date;
-	private List<Transaction> transactions;
+	private List<TimeLineDateItem> timeLineDateItems;
 
-	public TimelineItem(LocalDate date) {
+	public TimeLineDate(LocalDate date) {
 		this.date = date;
-		this.transactions = new ArrayList<>();
+		this.timeLineDateItems = new ArrayList<>();
 	}
 	
-	public TimelineItem(LocalDate date, List<Transaction> transactions) {
+	public TimeLineDate(LocalDate date, List<TimeLineDateItem> transactions) {
 		this.date = date;
-		this.transactions = transactions;
+		this.timeLineDateItems = transactions;
 	}
 
 	public LocalDate getDate() {
@@ -45,32 +45,32 @@ public class TimelineItem implements Serializable {
 		this.date = date;
 	}
 
-	public List<Transaction> getTransactions() {
-		return transactions;
+	public List<TimeLineDateItem> getTimeLineDateItems() {
+		return timeLineDateItems;
 	}
 
-	public void setTransactions(List<Transaction> transactions) {
-		this.transactions = transactions;
+	public void setTimeLineDateItems(List<TimeLineDateItem> timeLineDateItem) {
+		this.timeLineDateItems = timeLineDateItem;
 	}
 
-	public void addTransaction(Transaction transaction) {
-		this.getTransactions().add(transaction);
+	public void addTimeLineDateItem(TimeLineDateItem timeLineDateItem) {
+		this.getTimeLineDateItems().add(timeLineDateItem);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		return ((TimelineItem) obj).getDate().equals(this.getDate()) ? true : super.equals(obj);
+		return ((TimeLineDate) obj).getDate().equals(this.getDate()) ? true : super.equals(obj);
 	}
 
 	@Override
 	public String toString() {
 		StringBuffer stringBuffer = new StringBuffer();
 		stringBuffer.append("Data: ").append(date.toString());
-		stringBuffer.append(", Transações: ").append(transactions);
+		stringBuffer.append(", TimeLineDateItems: ").append(timeLineDateItems);
 		return stringBuffer.toString();
 	}
 
-	public static class Transaction implements Serializable {
+	public static class TimeLineDateItem implements Serializable {
 		/**
 		 * 
 		 */
@@ -81,14 +81,14 @@ public class TimelineItem implements Serializable {
 		private BigDecimal value;
 		private int type;
 
-		public Transaction(FinancialTransaction financialTransaction) {
+		public TimeLineDateItem(FinancialTransaction financialTransaction) {
 			this.id = financialTransaction.getId();
 			this.description = financialTransaction.getDescription();
 			this.value = financialTransaction.getValueTransaction();
 			this.type = financialTransaction.getFinancialTransactionType();
 		}
 
-		public Transaction(ObjectId id, String description, BigDecimal value, int type) {	
+		public TimeLineDateItem(ObjectId id, String description, BigDecimal value, int type) {	
 			this.id = id;
 			this.description = description;
 			this.value = value;
@@ -132,7 +132,7 @@ public class TimelineItem implements Serializable {
 		public String toString() {
 			StringBuffer stringBuffer = new StringBuffer();
 			stringBuffer.append("id: ").append(id);
-			stringBuffer.append(", descrição: ").append(description);
+			stringBuffer.append(", descri��o: ").append(description);
 			stringBuffer.append(", valor: ").append(value);
 			stringBuffer.append(", tipo: ").append(type);
 			return stringBuffer.toString();

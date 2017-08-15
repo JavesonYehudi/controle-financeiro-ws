@@ -13,6 +13,6 @@ public class BankAccountDao extends GenericDao<BankAccount> {
 	}
 
 	public List<BankAccount> list(User user) {
-		return getQuery().filter("eFundsType", EFundsType.BANK_ACCOUNT.getId()).asList();
+		return getQuery().filter("fundsType", EFundsType.BANK_ACCOUNT.getId()).asList();
 	}
 }

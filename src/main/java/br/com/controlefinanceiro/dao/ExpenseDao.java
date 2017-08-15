@@ -13,7 +13,7 @@ public class ExpenseDao extends GenericDao<Expense> {
 
 	@Override
 	public String getFieldUser() {
-		return "funds.user.login";
+		return "funds.user.id";
 	}
 	
 	@Override

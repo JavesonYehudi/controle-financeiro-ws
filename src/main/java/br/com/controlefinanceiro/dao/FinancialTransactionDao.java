@@ -19,6 +19,6 @@ public class FinancialTransactionDao extends GenericDao<FinancialTransaction> {
 	
 	@Override
 	public String getFieldUser() {
-		return "funds.user.login";
+		return "funds.user.id";
 	}
 }

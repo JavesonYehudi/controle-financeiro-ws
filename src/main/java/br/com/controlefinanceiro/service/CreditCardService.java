@@ -7,7 +7,9 @@ import org.bson.types.ObjectId;
 import br.com.controlefinanceiro.model.CreditCard;
 
 public class CreditCardService extends GenericService<CreditCard> {
+
 	public CreditCard create(CreditCard creditCard) {
+		creditCard.setUser(userSession.getUser());
 		return dao.create(creditCard);
 	}
 

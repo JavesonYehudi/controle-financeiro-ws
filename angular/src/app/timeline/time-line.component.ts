@@ -4,7 +4,7 @@ import { Router } 								from '@angular/router';
 import { FinancialTransaction } 				from '../model/financial-transaction';
 import { EFinancialTransactionType }			from '../model/e-financial-transaction-type';
 import { Maturity }				 				from '../model/maturity';
-import { TimelineItem, Transaction } 			from '../model/timeline-item';
+import { TimelineItem, TimeLineDateItems } 			from '../model/timeline-item';
 
 import { TimelineService } 			from '../timeline/time-line.service'
 
@@ -29,11 +29,6 @@ export class TimelineComponent implements OnInit {
 	}
 
    	getFinancialTransaction(): void {
-		this.timelineService.getTimelineItens("2017-08-01", "2017-08-31").then(timelineItems => {
-			this.timelineItems = timelineItems;
-			timelineItems.forEach(item => {
-				console.log(item);
-			})
-		});
+		this.timelineService.getTimelineItens("2017-08-01", "2017-08-31").then(timelineItems => this.timelineItems = timelineItems);
 	}
 }

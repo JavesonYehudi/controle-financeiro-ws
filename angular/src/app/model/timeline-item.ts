@@ -1,9 +1,9 @@
 export class TimelineItem {
 	date: Date;
-	transactions = new Array<Transaction>();
+	timeLineDateItems = new Array<TimeLineDateItems>();
 }
 
-export class Transaction {
+export class TimeLineDateItems {
 	id: string;
 	description: string;
 	value: number;

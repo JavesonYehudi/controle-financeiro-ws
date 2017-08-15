@@ -29,6 +29,7 @@ public class UserService extends GenericService<User> {
 
 	public User login(String externalId, EExternalConnections type, User user) throws UnsupportedEncodingException {
 		ExternalConnection externalConnection = new ExternalConnection(externalId, type);
+		user.addConnection(externalConnection);
 		User userAux = dao.find(externalConnection);
 
 		if (userAux == null)

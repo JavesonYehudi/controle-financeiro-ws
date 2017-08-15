@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.com.controlefinanceiro.serializer.NoObjectIdSerializer;
 
-@Entity(noClassnameStored = true)
+@Entity(noClassnameStored = true, value = "user")
 public class User implements Serializable {
 
 	/**
@@ -107,6 +107,10 @@ public class User implements Serializable {
 		this.status = status;
 	}
 
+	public void addConnection(ExternalConnection externalConnection) {
+		this.getConnections().add(externalConnection);
+	}
+	
 	@Override
 	public String toString() {
 		return this.login;

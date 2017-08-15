@@ -45,11 +45,11 @@
 
       <div class="timeline-badge">
         <span class="timeline-balloon-date-day">{{ timelineItem.date | date: 'dd' }}</span>
-        <span class="timeline-balloon-date-month">{{ timelineItem.date | date: 'MMM' }}</span>
+        <span class="timeline-balloon-date-month">{{ timelineItem.date | uppercase | date: 'MMM' }}</span>
       </div>
 
-      <div *ngIf="timelineItem.transactions" >
-        <div *ngFor="let transaction of timelineItem.transactions; let odd=odd;" class="col-sm-6 timeline-item" [class.col-sm-offset-6]="odd" >
+      <div *ngIf="timelineItem.timeLineDateItems" >
+        <div *ngFor="let transaction of timelineItem.timeLineDateItems; let odd=odd;" class="col-sm-6 timeline-item" [class.col-sm-offset-6]="odd" >
           <div class="row">
             <div class="col-sm-11" [class.col-sm-offset-1]="odd">
               <div class="timeline-panel" [class.debits]="transaction.type == 1" [class.credits]="transaction.type == 0">
