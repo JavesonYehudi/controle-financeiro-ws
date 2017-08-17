@@ -38,27 +38,28 @@ public class TimeLineService {
 			financialTransactions.forEach(financialTransaction -> {
 				LocalDate start = this.start.withDayOfMonth(financialTransaction.getFirstMaturity().get(ChronoField.DAY_OF_MONTH));
 
-				while (isValide(start, end, financialTransaction)) {
-					TimeLineDate.TimeLineDateItem timeLineDateItem = new TimeLineDate.TimeLineDateItem(financialTransaction);
+				do {
+					if (dateIsBetweenTransactionDates(start, financialTransaction)) {
+						TimeLineDate.TimeLineDateItem timeLineDateItem = new TimeLineDate.TimeLineDateItem(financialTransaction);
 
-					TimeLineDate timeLineDate = new TimeLineDate(start);
+						TimeLineDate timeLineDate = new TimeLineDate(start);
 
-					if (timeLineDates.contains(timeLineDate)) {
-						timeLineDates.listIterator().forEachRemaining((timelineItemAction) -> {
-							if (timelineItemAction.getDate().equals(timeLineDate.getDate()))
-								timelineItemAction.addTimeLineDateItem(timeLineDateItem);
-						});
+						if (timeLineDates.contains(timeLineDate)) {
+							timeLineDates.listIterator().forEachRemaining((timelineItemAction) -> {
+								if (timelineItemAction.getDate().equals(timeLineDate.getDate()))
+									timelineItemAction.addTimeLineDateItem(timeLineDateItem);
+							});
 
-					} else {
-						timeLineDate.addTimeLineDateItem(timeLineDateItem);
-						timeLineDates.add(timeLineDate);
+						} else {
+							timeLineDate.addTimeLineDateItem(timeLineDateItem);
+							timeLineDates.add(timeLineDate);
+						}
 					}
 
 					start = start.plus(1, financialTransaction.getCalendarPeriod().getChronoUnit());
-				}
+				} while (isValideDate(start, end));
 			});
 
-			System.out.println(timeLineDates);
 			return timeLineDates;
 		}
 
@@ -66,14 +67,9 @@ public class TimeLineService {
 			return start.isBefore(end) || start.equals(end);
 		}
 
-		private boolean isValide(LocalDate start, LocalDate end, FinancialTransaction financialTransaction) {
-			return isValideDate(start, end)
-					&& (start.isAfter(financialTransaction.getFirstMaturity())
-							|| start.equals(financialTransaction.getFirstMaturity()))
-					&& (financialTransaction.isFixedTransaction()
-							|| start.isBefore(financialTransaction.getLastMaturity())
-							|| start.equals(financialTransaction.getLastMaturity())
-							);
+		private boolean dateIsBetweenTransactionDates(LocalDate date, FinancialTransaction financialTransaction) {
+			return (date.isAfter(financialTransaction.getFirstMaturity()) || date.equals(financialTransaction.getFirstMaturity())) && 
+					(financialTransaction.isFixedTransaction() || date.isBefore(financialTransaction.getLastMaturity()) || date.equals(financialTransaction.getLastMaturity()));
 		}
 
 	}

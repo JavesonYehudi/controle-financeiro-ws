@@ -26,6 +26,8 @@ public class RootFilter implements Filter {
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 		if(ACCEPTED_LOCALES.contains(servletRequest.getLocale()))
 			((HttpServletResponse) servletResponse).sendRedirect(servletRequest.getServletContext().getContextPath().concat("/").concat(servletRequest.getLocale().getLanguage()));
+		else
+			((HttpServletResponse) servletResponse).sendRedirect(servletRequest.getServletContext().getContextPath().concat("/").concat(Locale.US.getLanguage()));
 	}
 
 	@Override
