@@ -14,16 +14,26 @@ export class FundsService {
 
   constructor(private http: Http) {}
 
-  getFunds() : Promise<Funds[]> {
+  getFunds() : Observable<Funds[]> {
     var requestoptions = new RequestOptions({
       method: RequestMethod.Get,
       url: this.fundsUrl
     });
 
-    return this.http.request(new Request(requestoptions)).toPromise().then(handleData);
+    return this.http.request(new Request(requestoptions)).map(this.handleData).catch(this.handleError);
   }
-}
 
-function handleData(res: Response): Funds[] {
-  return res.json();
+  private handleData(res: Response): Funds[] {
+    return res.json();
+  }
+
+  private handleError (error: any) {
+    // In a real world app, we might use a remote logging infrastructure
+    // We'd also dig deeper into the error to get a better message
+    let errMsg = (error.message) ? error.message :
+    error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+    console.error(errMsg); // log to console instead
+    return Observable.throw(errMsg);
+  }
+
 }

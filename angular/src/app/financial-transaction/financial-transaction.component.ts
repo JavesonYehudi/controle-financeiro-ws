@@ -1,5 +1,6 @@
 import { Component, OnInit } 			from '@angular/core';
 import { Router } 						from '@angular/router';
+import { Observable }           		from 'rxjs/Observable';
 
 import { FinancialTransaction } 		from '../model/financial-transaction';
 import { EFinancialTransactionType }	from '../model/e-financial-transaction-type';
@@ -12,7 +13,7 @@ import { FinancialTransactionService } 	from './financial-transaction.service';
     providers : [ FinancialTransactionService ]
 })
 export class FinancialTransactionComponent implements OnInit{
-	financialTransactions: FinancialTransaction[];
+	financialTransactions: Observable<FinancialTransaction[]>;
 	EFinancialTransactionType = EFinancialTransactionType;
 
 	constructor(
@@ -24,6 +25,6 @@ export class FinancialTransactionComponent implements OnInit{
 	}
 
 	getFinancialTransaction(): void {
-		this.financialTransactionService.getFunds().then(financialTransactions => this.financialTransactions = financialTransactions);
+		this.financialTransactions = this.financialTransactionService.getFinancialTransactions();
 	}
 }

@@ -1,12 +1,13 @@
 <h2>Meus Fundos</h2>
-<div *ngIf="!funds">
-	Nada para mostrar por enquanto.
+
+<div *ngIf="funds | async; let funds; else loading">
+	<ul>
+  		<li *ngFor="let fund of funds">
+	  		{{fund.description}}
+			<span>{{fund.totalExpensePaid}}</span>
+			<span>{{EFundsType[fund.fundsType]}}</span>
+		</li>
+	</ul>
 </div>
 
-<ul>
-	<li *ngFor="let fund of funds">
-		{{fund.description}}
-		<span>{{fund.totalExpensePaid}}</span>
-		<span>{{EFundsType[fund.fundsType]}}</span>
-	</li>
-</ul>
+<ng-template #loading>Loading...</ng-template>

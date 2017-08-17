@@ -1,9 +1,9 @@
 import { Injectable }                                                        from '@angular/core';
-import { Router }                                                            from '@angular/router';
 import { Http , RequestOptions , Response, RequestMethod, Request, Headers } from '@angular/http';
 import { Observable }                                                        from 'rxjs/Observable';
-import { FinancialTransaction }                                              from '../model/financial-transaction';
 import { environment }                                                       from '../../environments/environment'
+
+import { FinancialTransaction }                                              from '../model/financial-transaction';
 
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
@@ -14,13 +14,17 @@ export class FinancialTransactionService {
 
   constructor(private http: Http) {}
 
-  getFunds() : Promise<FinancialTransaction[]> {
+  getFinancialTransactions() : Observable<FinancialTransaction[]> {
     var requestoptions = new RequestOptions({
       method: RequestMethod.Get,
       url: this.financialTransactionUrl
     });
 
-    return this.http.request(new Request(requestoptions)).toPromise().then(handleData);
+    return this.http.request(new Request(requestoptions)).map(this.handleData).catch(this.handleError);
+  }
+
+  private handleData(res: Response): FinancialTransaction[] {
+    return res.json();
   }
 
   private handleError (error: any) {
@@ -32,8 +36,4 @@ export class FinancialTransactionService {
     return Observable.throw(errMsg);
   }
 
-}
-
-function handleData(res: Response): FinancialTransaction[] {
-  return res.json();
 }

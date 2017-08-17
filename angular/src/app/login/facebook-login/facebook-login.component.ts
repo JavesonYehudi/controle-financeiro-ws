@@ -41,6 +41,7 @@ export class FacebookLoginComponent implements OnInit {
             let user = new User();
             FB.api('me', {fields: 'name, email'}, response => {
                 user.name = response.name;
+                user.login = response.email;
                 user.email = response.email;
                 user.connections[0] = new ExternalConnection(response.id.toString(), 'FACEBOOK');
 

@@ -1,12 +1,13 @@
 <h2>Minhas Transações</h2>
-<div *ngIf="!financialTransactions">
-	Nada para mostrar por enquanto.
+
+<div *ngIf="financialTransactions | async; let financialTransactions; else loading">
+	<ul>
+		<li *ngFor="let transaction of financialTransactions">
+			{{transaction.description}}
+			<span>{{transaction.valueTransaction}}</span>
+			<span>{{EFinancialTransactionType[transaction.eFinancialTransactionType]}}</span>
+		</li>
+	</ul>
 </div>
 
-<ul>
-	<li *ngFor="let transaction of financialTransactions">
-		{{transaction.description}}
-		<span>{{transaction.valueTransaction}}</span>
-		<span>{{EFinancialTransactionType[transaction.eFinancialTransactionType]}}</span>
-	</li>
-</ul>
+<ng-template #loading>Loading...</ng-template>

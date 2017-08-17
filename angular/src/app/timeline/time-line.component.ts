@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } 								from '@angular/router';
+import { Observable }   						from 'rxjs/Observable';
 
 import { FinancialTransaction } 				from '../model/financial-transaction';
 import { EFinancialTransactionType }			from '../model/e-financial-transaction-type';
 import { Maturity }				 				from '../model/maturity';
-import { TimelineItem, TimeLineDateItems } 			from '../model/timeline-item';
+import { TimelineItem, TimeLineDateItems } 		from '../model/timeline-item';
 
 import { TimelineService } 			from '../timeline/time-line.service'
 
@@ -17,7 +18,7 @@ import { TimelineService } 			from '../timeline/time-line.service'
 })
 
 export class TimelineComponent implements OnInit {
-	timelineItems = new Array<TimelineItem>();
+	timelineItems: Observable<TimelineItem[]>;
 	EFinancialTransactionType = EFinancialTransactionType;
 
 	constructor(
@@ -29,6 +30,6 @@ export class TimelineComponent implements OnInit {
 	}
 
    	getFinancialTransaction(): void {
-		this.timelineService.getTimelineItens("2017-08-01", "2017-08-31").then(timelineItems => this.timelineItems = timelineItems);
+		this.timelineItems = this.timelineService.getTimelineItens("2017-08-01", "2017-08-31");
 	}
 }

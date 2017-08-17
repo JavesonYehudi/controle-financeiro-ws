@@ -1,5 +1,6 @@
 import { Component, OnInit } 	from '@angular/core';
 import { Router } 				from '@angular/router';
+import { Observable }           from 'rxjs/Observable';
 
 import { Funds } 				from '../model/funds';
 import { EFundsType } 			from '../model/e-funds-type';
@@ -12,7 +13,7 @@ import { FundsService } 		from './funds.service';
     providers : [ FundsService ]
 })
 export class FundsComponent implements OnInit{
-	funds:Funds[];
+	funds: Observable<Funds[]>;//;
 	EFundsType = EFundsType;
 
 	constructor(
@@ -24,6 +25,6 @@ export class FundsComponent implements OnInit{
 	}
 
 	getFunds(): void {
-		this.fundsService.getFunds().then(funds => this.funds = funds);
+		this.funds = this.fundsService.getFunds(); //.then(funds => this.funds = funds);
 	}
 }

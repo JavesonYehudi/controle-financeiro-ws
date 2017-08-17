@@ -1,70 +1,46 @@
-<!-- <div class="container">
-  <ul class="timeline" >
-    <li *ngFor="let data of timelinedatas | maturityDataSort; let index=index; let odd=odd;" [class.timeline-inverted]="odd">
-      <div class="timeline-badge info"> <span style="font-size: 14px;">{{data.date | date: 'dd/MM'}}</span></div>
-      <div class="timeline-panel">
-        <div class="timeline-heading">
-          {{even}}
+<ng-template #loading>Loading...</ng-template>
+
+<div *ngIf="timelineItems | async; let timelineItems; else loading">
+  <div class="container">
+    <div id="timeline">
+      <div class="row timeline-movement timeline-movement-top">
+
+        <div class="timeline-badge timeline-future-movement">
+          <a href="#">
+            <span class="glyphicon glyphicon-plus"></span>
+          </a>
         </div>
-      <div class="timeline-body">
-        <ul>
-          <li *ngFor="let transaction of data.transactions">
-            <span>{{transaction.description }}</span> ({{transaction.value | number : '1.2-2'}}) 
-            <button md-icon-button class="button_outline">
-              <md-icon>attach_money</md-icon>
-            </button>
-          </li>
-        </ul>
+
+        <div class="timeline-badge timeline-filter-movement">
+          <a href="#">
+            <span class="glyphicon glyphicon-time"></span>
+          </a>
+        </div>
+
       </div>
-      </div>
-    </li>
-  </ul>
-</div> -->
-
-<div class="container">
-  <div id="timeline">
-
-    <div class="row timeline-movement timeline-movement-top">
-
-      <div class="timeline-badge timeline-future-movement">
-        <a href="#">
-          <span class="glyphicon glyphicon-plus"></span>
-        </a>
-      </div>
-
-      <div class="timeline-badge timeline-filter-movement">
-        <a href="#">
-          <span class="glyphicon glyphicon-time"></span>
-        </a>
-      </div>
-
-    </div>
-
-
-    <div *ngFor="let timelineItem of timelineItems | maturityDataSort" class="row timeline-movement">
-
-      <div class="timeline-badge">
+      <div *ngFor="let timelineItem of timelineItems | maturityDataSort" class="row timeline-movement">
+        <div class="timeline-badge">
         <span class="timeline-balloon-date-day">{{ timelineItem.date | date: 'dd' }}</span>
-        <span class="timeline-balloon-date-month">{{ timelineItem.date | uppercase | date: 'MMM' }}</span>
-      </div>
+        <span class="timeline-balloon-date-month">{{ timelineItem.date | date: 'MMM' | uppercase}}</span>
+        </div>
 
-      <div *ngIf="timelineItem.timeLineDateItems" >
-        <div *ngFor="let transaction of timelineItem.timeLineDateItems; let odd=odd;" class="col-sm-6 timeline-item" [class.col-sm-offset-6]="odd" >
-          <div class="row">
-            <div class="col-sm-11" [class.col-sm-offset-1]="odd">
-              <div class="timeline-panel" [class.debits]="transaction.type == 1" [class.credits]="transaction.type == 0">
-                <ul class="timeline-panel-ul">
-                  <li><span class="importo">{{transaction.description }}</span></li>
-                  <li><span class="causale">{{transaction.value | number : '1.2-2'}} </span> </li>
-                  <li><span class="causale">{{EFinancialTransactionType[transaction.type]}} </span> </li>
-                  <li><p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ timelineItem.date | date }}</small></p> </li>
-                </ul>
+        <div *ngIf="timelineItem.timeLineDateItems" >
+          <div *ngFor="let transaction of timelineItem.timeLineDateItems; let odd=odd;" class="col-sm-6 timeline-item" [class.col-sm-offset-6]="odd" >
+            <div class="row">
+              <div class="col-sm-11" [class.col-sm-offset-1]="odd">
+                <div class="timeline-panel" [class.debits]="transaction.type == 1" [class.credits]="transaction.type == 0">
+                  <ul class="timeline-panel-ul">
+                    <li><span class="importo">{{transaction.description }}</span></li>
+                    <li><span class="causale">{{transaction.value | number : '1.2-2'}} </span> </li>
+                    <li><span class="causale">{{EFinancialTransactionType[transaction.type]}} </span> </li>
+                    <li><p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ timelineItem.date | date }}</small></p> </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </div>
