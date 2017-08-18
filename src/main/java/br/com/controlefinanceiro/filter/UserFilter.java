@@ -9,9 +9,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 
-import br.com.controlefinanceiro.dao.GenericDao;
 import br.com.controlefinanceiro.dao.UserDao;
-import br.com.controlefinanceiro.model.User;
 import br.com.controlefinanceiro.session.UserSession;
 import br.com.controlefinanceiro.utils.TokenUtils;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -20,7 +18,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 public class UserFilter implements ContainerRequestFilter {
 
 	@Inject
-	private GenericDao<User> genericDao;
+	private UserDao dao;
 	@Inject
 	private UserSession userSession;
 
@@ -29,9 +27,13 @@ public class UserFilter implements ContainerRequestFilter {
 		if (!isOptionsRequest(requestContext) && !isUserRequest(requestContext)) {
 			try{
 				String login = TokenUtils.verifyToken(requestContext.getHeaderString("Authorization"));
-				userSession.setUser(((UserDao)genericDao).find(login));				
+				userSession.setUser(dao.find(login));
+				if(userSession.getUser() == null)
+					requestContext.abortWith(Response.status(Status.UNAUTHORIZED).build());
 			}catch (ExpiredJwtException e) {
 				requestContext.abortWith(Response.status(Status.UNAUTHORIZED).build());
+			}catch (IllegalArgumentException e) {
+				requestContext.abortWith(Response.status(Status.UNAUTHORIZED).entity("{\"error\" : \"" + "Please, insert the Authorization code." + "\"}").build());
 			}
 		}
 	}

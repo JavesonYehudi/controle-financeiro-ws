@@ -18,7 +18,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class TimelineService {
-	private timeLineUrl = environment.rootPath + "/timeline";
+	private timeLineUrl = `${environment.rootPath}/timeline`;
 
 	constructor(private http:Http){}
 

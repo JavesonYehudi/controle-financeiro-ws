@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import br.com.controlefinanceiro.dao.FinancialTransactionDao;
 import br.com.controlefinanceiro.model.FinancialTransaction;
 import br.com.controlefinanceiro.model.TimeLineDate;
+import br.com.controlefinanceiro.model.TimeLineDate.TimeLineDateItem;
 
 public class TimeLineService {
 
@@ -40,18 +41,27 @@ public class TimeLineService {
 
 				do {
 					if (dateIsBetweenTransactionDates(start, financialTransaction)) {
-						TimeLineDate.TimeLineDateItem timeLineDateItem = new TimeLineDate.TimeLineDateItem(financialTransaction);
-
 						TimeLineDate timeLineDate = new TimeLineDate(start);
+
+						financialTransaction.getPayments().stream()
+								.filter(payment -> payment.getDate().get(ChronoField.MONTH_OF_YEAR) == timeLineDate.getDate().get(ChronoField.MONTH_OF_YEAR))
+								.forEach(payment -> {
+									TimeLineDateItem timeLineDateItem = timeLineDate.new TimeLineDateItem(financialTransaction.getId(), financialTransaction.getDescription(), payment.getValue(), financialTransaction.getFinancialTransactionType());
+									timeLineDate.addTimeLineDateItem(timeLineDateItem);
+									timeLineDate.setDate(payment.getDate());
+								});
+
+						if(timeLineDate.getTimeLineDateItems().isEmpty())
+							timeLineDate.addTimeLineDateItem(timeLineDate.new TimeLineDateItem(financialTransaction));
 
 						if (timeLineDates.contains(timeLineDate)) {
 							timeLineDates.listIterator().forEachRemaining((timelineItemAction) -> {
-								if (timelineItemAction.getDate().equals(timeLineDate.getDate()))
-									timelineItemAction.addTimeLineDateItem(timeLineDateItem);
+								if (timelineItemAction.getDate().equals(timeLineDate.getDate())) {
+									timelineItemAction.getTimeLineDateItems().addAll(timeLineDate.getTimeLineDateItems());
+								}
 							});
 
 						} else {
-							timeLineDate.addTimeLineDateItem(timeLineDateItem);
 							timeLineDates.add(timeLineDate);
 						}
 					}
@@ -68,8 +78,11 @@ public class TimeLineService {
 		}
 
 		private boolean dateIsBetweenTransactionDates(LocalDate date, FinancialTransaction financialTransaction) {
-			return (date.isAfter(financialTransaction.getFirstMaturity()) || date.equals(financialTransaction.getFirstMaturity())) && 
-					(financialTransaction.isFixedTransaction() || date.isBefore(financialTransaction.getLastMaturity()) || date.equals(financialTransaction.getLastMaturity()));
+			return (date.isAfter(financialTransaction.getFirstMaturity())
+					|| date.equals(financialTransaction.getFirstMaturity()))
+					&& (financialTransaction.isFixedTransaction()
+							|| date.isBefore(financialTransaction.getLastMaturity())
+							|| date.equals(financialTransaction.getLastMaturity()));
 		}
 
 	}

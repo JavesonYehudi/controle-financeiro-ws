@@ -43,12 +43,11 @@ export class FacebookLoginComponent implements OnInit {
                 user.name = response.name;
                 user.login = response.email;
                 user.email = response.email;
-                user.connections[0] = new ExternalConnection(response.id.toString(), 'FACEBOOK');
 
-                this.loginService.loginFacebook(user).then(
+                this.loginService.loginFacebook(user).subscribe(
                     response => {
                         localStorage.setItem('user', this.handleData(response));
-                        this.zone.run(() => {console.log('Outside Done!'); this.router.navigate(['/']); });
+                        this.zone.run(() => this.router.navigate(['/']));
                     }
                 );
             });

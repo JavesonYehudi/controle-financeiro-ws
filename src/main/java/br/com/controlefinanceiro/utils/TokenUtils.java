@@ -18,7 +18,7 @@ public class TokenUtils {
 	public static String generateToken(User user) {
 		String token = Jwts.builder()
 				.claim("login", user.getLogin())
-				.claim("pass", user.getPass())
+				.claim("pass", user.getPassword())
 				.setId(user.getId().toString())
 				.setIssuedAt(new Date())
 				.setExpiration(Date.from(LocalDateTime.now().plusDays(1).atZone(ZoneId.systemDefault()).toInstant()))
@@ -30,7 +30,7 @@ public class TokenUtils {
 		try{
 			Claims claims = Jwts.parser().setSigningKey(base64SecretBytes).parseClaimsJws(token).getBody();
 			return claims.get("login").toString();
-		} catch (ExpiredJwtException e) {
+		} catch (ExpiredJwtException | IllegalArgumentException e) {
 			throw e;
 		}
 	}

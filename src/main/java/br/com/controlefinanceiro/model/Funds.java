@@ -21,7 +21,7 @@ import br.com.controlefinanceiro.serializer.NoObjectIdSerializer;
 
 @Entity(noClassnameStored = true, value = "funds")
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Indexes({ @Index("user") })
+@Indexes({ @Index("user"), @Index("description") })
 public class Funds implements Serializable {
 	/**
 	 * 
@@ -43,6 +43,12 @@ public class Funds implements Serializable {
 		fundsType = EFundsType.DEFAULT.getId();
 	}
 
+	public Funds(User user){
+		this.description = "Wallet";
+		this.user = user;
+		fundsType = EFundsType.DEFAULT.getId();
+	}
+	
 	public Funds(String description) {
 		this.description = description;
 	}

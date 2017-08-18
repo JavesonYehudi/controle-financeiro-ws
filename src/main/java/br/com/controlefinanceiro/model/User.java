@@ -30,15 +30,12 @@ public class User implements Serializable {
 	private String name;
 	private String email;
 	private String login;
-	private String pass;
+	private String password;
 	@Transient
 	private String token;
-	@Transient
-	private boolean status;
 
 	public User() {
 		this.connections = new ArrayList<>();
-		setStatus(false);
 	}
 
 	public ObjectId getId() {
@@ -82,13 +79,13 @@ public class User implements Serializable {
 	}
 
 	@JsonIgnore
-	public String getPass() {
-		return pass;
+	public String getPassword() {
+		return password;
 	}
 
 	@JsonProperty
-	public void setPass(String pass) {
-		this.pass = pass;
+	public void setPassword(String pass) {
+		this.password = pass;
 	}
 
 	public String getToken() {
@@ -99,18 +96,10 @@ public class User implements Serializable {
 		this.token = token;
 	}
 
-	public boolean getStatus() {
-		return status;
-	}
-
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
-
 	public void addConnection(ExternalConnection externalConnection) {
 		this.getConnections().add(externalConnection);
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.login;

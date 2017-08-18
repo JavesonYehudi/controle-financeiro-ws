@@ -10,29 +10,29 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class LoginService {
-  private OauthLoginEndPointUrl = environment.rootPath + '/user';  // Oauth Login EndPointUrl to web API
+  private OauthLoginEndPointUrl = `${environment.rootPath}/user`;  // Oauth Login EndPointUrl to web API
 
   constructor(private router: Router, private http: Http) {}
 
-  login(user: User) : Promise<any> {
+  login(user: User) : Observable<any> {
     var requestoptions = new RequestOptions({
       method: RequestMethod.Post,
       url: `${this.OauthLoginEndPointUrl}/login`,
       body: JSON.stringify(user)
     });
 
-    return this.http.request(new Request(requestoptions)).toPromise();
+    return this.http.request(new Request(requestoptions)).map(this.handleData).catch(this.handleError);
 
   }
 
-  loginFacebook(user: User) : Promise<any> {
+  loginFacebook(user: User) : Observable<any> {
     var requestoptions = new RequestOptions({
       method: RequestMethod.Post,
       url: `${this.OauthLoginEndPointUrl}/facebook-login/${user.connections[0].id}`,
       body: JSON.stringify(user)
     });
 
-    return this.http.request(new Request(requestoptions)).toPromise();
+    return this.http.request(new Request(requestoptions)).map(this.handleData).catch(this.handleError);
 
   }
 

@@ -10,7 +10,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class FundsService {
-  private fundsUrl = environment.rootPath + '/funds';
+  private fundsUrl = `${environment.rootPath}/funds`;
 
   constructor(private http: Http) {}
 

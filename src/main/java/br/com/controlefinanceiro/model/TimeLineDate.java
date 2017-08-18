@@ -70,7 +70,7 @@ public class TimeLineDate implements Serializable {
 		return stringBuffer.toString();
 	}
 
-	public static class TimeLineDateItem implements Serializable {
+	public class TimeLineDateItem implements Serializable {
 		/**
 		 * 
 		 */

@@ -10,7 +10,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class FinancialTransactionService {
-  private financialTransactionUrl = environment.rootPath + '/financial-transaction';
+  private financialTransactionUrl = `${environment.rootPath}/financial-transaction`;
 
   constructor(private http: Http) {}
 

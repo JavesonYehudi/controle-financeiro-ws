@@ -16,7 +16,7 @@ public abstract class GenericService<T extends Serializable> {
 	@Inject
 	protected UserSession userSession;
 	
-	public abstract T create(T t);
+	public abstract T create(T t) throws Exception;
 
 	public abstract T find(ObjectId id);
 
