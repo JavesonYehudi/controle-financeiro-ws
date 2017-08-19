@@ -5,9 +5,6 @@ import { environment }                                                       fro
 
 import { Funds }                                                             from '../model/funds';
 
-import 'rxjs/add/operator/toPromise';
-import 'rxjs/add/operator/map';
-
 @Injectable()
 export class FundsService {
   private fundsUrl = `${environment.rootPath}/funds`;

@@ -25,6 +25,10 @@ export class FundsComponent implements OnInit{
 	}
 
 	getFunds(): void {
-		this.funds = this.fundsService.getFunds(); //.then(funds => this.funds = funds);
+		this.handleDate(this.fundsService.getFunds());
+	}
+
+	private handleDate(funds: Observable<Funds[]>){
+		this.funds = funds;
 	}
 }

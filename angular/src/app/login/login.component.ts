@@ -20,11 +20,11 @@ export class LoginComponent {
     event.preventDefault();
     this.loginService.login(this.user).subscribe(
       response => {
-        localStorage.setItem('user', this.handleData(response));
+//        localStorage.setItem('user', this.handleData);
         this.router.navigate(['']);
       });
   }
-  private handleData(res: Response) {
+  private handleData(res: Response) : string {
     let body = res.json();
     return JSON.stringify(body);
   }

@@ -5,16 +5,13 @@ import { Observable }                                                        fro
 import { User }                                                              from '../model/user';
 import { environment }                                                       from '../../environments/environment'
 
-import 'rxjs/add/operator/toPromise';
-import 'rxjs/add/operator/map';
-
 @Injectable()
 export class LoginService {
   private OauthLoginEndPointUrl = `${environment.rootPath}/user`;  // Oauth Login EndPointUrl to web API
 
   constructor(private router: Router, private http: Http) {}
 
-  login(user: User) : Observable<any> {
+  login(user: User) : Observable<User> {
     var requestoptions = new RequestOptions({
       method: RequestMethod.Post,
       url: `${this.OauthLoginEndPointUrl}/login`,
@@ -25,7 +22,7 @@ export class LoginService {
 
   }
 
-  loginFacebook(user: User) : Observable<any> {
+  loginFacebook(user: User) : Observable<User> {
     var requestoptions = new RequestOptions({
       method: RequestMethod.Post,
       url: `${this.OauthLoginEndPointUrl}/facebook-login/${user.connections[0].id}`,
@@ -37,8 +34,7 @@ export class LoginService {
   }
 
   private handleData(res: Response) {
-    let body = res.json();
-    return JSON.stringify(body);
+    return res.json();
   }
 
   private handleError (error: any) {

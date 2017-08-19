@@ -1,11 +1,8 @@
-import {Component, OnInit, NgZone}  from '@angular/core';
-import {Router}             from "@angular/router";
-import { LoginService }     from '../login.service';
-import {User}               from "../../model/user";
-import {ExternalConnection} from "../../model/external-connection";
-
-import 'rxjs/add/operator/toPromise';
-import 'rxjs/add/operator/map';
+import { Component, OnInit, NgZone }  from '@angular/core';
+import { Router }                     from "@angular/router";
+import { LoginService }               from '../login.service';
+import { User }                       from "../../model/user";
+import { ExternalConnection }         from "../../model/external-connection";
 
 declare const FB:any;
 
@@ -43,13 +40,15 @@ export class FacebookLoginComponent implements OnInit {
                 user.name = response.name;
                 user.login = response.email;
                 user.email = response.email;
+                user.connections.push(new ExternalConnection(response.id, 'FACEBOOK'));
 
-                this.loginService.loginFacebook(user).subscribe(
-                    response => {
-                        localStorage.setItem('user', this.handleData(response));
-                        this.zone.run(() => this.router.navigate(['/']));
-                    }
-                );
+                this.loginService.loginFacebook(user).subscribe(user => {
+                    localStorage.setItem('user', this.handleData(user));
+                    this.zone.run(() => {
+                        console.log('outside done!');
+                        this.router.navigate(['/']);
+                    });
+                });
             });
 
         }else {
@@ -67,8 +66,7 @@ export class FacebookLoginComponent implements OnInit {
         this.getLoginStatus();
     }
 
-    private handleData(res: Response) {
-        let body = res.json();
-        return JSON.stringify(body);
+    private handleData(user: User) {
+        return JSON.stringify(user);
     }
 }

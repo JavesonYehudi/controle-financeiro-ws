@@ -6,7 +6,7 @@
 <urlrewrite>
 
 	<rule match-type="wildcard">
-		<from>*/br/home</from>
+		<from>*/pt/home</from>
 		<to>index.html</to>
 	</rule>
 	
@@ -16,7 +16,7 @@
 	</rule>
 
 	<rule match-type="wildcard">
-		<from>*/br/funds</from>
+		<from>*/pt/funds</from>
 		<to>index.html</to>
 	</rule>
 	
@@ -26,7 +26,7 @@
 	</rule>
 
 	<rule match-type="wildcard">
-		<from>*/br/login</from>
+		<from>*/pt/login</from>
 		<to>index.html</to>
 	</rule>
 	<rule match-type="wildcard">
