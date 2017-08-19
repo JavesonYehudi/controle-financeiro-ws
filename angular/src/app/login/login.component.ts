@@ -18,7 +18,7 @@ export class LoginComponent {
     this.user.login = username;
     this.user.pass = password;
     event.preventDefault();
-    this.loginService.login(this.user).then(
+    this.loginService.login(this.user).subscribe(
       response => {
         localStorage.setItem('user', this.handleData(response));
         this.router.navigate(['']);
